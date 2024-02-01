@@ -17,7 +17,10 @@ class NewsHabitFactory: ProjectFactory {
     
     let bundleId: String = "Green-Tea-organization-NewsHabit"
     
-    let dependencies: [TargetDependency] = []
+    let dependencies: [TargetDependency] = [
+        .external(name: "SnapKit"),
+        .external(name: "Then")
+    ]
     
     let infoPlist: [String: Plist.Value] = [
         "ITSAppUsesNonExemptEncryption": .boolean(false),
