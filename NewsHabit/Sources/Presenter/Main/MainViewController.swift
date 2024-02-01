@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: BaseNavigationBarController<MainView> {
     
     // MARK: - Life Cycle
     
