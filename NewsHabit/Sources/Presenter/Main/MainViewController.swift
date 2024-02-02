@@ -7,12 +7,19 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: BaseNavigationBarController<MainView> {
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
+    }
+    
+    // MARK: - BaseNavigationBarViewControllerProtocol
+    
+    override func setupNavigationBar() {
+        
     }
     
 }
