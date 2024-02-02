@@ -19,7 +19,7 @@ class MainView: BaseView {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    // MARK: - UI
+    // MARK: - UI Components
     
     let backgroundView = UIView().then {
         $0.backgroundColor = .white
@@ -64,7 +64,7 @@ class MainView: BaseView {
         $0.backgroundColor = .systemYellow.withAlphaComponent(0.1)
     }
     
-    // MARK: - initializer
+    // MARK: - Initializer
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -76,7 +76,7 @@ class MainView: BaseView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - BaseViewProtocol
+    // MARK: - Setup Methods
     
     override func setupLayout() {
         addSubview(backgroundView)
@@ -135,26 +135,38 @@ class MainView: BaseView {
         }
     }
     
-    // MARK: - Setup Gesture Recognizer
-    
     private func setupGestureRecognizer() {
-        todayNewsLabel.addGestureRecognizer(
-            UITapGestureRecognizer(target: self, action: #selector(handleTodayNewsTap))
-        )
-        monthlyRecordLabel.addGestureRecognizer(
-            UITapGestureRecognizer(target: self, action: #selector(handleMonthlyRecordTap))
-        )
+        // 탭 제스처 인식기 설정
+        addTapGestureRecognizer(to: todayNewsLabel, action: #selector(handleTodayNewsTap))
+        addTapGestureRecognizer(to: monthlyRecordLabel, action: #selector(handleMonthlyRecordTap))
+
+        // 스와이프 제스처 인식기 설정
+        addSwipeGestureRecognizer(to: self, action: #selector(handleTodayNewsTap), direction: .right)
+        addSwipeGestureRecognizer(to: self, action: #selector(handleMonthlyRecordTap), direction: .left)
     }
     
-    @objc private func handleTodayNewsTap() {
-        viewModel?.selectedMenu = .todayNews
+}
+
+// MARK: - Gesture Recognizers Setup
+
+extension MainView {
+    
+    private func addTapGestureRecognizer(to view: UIView, action: Selector) {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: action)
+        view.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    @objc private func handleMonthlyRecordTap() {
-        viewModel?.selectedMenu = .monthlyRecord
+    private func addSwipeGestureRecognizer(to view: UIView, action: Selector, direction: UISwipeGestureRecognizer.Direction) {
+        let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: action)
+        swipeGestureRecognizer.direction = direction
+        view.addGestureRecognizer(swipeGestureRecognizer)
     }
     
-    // MARK: - Bind View Model
+}
+
+// MARK: - ViewModel Binding
+
+extension MainView {
     
     func bindViewModel(_ viewModel: MainViewModel) {
         self.viewModel = viewModel
@@ -180,6 +192,20 @@ class MainView: BaseView {
             self.scrollView.setContentOffset(viewOffset, animated: true)
             self.layoutIfNeeded()
         }
+    }
+    
+}
+
+// MARK: - Action Handlers
+
+extension MainView {
+    
+    @objc private func handleTodayNewsTap() {
+        viewModel?.selectedMenu = .todayNews
+    }
+    
+    @objc private func handleMonthlyRecordTap() {
+        viewModel?.selectedMenu = .monthlyRecord
     }
     
 }
