@@ -16,7 +16,7 @@ protocol BaseViewProtocol {
 
 class BaseView: UIView, BaseViewProtocol {
     
-    // MARK: - initializer
+    // MARK: - Initializer
     
     override init(frame: CGRect) {
         super.init(frame: frame)
