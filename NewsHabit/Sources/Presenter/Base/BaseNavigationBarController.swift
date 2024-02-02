@@ -182,7 +182,7 @@ class BaseNavigationBarController<View: BaseView>: UIViewController, BaseNavigat
         }
         
         navigationItemBar.rightItemButton.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(20)
+            $0.trailing.equalToSuperview().inset(20)
             $0.centerY.equalToSuperview()
             $0.width.height.equalTo(24)
         }
