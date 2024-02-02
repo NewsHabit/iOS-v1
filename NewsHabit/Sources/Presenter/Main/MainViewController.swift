@@ -13,6 +13,13 @@ class MainViewController: BaseNavigationBarController<MainView> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
+    }
+    
+    // MARK: - BaseNavigationBarViewControllerProtocol
+    
+    override func setupNavigationBar() {
+        
     }
     
 }

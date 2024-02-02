@@ -37,19 +37,21 @@ class BaseNavigationBarController<View: BaseView>: UIViewController, BaseNavigat
     let statusBar = UIView()
     
     let navigationItemBar = NavigationItemBar().then {
+        $0.leftItemButton.tintColor = .label
         $0.leftItemButton.configuration = .plain()
-        $0.leftItemButton.configuration?.image = UIImage(systemName: "chevron.left")
-        $0.leftItemButton.configuration?.preferredSymbolConfigurationForImage = .init(weight: .semibold)
+        $0.leftItemButton.configuration?.image = UIImage(
+            systemName: "chevron.left",
+            withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)
+        )
+        $0.rightItemButton.tintColor = .label
         $0.rightItemButton.configuration = .plain()
-        $0.rightItemButton.configuration?.image = UIImage(systemName: "square.and.arrow.up")
-        $0.leftItemButton.configuration?.preferredSymbolConfigurationForImage = .init(weight: .semibold)
+        $0.rightItemButton.configuration?.image = UIImage(
+            systemName: "square.and.arrow.up",
+            withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)
+        )
     }
     
     let contentView: BaseView = View()
-    
-    // MARK: - Default Properties
-    
-    let tintColor: UIColor = .darkGray
     
     // MARK: - Life Lycle
     
@@ -59,13 +61,13 @@ class BaseNavigationBarController<View: BaseView>: UIViewController, BaseNavigat
         navigationController?.setNavigationBarHidden(true, animated: false)
         view.backgroundColor = .systemBackground
         setupLayout()
-        setupNavigationBar()
-        setupProperties()
     }
     
     // MARK: - BaseNavigationBarViewControllerProtocol
     
-    func setupNavigationBar() {}
+    func setupNavigationBar() {
+        fatalError("setupNavigationBar() must be overridden")
+    }
     
     func setNavigationBarBackgroundColor(_ color: UIColor?) {
         statusBar.backgroundColor = color
@@ -148,10 +150,6 @@ class BaseNavigationBarController<View: BaseView>: UIViewController, BaseNavigat
             $0.left.right.equalToSuperview()
             $0.bottom.equalToSuperview().inset(tabBarController?.tabBar.frame.height ?? 0)
         }
-    }
-    
-    private func setupProperties() {
-        setNavigationBarTintColor(tintColor)
     }
     
 }
