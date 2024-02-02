@@ -146,17 +146,7 @@ class BaseNavigationBarController<View: BaseView>: UIViewController {
     
     // MARK: - BaseNavigationBarViewControllerProtocol
     
-    /**
-     `setupNavigationBar` 메서드는 네비게이션 바의 초기 설정을 위해 반드시 오버라이드되어야 합니다.
-     
-     ## 호출 시점
-     이 메서드는 `viewDidLoad` 내에서 호출되어야 하며, `super.viewDidLoad()`의 호출 직후에 위치해야 합니다.
-      
-     ## 예외 처리
-     서브클래스에서 이 메서드를 오버라이드하지 않을 경우, 런타임 에러가 발생합니다.
-     이는 개발 과정에서 메서드의 구현을 강제하기 위한 의도적인 설계입니다.
-     서브클래스는 이 메서드 내에서 네비게이션 바의 모든 관련 설정(버튼, 타이틀, 색상 등)을 구성해야 합니다.
-    */
+    /// 네비게이션 바의 초기 설정을 위해 반드시 서브클래스에서 재정의해야 하는 함수
     func setupNavigationBar() {
         fatalError("setupNavigationBar() must be overridden")
     }
