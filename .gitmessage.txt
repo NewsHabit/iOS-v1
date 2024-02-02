@@ -16,14 +16,9 @@
 # 🐛 :bug: fix: 버그 수정
 # 📝 :memo: docs: 문서 추가, 수정, 삭제
 # 🎨 :art: style: 코드 구조/형태 개선
-# 🔥 :fire: 코드/파일 삭제
-# 💄 :lipstick: UI 추가, 수정, 삭제
-# ♻️  :recycle: 코드 리팩토링
-# 💡 :bulb: 주석 추가, 수정, 삭제
+# 🔥 :fire: remove: 코드/파일 삭제
+# 💄 :lipstick: design: UI 추가, 수정, 삭제
+# ♻️  :recycle: rafactor: 코드 리팩토링
+# 💡 :bulb: comment: 주석 추가, 수정, 삭제
 # 💚 :green_heart: chore: 기타 변경사항
 
-### 꼬리말 유형
-# Fixes	    : 해당 커밋이 특정 이슈를 해결했음
-# Closes    : 해당 커밋이 특정 이슈를 닫았음
-# Refs	    : 해당 커밋이 특정 이슈와 관련이 있음
-# Seel also : 다른 관련 이슈와의 연결
