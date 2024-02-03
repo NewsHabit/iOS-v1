@@ -35,11 +35,11 @@ class NavigationItemBar: UIView {
     }
     
     let largeTitleLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 30, weight: .bold)
+        $0.font = .systemFont(ofSize: 25, weight: .bold)
     }
     
     let subTitleLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 18, weight: .semibold)
+        $0.font = .systemFont(ofSize: 16, weight: .semibold)
     }
     
 }
@@ -60,6 +60,7 @@ protocol BaseNavigationBarViewControllerProtocol {
     func setNavigationBarLargeTitleTextColor(_ color: UIColor?)
     func setNavigationBarSubTitleText(_ title: String?)
     func setNavigationBarSubTitleTextColor(_ color: UIColor?)
+    func setNavigationBarSubTitleFont(_ font: UIFont?)
 }
 
 class BaseNavigationBarController<View: BaseView>: UIViewController {
@@ -120,13 +121,13 @@ class BaseNavigationBarController<View: BaseView>: UIViewController {
         }
         
         navigationItemBar.largeTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(30)
+            $0.top.equalToSuperview().inset(20)
             $0.leading.equalToSuperview().inset(20)
         }
         
         navigationItemBar.subTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(navigationItemBar.largeTitleLabel.snp.bottom).offset(10)
-            $0.leading.equalToSuperview().inset(20)
+            $0.top.equalTo(navigationItemBar.largeTitleLabel.snp.bottom).offset(7)
+            $0.leading.equalToSuperview().inset(25)
         }
         
         contentView.snp.makeConstraints {
@@ -190,7 +191,7 @@ class BaseNavigationBarController<View: BaseView>: UIViewController {
         navigationItemBar.snp.remakeConstraints {
             $0.top.equalTo(statusBar.snp.bottom)
             $0.left.right.equalToSuperview()
-            $0.height.equalTo(110)
+            $0.height.equalTo(80)
         }
     }
     
@@ -225,6 +226,10 @@ class BaseNavigationBarController<View: BaseView>: UIViewController {
     
     func setNavigationBarSubTitleTextColor(_ color: UIColor?) {
         navigationItemBar.subTitleLabel.textColor = color
+    }
+    
+    func setNavigationBarSubTitleFont(_ font: UIFont?) {
+        navigationItemBar.subTitleLabel.font = font
     }
     
 }

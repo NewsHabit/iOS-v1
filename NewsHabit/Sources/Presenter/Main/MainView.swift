@@ -24,21 +24,21 @@ class MainView: BaseView {
     let backgroundView = UIView().then {
         $0.backgroundColor = .white
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 40
+        $0.layer.cornerRadius = 35
         $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner] // 위쪽 모서리 둥글게
     }
     
     let todayNewsLabel = UILabel().then {
         $0.text = "오늘의 뉴스"
         $0.textColor = .label
-        $0.font = .systemFont(ofSize: 20, weight: .semibold)
+        $0.font = .systemFont(ofSize: 18, weight: .semibold)
         $0.isUserInteractionEnabled = true
     }
     
     let monthlyRecordLabel = UILabel().then {
         $0.text = "이번 달 기록"
         $0.textColor = .label
-        $0.font = .systemFont(ofSize: 20, weight: .semibold)
+        $0.font = .systemFont(ofSize: 18, weight: .semibold)
         $0.isUserInteractionEnabled = true
     }
     
@@ -89,12 +89,12 @@ class MainView: BaseView {
         scrollView.addSubview(monthlyRecordView)
         
         backgroundView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(30)
+            $0.top.equalToSuperview().inset(20)
             $0.leading.trailing.bottom.equalToSuperview()
         }
         
         todayNewsLabel.snp.makeConstraints {
-            $0.top.equalTo(backgroundView.snp.top).offset(60)
+            $0.top.equalTo(backgroundView.snp.top).offset(40)
             $0.leading.equalToSuperview().inset(25)
         }
         
@@ -104,7 +104,7 @@ class MainView: BaseView {
         }
         
         separator.snp.makeConstraints {
-            $0.top.equalTo(todayNewsLabel.snp.bottom).offset(10)
+            $0.top.equalTo(todayNewsLabel.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(1)
         }
@@ -117,7 +117,7 @@ class MainView: BaseView {
         }
         
         scrollView.snp.makeConstraints {
-            $0.top.equalTo(separator.snp.bottom).offset(5)
+            $0.top.equalTo(separator.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
         
