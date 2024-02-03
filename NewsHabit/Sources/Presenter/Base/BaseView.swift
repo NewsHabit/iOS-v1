@@ -16,7 +16,7 @@ protocol BaseViewProtocol {
 
 class BaseView: UIView, BaseViewProtocol {
     
-    // MARK: - initializer
+    // MARK: - Initializer
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,6 +28,7 @@ class BaseView: UIView, BaseViewProtocol {
     
     // MARK: - BaseViewProtocol
     
+    /// 뷰의 레이아웃 설정을 위해 반드시 서브클래스에서 재정의해야 하는 함수
     func setupLayout() {
         fatalError("setupLayout() must be overridden")
     }

@@ -14,17 +14,20 @@ class MainViewController: BaseNavigationBarController<MainView> {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        
+        guard let contentView = contentView as? MainView else { return }
+        contentView.bindViewModel(MainViewModel())
     }
     
     // MARK: - BaseNavigationBarViewControllerProtocol
     
     override func setupNavigationBar() {
-        setNavigationBarMode(.button)
-//        setBackgroundColor(UIColor(red: 53/255, green: 53/255, blue: 53/255, alpha: 1)) // 📌
-//        setNavigationBarLargeTitleText("홍길동님의 뉴빗")
-//        setNavigationBarLargeTitleTextColor(.white)
-//        setNavigationBarSubTitleText("👀 42일 째 모두 읽으셨어요!")
-//        setNavigationBarSubTitleTextColor(.white)
+        setNavigationBarMode(.title)
+        setBackgroundColor(UIColor(red: 53/255, green: 53/255, blue: 53/255, alpha: 1)) // 📌
+        setNavigationBarLargeTitleText("홍길동님의 뉴빗")
+        setNavigationBarLargeTitleTextColor(.white)
+        setNavigationBarSubTitleText("👀 42일 째 모두 읽으셨어요!")
+        setNavigationBarSubTitleTextColor(.white)
     }
     
 }

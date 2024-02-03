@@ -16,10 +16,32 @@ enum NavigationBarMode {
 }
 
 class NavigationItemBar: UIView {
-    var backButton = UIButton()
-    var rightItemButton = UIButton()
-    var largeTitleLabel = UILabel()
-    var subTitleLabel = UILabel()
+    let backButton = UIButton().then {
+        $0.tintColor = .label
+        $0.configuration = .plain()
+        $0.configuration?.image = UIImage(
+            systemName: "chevron.left",
+            withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)
+        )
+    }
+    
+    let rightItemButton = UIButton().then {
+        $0.tintColor = .label
+        $0.configuration = .plain()
+        $0.configuration?.image = UIImage(
+            systemName: "square.and.arrow.up",
+            withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)
+        )
+    }
+    
+    let largeTitleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 30, weight: .bold)
+    }
+    
+    let subTitleLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 18, weight: .semibold)
+    }
+    
 }
 
 protocol BaseNavigationBarViewControllerProtocol {
@@ -40,29 +62,12 @@ protocol BaseNavigationBarViewControllerProtocol {
     func setNavigationBarSubTitleTextColor(_ color: UIColor?)
 }
 
-class BaseNavigationBarController<View: BaseView>: UIViewController, BaseNavigationBarViewControllerProtocol {
+class BaseNavigationBarController<View: BaseView>: UIViewController {
     
-    // MARK: - UI
+    // MARK: - UI Components
     
     let statusBar = UIView()
-    
-    let navigationItemBar = NavigationItemBar().then {
-        $0.backButton.tintColor = .label
-        $0.backButton.configuration = .plain()
-        $0.backButton.configuration?.image = UIImage(
-            systemName: "chevron.left",
-            withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)
-        )
-        $0.rightItemButton.tintColor = .label
-        $0.rightItemButton.configuration = .plain()
-        $0.rightItemButton.configuration?.image = UIImage(
-            systemName: "square.and.arrow.up",
-            withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)
-        )
-        $0.largeTitleLabel.font = .systemFont(ofSize: 30, weight: .bold)
-        $0.subTitleLabel.font = .systemFont(ofSize: 18, weight: .semibold)
-    }
-    
+    let navigationItemBar = NavigationItemBar()
     let contentView: BaseView = View()
     
     // MARK: - Property
@@ -77,83 +82,10 @@ class BaseNavigationBarController<View: BaseView>: UIViewController, BaseNavigat
         navigationController?.setNavigationBarHidden(true, animated: false)
         view.backgroundColor = .systemBackground
         setupLayout()
+        setupGestureRecognizer()
     }
     
-    // MARK: - BaseNavigationBarViewControllerProtocol
-    
-    func setupNavigationBar() {
-        fatalError("setupLayout() must be overridden")
-    }
-    
-    func setBackgroundColor(_ color: UIColor?) {
-        statusBar.backgroundColor = color
-        navigationItemBar.backgroundColor = color
-        contentView.backgroundColor = color
-    }
-    
-    func setNavigationBarMode(_ mode: NavigationBarMode) {
-        if mode == .button {
-            navigationItemBar.backButton.isHidden = false
-            navigationItemBar.rightItemButton.isHidden = false
-            navigationItemBar.largeTitleLabel.isHidden = true
-            navigationItemBar.subTitleLabel.isHidden = true
-            navigationItemBar.snp.remakeConstraints {
-                $0.top.equalTo(statusBar.snp.bottom)
-                $0.left.right.equalToSuperview()
-                $0.height.equalTo(60)
-            }
-        } else {
-            navigationItemBar.backButton.isHidden = true
-            navigationItemBar.rightItemButton.isHidden = true
-            navigationItemBar.largeTitleLabel.isHidden = false
-            navigationItemBar.subTitleLabel.isHidden = false
-            navigationItemBar.snp.remakeConstraints {
-                $0.top.equalTo(statusBar.snp.bottom)
-                $0.left.right.equalToSuperview()
-                $0.height.equalTo(110)
-            }
-        }
-        contentView.snp.remakeConstraints {
-            $0.top.equalTo(navigationItemBar.snp.bottom)
-            $0.left.right.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(tabBarController?.tabBar.frame.height ?? 0)
-        }
-    }
-    
-    func setNavigationBarButtonTintColor(_ color: UIColor?) {
-        navigationItemBar.backButton.tintColor = color
-        navigationItemBar.rightItemButton.tintColor = color
-    }
-    
-    func setNavigationBarRightItemButtonHidden(_ hidden: Bool) {
-        navigationItemBar.rightItemButton.isHidden = hidden
-    }
-    
-    func setNavigationBarRightItemButtonImage(_ image: UIImage?) {
-        navigationItemBar.rightItemButton.configuration?.image = image
-    }
-    
-    func setNavigationBarRightItemButtonAction(_ selector: Selector) {
-        navigationItemBar.rightItemButton.addTarget(nil, action: selector, for: .touchUpInside)
-    }
-    
-    func setNavigationBarLargeTitleText(_ title: String?) {
-        navigationItemBar.largeTitleLabel.text = title
-    }
-    
-    func setNavigationBarLargeTitleTextColor(_ color: UIColor?) {
-        navigationItemBar.largeTitleLabel.textColor = color
-    }
-    
-    func setNavigationBarSubTitleText(_ title: String?) {
-        navigationItemBar.subTitleLabel.text = title
-    }
-    
-    func setNavigationBarSubTitleTextColor(_ color: UIColor?) {
-        navigationItemBar.subTitleLabel.textColor = color
-    }
-    
-    // MARK: - functions
+    // MARK: - Setup Methods
     
     private func setupLayout() {
         view.addSubview(statusBar)
@@ -202,6 +134,97 @@ class BaseNavigationBarController<View: BaseView>: UIViewController, BaseNavigat
             $0.left.right.equalToSuperview()
             $0.bottom.equalToSuperview().inset(tabBarController?.tabBar.frame.height ?? 0)
         }
+    }
+    
+    private func setupGestureRecognizer() {
+        navigationItemBar.backButton.addTarget(self, action: #selector(handleBackButtonTap), for: .touchUpInside)
+    }
+    
+    @objc private func handleBackButtonTap() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: - BaseNavigationBarViewControllerProtocol
+    
+    /// 네비게이션 바의 초기 설정을 위해 반드시 서브클래스에서 재정의해야 하는 함수
+    func setupNavigationBar() {
+        fatalError("setupNavigationBar() must be overridden")
+    }
+    
+    func setBackgroundColor(_ color: UIColor?) {
+        statusBar.backgroundColor = color
+        navigationItemBar.backgroundColor = color
+        contentView.backgroundColor = color
+    }
+    
+    func setNavigationBarMode(_ mode: NavigationBarMode) {
+        if mode == .button {
+            setNavigationBarButtonMode()
+        } else {
+            setNavigationBarTitleMode()
+        }
+        contentView.snp.remakeConstraints {
+            $0.top.equalTo(navigationItemBar.snp.bottom)
+            $0.left.right.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(tabBarController?.tabBar.frame.height ?? 0)
+        }
+    }
+    
+    private func setNavigationBarButtonMode() {
+        navigationItemBar.backButton.isHidden = false
+        navigationItemBar.rightItemButton.isHidden = false
+        navigationItemBar.largeTitleLabel.isHidden = true
+        navigationItemBar.subTitleLabel.isHidden = true
+        navigationItemBar.snp.remakeConstraints {
+            $0.top.equalTo(statusBar.snp.bottom)
+            $0.left.right.equalToSuperview()
+            $0.height.equalTo(60)
+        }
+    }
+    
+    private func setNavigationBarTitleMode() {
+        navigationItemBar.backButton.isHidden = true
+        navigationItemBar.rightItemButton.isHidden = true
+        navigationItemBar.largeTitleLabel.isHidden = false
+        navigationItemBar.subTitleLabel.isHidden = false
+        navigationItemBar.snp.remakeConstraints {
+            $0.top.equalTo(statusBar.snp.bottom)
+            $0.left.right.equalToSuperview()
+            $0.height.equalTo(110)
+        }
+    }
+    
+    func setNavigationBarButtonTintColor(_ color: UIColor?) {
+        navigationItemBar.backButton.tintColor = color
+        navigationItemBar.rightItemButton.tintColor = color
+    }
+    
+    func setNavigationBarRightItemButtonHidden(_ hidden: Bool) {
+        navigationItemBar.rightItemButton.isHidden = hidden
+    }
+    
+    func setNavigationBarRightItemButtonImage(_ image: UIImage?) {
+        navigationItemBar.rightItemButton.configuration?.image = image
+    }
+    
+    func setNavigationBarRightItemButtonAction(_ selector: Selector) {
+        navigationItemBar.rightItemButton.addTarget(self, action: selector, for: .touchUpInside)
+    }
+    
+    func setNavigationBarLargeTitleText(_ title: String?) {
+        navigationItemBar.largeTitleLabel.text = title
+    }
+    
+    func setNavigationBarLargeTitleTextColor(_ color: UIColor?) {
+        navigationItemBar.largeTitleLabel.textColor = color
+    }
+    
+    func setNavigationBarSubTitleText(_ title: String?) {
+        navigationItemBar.subTitleLabel.text = title
+    }
+    
+    func setNavigationBarSubTitleTextColor(_ color: UIColor?) {
+        navigationItemBar.subTitleLabel.textColor = color
     }
     
 }

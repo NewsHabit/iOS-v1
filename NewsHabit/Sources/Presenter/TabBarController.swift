@@ -17,7 +17,7 @@ class TabBarController: UITabBarController {
         setupTabBar()
     }
     
-    // MARK: - functions
+    // MARK: - Setup Methods
     
     private func setupTabBar() {
         tabBar.backgroundColor = .systemBackground
