@@ -58,6 +58,7 @@ protocol BaseNavigationBarViewControllerProtocol {
     func setNavigationBarRightItemButtonAction(_ selector: Selector)
     func setNavigationBarLargeTitleText(_ title: String?)
     func setNavigationBarLargeTitleTextColor(_ color: UIColor?)
+    func setNavigationBarSubTitleHidden(_ hidden: Bool)
     func setNavigationBarSubTitleText(_ title: String?)
     func setNavigationBarSubTitleTextColor(_ color: UIColor?)
     func setNavigationBarSubTitleFont(_ font: UIFont?)
@@ -70,10 +71,6 @@ class BaseNavigationBarController<View: BaseView>: UIViewController {
     let statusBar = UIView()
     let navigationItemBar = NavigationItemBar()
     let contentView: BaseView = View()
-    
-    // MARK: - Property
-    
-    var navigationBarHeight: CGFloat = 140.0
     
     // MARK: - Life Lycle
     
@@ -218,6 +215,29 @@ class BaseNavigationBarController<View: BaseView>: UIViewController {
     
     func setNavigationBarLargeTitleTextColor(_ color: UIColor?) {
         navigationItemBar.largeTitleLabel.textColor = color
+    }
+    
+    func setNavigationBarSubTitleHidden(_ hidden: Bool) {
+        navigationItemBar.subTitleLabel.isHidden = hidden
+        if hidden {
+            navigationItemBar.snp.remakeConstraints {
+                $0.top.equalTo(statusBar.snp.bottom)
+                $0.left.right.equalToSuperview()
+                $0.height.equalTo(60)
+            }
+        } else {
+            navigationItemBar.snp.remakeConstraints {
+                $0.top.equalTo(statusBar.snp.bottom)
+                $0.left.right.equalToSuperview()
+                $0.height.equalTo(80)
+            }
+        }
+        
+        contentView.snp.remakeConstraints {
+            $0.top.equalTo(navigationItemBar.snp.bottom)
+            $0.left.right.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(tabBarController?.tabBar.frame.height ?? 0)
+        }
     }
     
     func setNavigationBarSubTitleText(_ title: String?) {

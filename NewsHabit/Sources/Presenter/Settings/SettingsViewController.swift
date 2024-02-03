@@ -7,12 +7,21 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: BaseNavigationBarController<SettingsView> {
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
+    }
+    
+    // MARK: - BaseNavigationBarViewControllerProtocol
+    
+    override func setupNavigationBar() {
+        setNavigationBarMode(.title)
+        setNavigationBarLargeTitleText("설정")
+        setNavigationBarSubTitleHidden(true)
     }
     
 }
