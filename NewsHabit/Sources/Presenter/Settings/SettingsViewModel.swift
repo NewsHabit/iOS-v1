@@ -29,9 +29,22 @@ final class SettingsViewModel: BaseViewModel {
     private let output = PassthroughSubject<Output, Never>()
     private var cancellables = Set<AnyCancellable>()
     
-    // MARK: - Initializer
+    // MARK: - Input -> Output
     
-    init() {
+    func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
+        input.sink { [weak self] event in
+            switch event {
+            case .viewDidLoad:
+                self?.initSectionViewModels()
+                self?.output.send(.updateSettings)
+            }
+        }.store(in: &cancellables)
+        return output.eraseToAnyPublisher()
+    }
+    
+    // MARK: - Functions
+    
+    private func initSectionViewModels() {
         sectionViewModels.append(SettingsSectionViewModel(
             title: "나의 뉴빗",
             cellViewModels: [
@@ -76,23 +89,8 @@ final class SettingsViewModel: BaseViewModel {
         ))
     }
     
-    // MARK: - Input -> Output
-    
-    func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
-        input.sink { [weak self] event in
-            switch event {
-            case .viewDidLoad:
-                self?.output.send(.updateSettings)
-            }
-        }.store(in: &cancellables)
-        return output.eraseToAnyPublisher()
-    }
-    
-    // MARK: - Functions
-    
     func cellViewModel(forIndexPath indexPath: IndexPath) -> SettingsCellViewModel? {
         return sectionViewModels[indexPath.section].cellViewModels?[indexPath.row]
     }
     
 }
-

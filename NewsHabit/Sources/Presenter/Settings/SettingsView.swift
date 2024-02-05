@@ -79,9 +79,8 @@ extension SettingsView {
     
     func bindViewModel(_ viewModel: SettingsViewModel) {
         self.viewModel = viewModel
-        
-        let output = viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
-        output.receive(on: DispatchQueue.main)
+        viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
+            .receive(on: RunLoop.main)
             .sink { [weak self] event in
                 switch event {
                 case .updateSettings:
