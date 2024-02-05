@@ -7,19 +7,26 @@
 
 import UIKit
 
-class SettingsCellViewModel: Identifiable {
+enum SettingsType {
+    case nickname
+    case keyword
+    case todayNewsCount
+    case notification
+    case theme
+}
+
+final class SettingsCellViewModel: Identifiable {
     
     var id = UUID()
     var title: String
     var description: String?
     var descriptionColor: UIColor
-    var didSelectAction: (() -> Void)?
+    var settingsType: SettingsType?
     
-    init(title: String, description: String? = nil, color: UIColor = .gray, didSelectAction: (() -> Void)? = nil) {
+    init(title: String, description: String? = nil, color: UIColor = .gray, settingsType: SettingsType? = nil) {
         self.title = title
         self.description = description
         self.descriptionColor = color
-        self.didSelectAction = didSelectAction
+        self.settingsType = settingsType
     }
 }
-
