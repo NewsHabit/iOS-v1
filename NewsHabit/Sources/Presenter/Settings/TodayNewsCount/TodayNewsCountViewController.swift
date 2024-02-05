@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TodayNewsCountViewController: BaseNavigationBarController<NicknameView> {
+class TodayNewsCountViewController: BaseNavigationBarController<TodayNewsCountView> {
     
     // MARK: - Life Cycle
     

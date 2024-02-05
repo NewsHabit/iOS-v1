@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NicknameViewController: BaseNavigationBarController<NicknameView> {
+class UsernameViewController: BaseNavigationBarController<UsernameView> {
     
     // MARK: - Life Cycle
     

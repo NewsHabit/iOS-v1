@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ThemeViewController: BaseNavigationBarController<NicknameView> {
+class ThemeViewController: BaseNavigationBarController<ThemeView> {
     
     // MARK: - Life Cycle
     

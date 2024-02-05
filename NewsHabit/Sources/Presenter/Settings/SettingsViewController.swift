@@ -44,8 +44,8 @@ extension SettingsViewController: SettingsDelegate {
     
     func pushViewController(_ settingsType: SettingsType) {
         switch settingsType {
-        case .nickname:
-            navigationController?.pushViewController(NicknameViewController(), animated: true)
+        case .username:
+            navigationController?.pushViewController(UsernameViewController(), animated: true)
         case .keyword:
             navigationController?.pushViewController(KeywordViewController(), animated: true)
         case .todayNewsCount:

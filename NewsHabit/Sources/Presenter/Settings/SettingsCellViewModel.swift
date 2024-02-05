@@ -7,14 +7,6 @@
 
 import UIKit
 
-enum SettingsType {
-    case nickname
-    case keyword
-    case todayNewsCount
-    case notification
-    case theme
-}
-
 final class SettingsCellViewModel: Identifiable {
     
     var id = UUID()
