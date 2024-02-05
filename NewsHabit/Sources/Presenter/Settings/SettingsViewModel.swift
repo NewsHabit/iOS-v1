@@ -50,17 +50,17 @@ final class SettingsViewModel: BaseViewModel {
             cellViewModels: [
                 SettingsCellViewModel(
                     title: "닉네임",
-                    description: "사용자",
-                    settingsType: .nickname
+                    description: Settings.username,
+                    settingsType: .username
                 ),
                 SettingsCellViewModel(
                     title: "키워드",
-                    description: "iOS",
+                    description: Settings.keyword,
                     settingsType: .keyword
                 ),
                 SettingsCellViewModel(
                     title: "오늘의 뉴스 개수",
-                    description: "3",
+                    description: String(Settings.todayNewsCount),
                     settingsType: .todayNewsCount
                 )
             ]
@@ -70,12 +70,12 @@ final class SettingsViewModel: BaseViewModel {
             cellViewModels: [
                 SettingsCellViewModel(
                     title: "알림",
-                    description: "OFF",
+                    description: Settings.notification ? "ON" : "OFF",
                     settingsType: .notification
                 ),
                 SettingsCellViewModel(
                     title: "테마",
-                    description: "라이트 모드",
+                    description: Settings.theme,
                     settingsType: .theme
                 )
             ]

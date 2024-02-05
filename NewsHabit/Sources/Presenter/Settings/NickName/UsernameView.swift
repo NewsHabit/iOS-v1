@@ -1,5 +1,5 @@
 //
-//  NicknameView.swift
+//  UsernameView.swift
 //  NewsHabit
 //
 //  Created by jiyeon on 2/5/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NicknameView: BaseView {
+class UsernameView: BaseView {
     
     // MARK: - Initializer
     

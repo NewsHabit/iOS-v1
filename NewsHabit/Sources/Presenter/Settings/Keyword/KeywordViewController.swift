@@ -7,7 +7,7 @@
 
 import UIKit
 
-class KeywordViewController: BaseNavigationBarController<NicknameView> {
+class KeywordViewController: BaseNavigationBarController<KeywordView> {
     
     // MARK: - Life Cycle
     

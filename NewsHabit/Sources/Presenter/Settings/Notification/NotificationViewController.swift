@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NotificationViewController: BaseNavigationBarController<NicknameView> {
+class NotificationViewController: BaseNavigationBarController<NotificationView> {
     
     // MARK: - Life Cycle
     
