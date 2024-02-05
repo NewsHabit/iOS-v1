@@ -15,7 +15,8 @@ class MainViewController: BaseNavigationBarController<MainView> {
         super.viewDidLoad()
         setupNavigationBar()
         
-        guard let contentView = contentView as? MainView else { return }
+        guard let contentView = contentView as? MainView
+        else { fatalError("error: MainViewController viewDidLoad") }
         contentView.bindViewModel(MainViewModel())
     }
     

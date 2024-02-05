@@ -5,6 +5,7 @@
 //  Created by jiyeon on 2/3/24.
 //
 
+import Combine
 import UIKit
 
 import SnapKit
@@ -14,8 +15,10 @@ class SettingsView: BaseView {
     
     // MARK: - Properties
     
-    var viewModel: SettingsViewModel!
-    var dataSource: UITableViewDiffableDataSource<SettingsSectionViewModel.ID, SettingsCellViewModel.ID>!
+    var delegate: SettingsDelegate?
+    private var viewModel: SettingsViewModel?
+    private var dataSource: UITableViewDiffableDataSource<SettingsSectionViewModel.ID, SettingsCellViewModel.ID>!
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     
@@ -37,11 +40,9 @@ class SettingsView: BaseView {
     // MARK: - Initializer
     
     override init(frame: CGRect) {
-        viewModel = SettingsViewModel()
         super.init(frame: frame)
         setupLayout()
         setupDataSource()
-        applyInitialSnapshot()
     }
     
     required init?(coder: NSCoder) {
@@ -63,42 +64,61 @@ class SettingsView: BaseView {
         dataSource = UITableViewDiffableDataSource(tableView: tableView) { [weak self] tableView, indexPath, itemIdentifier in
             guard let self = self,
                   let viewModel = self.viewModel?.cellViewModel(forIndexPath: indexPath),
-                  let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseIdentifier, for: indexPath) as? SettingsCell else {
-                fatalError("SettingsView: Error in dequeuing SettingsCell or finding cellViewModel at indexPath: \(indexPath)")
-            }
-            
+                  let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseIdentifier, for: indexPath) as? SettingsCell
+            else { fatalError("error: SettingsView setupDataSource") }
             cell.bindViewModel(viewModel)
             return cell
         }
     }
     
-    private func applyInitialSnapshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<SettingsSectionViewModel.ID, SettingsCellViewModel.ID>()
+}
+
+// MARK: - Binding View Model
+
+extension SettingsView {
+    
+    func bindViewModel(_ viewModel: SettingsViewModel) {
+        self.viewModel = viewModel
         
-        viewModel.sectionViewModels.forEach { sectionViewModel in
-            snapshot.appendSections([sectionViewModel.id])
-            if let cellViewModels = sectionViewModel.cellViewModels {
-                snapshot.appendItems(cellViewModels.map { $0.id }, toSection: sectionViewModel.id)
-            }
-        }
-        
-        dataSource.apply(snapshot, animatingDifferences: true)
+        let output = viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
+        output.receive(on: DispatchQueue.main)
+            .sink { [weak self] event in
+                switch event {
+                case .updateSettings:
+                    var snapshot = NSDiffableDataSourceSnapshot<SettingsSectionViewModel.ID, SettingsCellViewModel.ID>()
+                    viewModel.sectionViewModels.forEach { sectionViewModel in
+                        snapshot.appendSections([sectionViewModel.id])
+                        if let cellViewModels = sectionViewModel.cellViewModels {
+                            snapshot.appendItems(cellViewModels.map { $0.id }, toSection: sectionViewModel.id)
+                        }
+                    }
+                    self?.dataSource.apply(snapshot, animatingDifferences: false)
+                }
+            }.store(in: &cancellables)
     }
     
 }
 
+// MARK: - UITableViewDelegate
+
 extension SettingsView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: SettingsSection.reuseIdentifier) as? SettingsSection else {
-            return nil
-        }
+        guard let viewModel, let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: SettingsSection.reuseIdentifier) as? SettingsSection
+        else { return nil }
         headerView.bindViewModel(viewModel.sectionViewModels[section])
         return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let viewModel,
+              let settingsType = viewModel.cellViewModel(forIndexPath: indexPath)?.settingsType
+        else { return }
+        delegate?.pushViewController(settingsType)
     }
     
 }

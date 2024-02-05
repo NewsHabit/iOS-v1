@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SettingsSectionViewModel: Identifiable {
+final class SettingsSectionViewModel: Identifiable {
     
     var cellViewModels: [SettingsCellViewModel]?
     
