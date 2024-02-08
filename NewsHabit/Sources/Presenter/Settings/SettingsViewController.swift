@@ -27,7 +27,12 @@ class SettingsViewController: BaseNavigationBarController<SettingsView> {
         else { fatalError("error: SettingsViewController viewDidLoad") }
         contentView.delegate = self
         contentView.bindViewModel(viewModel)
-        viewModel.input.send(.viewDidLoad)
+//        viewModel.input.send(.viewDidLoad)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.input.send(.viewWillAppear)
     }
     
     // MARK: - BaseNavigationBarViewControllerProtocol
@@ -44,8 +49,8 @@ extension SettingsViewController: SettingsDelegate {
     
     func pushViewController(_ settingsType: SettingsType) {
         switch settingsType {
-        case .username:
-            navigationController?.pushViewController(UsernameViewController(), animated: true)
+        case .nickname:
+            navigationController?.pushViewController(NicknameViewController(), animated: true)
         case .keyword:
             navigationController?.pushViewController(KeywordViewController(), animated: true)
         case .todayNewsCount:

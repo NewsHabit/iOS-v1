@@ -13,7 +13,7 @@ final class SettingsViewModel: BaseViewModel {
     // MARK: - Input
     
     enum Input {
-        case viewDidLoad
+        case viewWillAppear
     }
     
     // MARK: - Output
@@ -34,8 +34,9 @@ final class SettingsViewModel: BaseViewModel {
     func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
         input.sink { [weak self] event in
             switch event {
-            case .viewDidLoad:
-                self?.initSectionViewModels()
+            case .viewWillAppear:
+                self?.sectionViewModels.removeAll()
+                self?.updateSectionViewModels()
                 self?.output.send(.updateSettings)
             }
         }.store(in: &cancellables)
@@ -44,14 +45,14 @@ final class SettingsViewModel: BaseViewModel {
     
     // MARK: - Functions
     
-    private func initSectionViewModels() {
+    private func updateSectionViewModels() {
         sectionViewModels.append(SettingsSectionViewModel(
             title: "나의 뉴빗",
             cellViewModels: [
                 SettingsCellViewModel(
-                    title: "닉네임",
-                    description: Settings.username,
-                    settingsType: .username
+                    title: "별명",
+                    description: Settings.nickname,
+                    settingsType: .nickname
                 ),
                 SettingsCellViewModel(
                     title: "키워드",
