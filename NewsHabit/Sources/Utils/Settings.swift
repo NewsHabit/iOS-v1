@@ -8,7 +8,7 @@
 import Foundation
 
 enum SettingsType: String {
-    case username
+    case nickname
     case keyword
     case todayNewsCount
     case notification
@@ -17,8 +17,8 @@ enum SettingsType: String {
 
 struct Settings {
     
-    @UserDefaultsWrapper(key: SettingsType.username.rawValue, defaultValue: "뉴빗 사용자")
-    static var username: String
+    @UserDefaultsWrapper(key: SettingsType.nickname.rawValue, defaultValue: "뉴빗 사용자")
+    static var nickname: String
     
     @UserDefaultsWrapper(key: SettingsType.keyword.rawValue, defaultValue: "기본키워드")
     static var keyword: String
