@@ -121,7 +121,7 @@ class BaseViewController<View: UIView>: UIViewController, BaseViewControllerProt
     }
     
     func setNavigationBarSubTitleTextColor(_ color: UIColor?) {
-        navigationBar.largeTitle.textColor = color
+        navigationBar.subTitle.textColor = color
     }
     
 }

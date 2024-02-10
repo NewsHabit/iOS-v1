@@ -77,7 +77,7 @@ class NavigationBar: UIView {
     
     private func setupLayout() {
         title.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(10)
+            $0.top.equalToSuperview().inset(15)
             $0.centerX.equalToSuperview()
         }
         
@@ -94,7 +94,7 @@ class NavigationBar: UIView {
         }
         
         largeTitleView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(60)
+            $0.top.equalToSuperview().inset(30)
             $0.leading.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(10)
         }

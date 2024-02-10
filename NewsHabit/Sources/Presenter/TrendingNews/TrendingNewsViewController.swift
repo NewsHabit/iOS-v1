@@ -1,5 +1,5 @@
 //
-//  MainViewController.swift
+//  TrendingNewsViewController.swift
 //  NewsHabit
 //
 //  Created by jiyeon on 2/11/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainViewController: BaseViewController<MainView> {
+class TrendingNewsViewController: BaseViewController<TrendingNewsView> {
     
     // MARK: - Life Cycle
     
@@ -19,13 +19,11 @@ class MainViewController: BaseViewController<MainView> {
     // MARK: - BaseViewControllerProtocol
     
     override func setupNavigationBar() {
-        setBackgroundColor(.newsHabitDarkGray)
         setNavigationBarBackButtonHidden(true)
         setNavigationBarLinkButtonHidden(true)
-        setNavigationBarLargeTitle("사용자님의 뉴빗")
-        setNavigationBarLargeTitleTextColor(.white)
-        setNavigationBarSubTitle("👀 42일 째 모두 읽으셨어요!")
-        setNavigationBarSubTitleTextColor(.white)
+        setNavigationBarLargeTitle("🔥 지금 뜨는 뉴스")
+        setNavigationBarSubTitle("2024년 2월 10일 17:00 기준")
+        setNavigationBarSubTitleTextColor(.newsHabitGray)
     }
     
 }
