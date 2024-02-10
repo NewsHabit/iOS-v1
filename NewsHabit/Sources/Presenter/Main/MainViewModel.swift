@@ -10,11 +10,6 @@ import Foundation
 
 class MainViewModel {
     
-    enum MenuOption {
-        case todayNews
-        case monthlyRecord
-    }
-    
-    @Published var selectedMenu: MenuOption = .todayNews
+    @Published var selectedMenu: MainOption = .todayNews
     
 }

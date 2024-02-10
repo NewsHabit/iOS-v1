@@ -56,7 +56,7 @@ final class SettingsViewModel: BaseViewModel {
                 ),
                 SettingsCellViewModel(
                     title: "키워드",
-                    description: Settings.keyword,
+                    description: getKeywordString(),
                     settingsType: .keyword
                 ),
                 SettingsCellViewModel(
@@ -88,6 +88,15 @@ final class SettingsViewModel: BaseViewModel {
                 SettingsCellViewModel(title: "개발자 정보")
             ]
         ))
+    }
+    
+    private func getKeywordString() -> String {
+        let keywordIndexArray = Settings.keyword
+        if keywordIndexArray.count > 1 {
+            return "\(Keyword.allCases[keywordIndexArray[0]].toString()) 외 \(keywordIndexArray.count - 1)개"
+        } else {
+            return Keyword.allCases[keywordIndexArray[0]].toString()
+        }
     }
     
     func cellViewModel(forIndexPath indexPath: IndexPath) -> SettingsCellViewModel? {

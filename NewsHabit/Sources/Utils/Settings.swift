@@ -7,21 +7,13 @@
 
 import Foundation
 
-enum SettingsType: String {
-    case nickname
-    case keyword
-    case todayNewsCount
-    case notification
-    case theme
-}
-
 struct Settings {
     
     @UserDefaultsWrapper(key: SettingsType.nickname.rawValue, defaultValue: "뉴빗 사용자")
     static var nickname: String
     
-    @UserDefaultsWrapper(key: SettingsType.keyword.rawValue, defaultValue: "기본키워드")
-    static var keyword: String
+    @UserDefaultsWrapper(key: SettingsType.keyword.rawValue, defaultValue: [Keyword.itScience.rawValue])
+    static var keyword: [Int]
     
     @UserDefaultsWrapper(key: SettingsType.todayNewsCount.rawValue, defaultValue: 3)
     static var todayNewsCount: Int

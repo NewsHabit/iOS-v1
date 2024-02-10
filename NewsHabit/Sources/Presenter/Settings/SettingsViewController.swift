@@ -27,7 +27,6 @@ class SettingsViewController: BaseNavigationBarController<SettingsView> {
         else { fatalError("error: SettingsViewController viewDidLoad") }
         contentView.delegate = self
         contentView.bindViewModel(viewModel)
-//        viewModel.input.send(.viewDidLoad)
     }
     
     override func viewWillAppear(_ animated: Bool) {

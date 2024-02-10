@@ -103,7 +103,8 @@ extension SettingsView {
 extension SettingsView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let viewModel, let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: SettingsSection.reuseIdentifier) as? SettingsSection
+        guard let viewModel = viewModel,
+              let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: SettingsSection.reuseIdentifier) as? SettingsSection
         else { return nil }
         headerView.bindViewModel(viewModel.sectionViewModels[section])
         return headerView
@@ -114,7 +115,7 @@ extension SettingsView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let viewModel,
+        guard let viewModel = viewModel,
               let settingsType = viewModel.cellViewModel(forIndexPath: indexPath)?.settingsType
         else { return }
         delegate?.pushViewController(settingsType)

@@ -178,7 +178,7 @@ extension MainView {
             .store(in: &cancellables)
     }
     
-    private func updateMenuPosition(for menu: MainViewModel.MenuOption) {
+    private func updateMenuPosition(for menu: MainOption) {
         let indicatorPosition = menu == .todayNews ? todayNewsLabel : monthlyRecordLabel
         let viewOffset = menu == .todayNews ? CGPoint(x: 0, y: 0) : CGPoint(x: scrollView.frame.width, y: 0)
         

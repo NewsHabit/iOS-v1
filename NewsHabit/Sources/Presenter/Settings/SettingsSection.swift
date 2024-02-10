@@ -15,7 +15,6 @@ class SettingsSection: UITableViewHeaderFooterView {
     // MARK: - Properties
     
     static let reuseIdentifier = "SettingsTableViewSection"
-    
     var viewModel: SettingsSectionViewModel?
     
     // MARK: - UI Components
@@ -38,13 +37,15 @@ class SettingsSection: UITableViewHeaderFooterView {
     // MARK: - Setup Methods
     
     private func setupLayout() {
-        addSubview(titleLabel)
+        contentView.addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(10)
         }
     }
+    
+    // MARK: - Bind View Model
     
     func bindViewModel(_ viewModel: SettingsSectionViewModel) {
         self.viewModel = viewModel
