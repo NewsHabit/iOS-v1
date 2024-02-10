@@ -32,7 +32,7 @@ class BottomSheetController<View: UIView>: UIViewController {
     let indicator = UIView().then {
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 2
-        $0.backgroundColor = .systemGray3 // 📌
+        $0.backgroundColor = .newsHabitLightGray
     }
     
     // MARK: - Initializer
@@ -124,7 +124,7 @@ class BottomSheetController<View: UIView>: UIViewController {
             $0.height.equalTo(bottomSheetHeight)
         }
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
-            self.dimmedView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.75) // 📌
+            self.dimmedView.backgroundColor = .newsHabitDarkGray.withAlphaComponent(0.75)
             self.view.layoutIfNeeded()
         })
     }

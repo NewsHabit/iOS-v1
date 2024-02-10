@@ -13,7 +13,6 @@ class MainView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupProperty()
     }
     
     required init?(coder: NSCoder) {
@@ -21,9 +20,5 @@ class MainView: UIView {
     }
     
     // MARK: - Setup Methods
-    
-    private func setupProperty() {
-        backgroundColor = .systemPink
-    }
     
 }
