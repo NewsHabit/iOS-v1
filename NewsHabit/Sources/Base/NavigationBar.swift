@@ -16,7 +16,7 @@ class NavigationBar: UIView {
     
     let title = UILabel().then {
         $0.textColor = .label
-        $0.font = .systemFont(ofSize: 16, weight: .bold)
+        $0.font = .titleFont
     }
     
     let backButton = UIButton().then {
@@ -44,12 +44,12 @@ class NavigationBar: UIView {
     
     let largeTitle = UILabel().then {
         $0.textColor = .label
-        $0.font = .systemFont(ofSize: 22, weight: .bold)
+        $0.font = .largeTitleFont
     }
     
     let subTitle = UILabel().then {
         $0.textColor = .label
-        $0.font = .systemFont(ofSize: 14, weight: .semibold)
+        $0.font = .subTitleFont
     }
     
     // MARK: - Initializer
