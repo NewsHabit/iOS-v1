@@ -22,12 +22,6 @@ class MainViewController: BaseViewController<MainView> {
         setNavigationBarTitle("메인")
         setNavigationBarLargeTitle("사용자님의 뉴빗")
         setNavigationBarSubTitle("👀 42일 째 모두 읽으셨어요!")
-        setNavigationBarLinkButtonAction(#selector(ex))
-    }
-    
-    @objc func ex() {
-        let exVC = ExViewController(bottomSheetHeight: 300)
-        present(exVC, animated: false)
     }
     
 }
