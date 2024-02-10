@@ -57,7 +57,7 @@ final class Toast {
             $0.width.equalTo(messageLabel.snp.width).multipliedBy(1.5)
             $0.height.equalTo(messageLabel.snp.height).multipliedBy(2)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(150)
+            $0.bottom.equalToSuperview().inset(120)
         }
         
         messageLabel.snp.makeConstraints {
