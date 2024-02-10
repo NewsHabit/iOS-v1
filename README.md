@@ -1,1 +1,1 @@
-# NewsHabbit iOS 디렉토리 입니다.
+## NewsHabit iOS 레포지토리입니다
