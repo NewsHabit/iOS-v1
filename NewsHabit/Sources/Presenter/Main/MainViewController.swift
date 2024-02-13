@@ -22,7 +22,7 @@ class MainViewController: BaseViewController<MainView> {
         setBackgroundColor(.newsHabitDarkGray)
         setNavigationBarBackButtonHidden(true)
         setNavigationBarLinkButtonHidden(true)
-        setNavigationBarLargeTitle("사용자님의 뉴빗")
+        setNavigationBarLargeTitle("\(UserDefaultsManager.username)님의 뉴빗")
         setNavigationBarLargeTitleTextColor(.white)
         setNavigationBarSubTitle("👀 42일 째 모두 읽으셨어요!")
         setNavigationBarSubTitleTextColor(.white)
