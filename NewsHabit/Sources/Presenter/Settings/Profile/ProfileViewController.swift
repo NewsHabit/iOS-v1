@@ -7,6 +7,40 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+protocol ProfileViewDelegate {
+    func getTabBarHeight() -> CGFloat
+    func popViewController()
+}
+
+class ProfileViewController: BaseViewController<ProfileView> {
+    
+    // MARK: - Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupNavigationBar()
+        
+        guard let contentView = contentView as? ProfileView else { return }
+        contentView.delegate = self
+    }
+    
+    // MARK: - BaseViewControllerProtocol
+    
+    override func setupNavigationBar() {
+        setNavigationBarLinkButtonHidden(true)
+        setNavigationBarTitle("프로필")
+    }
+    
+}
+
+extension ProfileViewController: ProfileViewDelegate {
+    
+    func getTabBarHeight() -> CGFloat {
+        return self.tabBarController?.tabBar.frame.height ?? 0
+    }
+    
+    func popViewController() {
+        navigationController?.popViewController(animated: true)
+    }
     
 }
