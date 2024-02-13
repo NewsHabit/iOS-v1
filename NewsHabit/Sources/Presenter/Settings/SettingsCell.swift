@@ -10,6 +10,11 @@ import UIKit
 import SnapKit
 import Then
 
+struct SettingsItem {
+    let image: UIImage?
+    let title: String
+}
+
 class SettingsCell: UITableViewCell {
     
     // MARK: - Properties
@@ -48,8 +53,8 @@ class SettingsCell: UITableViewCell {
     }
     
     private func setupHierarchy() {
-        addSubview(image)
-        addSubview(label)
+        contentView.addSubview(image)
+        contentView.addSubview(label)
     }
     
     private func setupLayout() {
