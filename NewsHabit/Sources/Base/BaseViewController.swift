@@ -79,6 +79,7 @@ class BaseViewController<View: UIView>: UIViewController, BaseViewControllerProt
     }
     
     @objc private func handleBackButtonTap() {
+        contentView.endEditing(true)
         navigationController?.popViewController(animated: true)
     }
     
