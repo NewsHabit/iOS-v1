@@ -45,7 +45,10 @@ extension MyNewsHabitViewController: MyNewsHabitViewDelegate {
             let keywordViewController = KeywordViewController(bottomSheetHeight: 400.0)
             keywordViewController.delegate = self
             present(keywordViewController, animated: false)
-        case 1: present(KeywordViewController(bottomSheetHeight: 400.0), animated: false)
+        case 1:
+            let todayNewsCountViewController = TodayNewsCountViewController(bottomSheetHeight: 400.0)
+            todayNewsCountViewController.delegate = self
+            present(todayNewsCountViewController, animated: false)
         default: break
         }
     }
