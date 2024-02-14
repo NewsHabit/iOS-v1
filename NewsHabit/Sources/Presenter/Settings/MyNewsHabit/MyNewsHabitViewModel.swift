@@ -13,7 +13,7 @@ class MyNewsHabitViewModel {
     // MARK: - Input
     
     enum Input {
-        case viewWillAppear
+        case updateMyNewsHabitSettings
     }
     
     // MARK: - Output
@@ -34,7 +34,7 @@ class MyNewsHabitViewModel {
     func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
         input.sink { [weak self] event in
             switch event {
-            case .viewWillAppear:
+            case .updateMyNewsHabitSettings:
                 self?.myNewsHabitItems.removeAll()
                 self?.updateMyNewsHabitItems()
                 self?.output.send(.updateMyNewsHabitItems)
