@@ -19,7 +19,7 @@ class KeywordView: UIView {
     // MARK: - UI Components
     
     let titleLabel = UILabel().then {
-        $0.text = "선택한 키워드와 관련된 기사를 매일 추천해드릴게요\n최대 3개까지 선택할 수 있어요"
+        $0.text = "선택한 키워드와 관련된 기사를 매일 추천해드릴게요"
         $0.textColor = .label
         $0.font = .cellTitleFont
         $0.numberOfLines = 0
