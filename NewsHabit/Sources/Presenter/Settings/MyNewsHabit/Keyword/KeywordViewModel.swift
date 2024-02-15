@@ -24,9 +24,9 @@ class KeywordViewModel {
     // MARK: - Functions
     
     func selectKeyword(at indexPath: IndexPath) {
-        if selectedKeywordIndex.contains(indexPath.row) {
+        if selectedKeywordIndex.count > 1 && selectedKeywordIndex.contains(indexPath.row) {
             selectedKeywordIndex.remove(indexPath.row)
-        } else if (selectedKeywordIndex.count < 3) {
+        } else {
             selectedKeywordIndex.insert(indexPath.row)
         }
     }
