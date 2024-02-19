@@ -103,7 +103,7 @@ class NewsCell: UITableViewCell {
         }
         
         descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(stackView.snp.bottom).offset(10)
+            $0.top.equalTo(stackView.snp.bottom).offset(8)
             $0.leading.equalToSuperview().inset(15)
             $0.trailing.equalTo(thumbnailView.snp.leading).offset(-15)
             $0.bottom.equalTo(thumbnailView.snp.bottom)
