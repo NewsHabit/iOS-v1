@@ -68,6 +68,7 @@ class ProfileView: UIView {
         saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        textField.becomeFirstResponder()
     }
     
     private func setupHierarchy() {
