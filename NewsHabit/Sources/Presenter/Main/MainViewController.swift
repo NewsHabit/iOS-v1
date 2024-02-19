@@ -9,11 +9,18 @@ import UIKit
 
 class MainViewController: BaseViewController<MainView> {
     
+    // MARK: - Properties
+    
+    private let viewModel = MainViewModel()
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        
+        guard let contentView = contentView as? MainView else { return }
+        contentView.bindViewModel(viewModel)
     }
     
     override func viewWillAppear(_ animated: Bool) {
