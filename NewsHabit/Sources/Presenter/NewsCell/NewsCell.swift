@@ -71,6 +71,19 @@ class NewsCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        isReadView.isHidden = true
+        titleLabel.text = nil
+        descriptionLabel.text = nil
+        categoryLabel.text = nil
+        thumbnailView.image = nil
+        
+        // Combine 구독 취소
+        cancellables.removeAll()
+    }
+    
     // MARK: - Setup Methods
     
     private func setupProperty() {
@@ -120,6 +133,7 @@ class NewsCell: UITableViewCell {
     
     func bindViewModel(_ viewModel: NewsCellViewModel) {
         self.viewModel = viewModel
+        isReadView.isHidden = viewModel.isRead
         titleLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description
         categoryLabel.text = viewModel.category
