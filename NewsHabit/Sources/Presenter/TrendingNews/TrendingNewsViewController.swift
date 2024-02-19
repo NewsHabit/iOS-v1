@@ -16,13 +16,17 @@ class TrendingNewsViewController: BaseViewController<TrendingNewsView> {
         setupNavigationBar()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setNavigationBarSubTitle("\(Date().toString()) 기준")
+    }
+    
     // MARK: - BaseViewControllerProtocol
     
     override func setupNavigationBar() {
         setNavigationBarBackButtonHidden(true)
         setNavigationBarLinkButtonHidden(true)
         setNavigationBarLargeTitle("🔥 지금 뜨는 뉴스")
-        setNavigationBarSubTitle("2024년 2월 10일 17:00 기준")
         setNavigationBarSubTitleTextColor(.newsHabitGray)
     }
     
