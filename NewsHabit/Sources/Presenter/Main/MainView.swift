@@ -45,9 +45,7 @@ class MainView: UIView {
         $0.showsHorizontalScrollIndicator = false
     }
     
-    let todayNewsView = UIView().then {
-        $0.backgroundColor = .systemPink.withAlphaComponent(0.1)
-    }
+    let todayNewsView = TodayNewsView()
     
     let monthlyRecordView = UIView().then {
         $0.backgroundColor = .systemYellow.withAlphaComponent(0.1)
