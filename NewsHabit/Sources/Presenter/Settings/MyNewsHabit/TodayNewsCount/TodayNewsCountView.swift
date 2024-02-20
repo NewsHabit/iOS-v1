@@ -128,13 +128,8 @@ extension TodayNewsCountView: UITableViewDataSource {
               let cell = tableView.dequeueReusableCell(withIdentifier: TodayNewsCountCell.reuseIdentifier) as? TodayNewsCountCell
         else { return UITableViewCell() }
         cell.titleLabel.text = "\(3 + indexPath.row)개"
-        if viewModel.selectedIndex == indexPath.row {
-            cell.selectedButton.configuration?.image = UIImage(systemName: "circle.inset.filled")
-        } else {
-            cell.selectedButton.configuration?.image = UIImage(systemName: "circle")
-        }
+        cell.setSelected(viewModel.selectedIndex == indexPath.row)
         return cell
     }
-    
     
 }

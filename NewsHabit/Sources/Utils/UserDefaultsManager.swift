@@ -21,7 +21,7 @@ struct UserDefaultsManager {
     @UserDefaultsData(key: UserDefaultsDataType.notification.rawValue, defaultValue: false)
     static var notification: Bool
 
-    @UserDefaultsData(key: UserDefaultsDataType.theme.rawValue, defaultValue: "기본테마")
+    @UserDefaultsData(key: UserDefaultsDataType.theme.rawValue, defaultValue: ThemeType.system.rawValue)
     static var theme: String
 
 }
