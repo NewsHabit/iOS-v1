@@ -29,6 +29,7 @@ class KeywordView: UIView {
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
     ).then {
+        $0.backgroundColor = .clear
         $0.register(KeywordCell.self, forCellWithReuseIdentifier: KeywordCell.reuseIdentifier)
         if let layout = $0.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.minimumLineSpacing = 20
@@ -40,7 +41,7 @@ class KeywordView: UIView {
         $0.configuration = .plain()
         $0.configuration?.attributedTitle = .init("저장", attributes: .init([.font: UIFont.labelFont]))
         $0.tintColor = .white
-        $0.backgroundColor = .newsHabitGray
+        $0.backgroundColor = .black
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 5
     }
@@ -149,11 +150,7 @@ extension KeywordView: UICollectionViewDataSource {
               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: KeywordCell.reuseIdentifier, for: indexPath) as? KeywordCell
         else { return UICollectionViewCell() }
         cell.label.text = KeywordType.allCases[indexPath.row].toString()
-        if viewModel.selectedKeywordIndex.contains(indexPath.row) {
-            cell.backgroundColor = .label
-        } else {
-            cell.backgroundColor = .newsHabitLightGray
-        }
+        cell.setSelected(viewModel.selectedKeywordIndex.contains(indexPath.row))
         return cell
     }
     

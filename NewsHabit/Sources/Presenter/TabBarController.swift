@@ -35,7 +35,7 @@ class TabBarController: UITabBarController {
             )
         ]
         tabBar.tintColor = .label
-        tabBar.backgroundColor = .systemBackground
+        tabBar.backgroundColor = .background
     }
     
     private func setupNavigationController(viewController: UIViewController, image: UIImage?, selectedImage: UIImage?) -> UIViewController {

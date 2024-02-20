@@ -46,7 +46,7 @@ class NewsCell: UITableViewCell {
     }
     
     let categoryLabel = UILabel().then {
-        $0.textColor = .systemBackground
+        $0.textColor = .background
         $0.textAlignment = .center
         $0.font = .smallFont
         $0.backgroundColor = .newsHabit
@@ -87,6 +87,7 @@ class NewsCell: UITableViewCell {
     // MARK: - Setup Methods
     
     private func setupProperty() {
+        backgroundColor = .clear
         selectionStyle = .none
     }
     

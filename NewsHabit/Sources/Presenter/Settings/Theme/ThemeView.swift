@@ -1,8 +1,8 @@
 //
-//  MyNewsHabitView.swift
+//  ThemeView.swift
 //  NewsHabit
 //
-//  Created by jiyeon on 2/13/24.
+//  Created by jiyeon on 2/20/24.
 //
 
 import Combine
@@ -11,12 +11,11 @@ import UIKit
 import SnapKit
 import Then
 
-class MyNewsHabitView: UIView {
+class ThemeView: UIView {
     
     // MARK: - Properties
     
-    var delegate: MyNewsHabitViewDelegate?
-    var viewModel: MyNewsHabitViewModel?
+    private var viewModel: ThemeViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
@@ -24,7 +23,7 @@ class MyNewsHabitView: UIView {
     let tableView = UITableView().then {
         $0.backgroundColor = .clear
         $0.separatorStyle = .none
-        $0.register(MyNewsHabitCell.self, forCellReuseIdentifier: MyNewsHabitCell.reuseIdentifier)
+        $0.register(ThemeCell.self, forCellReuseIdentifier: ThemeCell.reuseIdentifier)
     }
     
     // MARK: - Initializer
@@ -60,43 +59,45 @@ class MyNewsHabitView: UIView {
     
     // MARK: - Bind ViewModel
     
-    func bindViewModel(_ viewModel: MyNewsHabitViewModel) {
+    func bindViewModel(_ viewModel: ThemeViewModel) {
         self.viewModel = viewModel
-        viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
+        viewModel.$selectedTheme
             .receive(on: RunLoop.main)
-            .sink { [weak self] event in
-                switch event {
-                case .updateMyNewsHabitItems:
-                    self?.tableView.reloadData()
-                }
+            .sink{ [weak self] selectedTheme in
+                guard let window = self?.window else { return }
+                UserDefaultsManager.theme = selectedTheme
+                window.overrideUserInterfaceStyle = selectedTheme.toUserInterfaceStyle()
+                self?.tableView.reloadData()
             }.store(in: &cancellables)
     }
     
 }
 
-extension MyNewsHabitView: UITableViewDelegate {
+extension ThemeView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.present(indexPath)
+        guard let viewModel = viewModel else { return }
+        viewModel.selectedTheme = ThemeType.allCases[indexPath.row]
     }
     
 }
 
-extension MyNewsHabitView: UITableViewDataSource {
+extension ThemeView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let viewModel = viewModel else { return 0 }
-        return viewModel.myNewsHabitItems.count
+        return ThemeType.allCases.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let viewModel = viewModel,
-              let cell = tableView.dequeueReusableCell(withIdentifier: MyNewsHabitCell.reuseIdentifier) as? MyNewsHabitCell else { return UITableViewCell() }
-        cell.bindViewModel(viewModel.myNewsHabitItems[indexPath.row])
+              let cell = tableView.dequeueReusableCell(withIdentifier: ThemeCell.reuseIdentifier) as? ThemeCell
+        else { return UITableViewCell() }
+        cell.bindThemeItem(ThemeType.allCases[indexPath.row])
+        cell.setSelected(viewModel.selectedTheme == ThemeType.allCases[indexPath.row])
         return cell
     }
     

@@ -21,23 +21,40 @@ struct UserDefaultsManager {
     @UserDefaultsData(key: UserDefaultsDataType.notification.rawValue, defaultValue: false)
     static var notification: Bool
 
-    @UserDefaultsData(key: UserDefaultsDataType.theme.rawValue, defaultValue: "기본테마")
-    static var theme: String
+    @UserDefaultsData(key: UserDefaultsDataType.theme.rawValue, defaultValue: ThemeType.system)
+    static var theme: ThemeType
 
 }
 
+import Foundation
+
 @propertyWrapper
-struct UserDefaultsData<Value> {
+struct UserDefaultsData<Value: Codable> {
     let key: String
     let defaultValue: Value
     var container: UserDefaults = .standard
 
     var wrappedValue: Value {
         get {
-            container.object(forKey: key) as? Value ?? defaultValue
+            guard let data = container.object(forKey: key) as? Data else {
+                return defaultValue
+            }
+            do {
+                let value = try JSONDecoder().decode(Value.self, from: data)
+                return value
+            } catch {
+                print("Error decoding UserDefaults data for key \(key): \(error)")
+                return defaultValue
+            }
         }
         set {
-            container.set(newValue, forKey: key)
+            do {
+                let data = try JSONEncoder().encode(newValue)
+                container.set(data, forKey: key)
+            } catch {
+                print("Error encoding UserDefaults data for key \(key): \(error)")
+            }
         }
     }
 }
+

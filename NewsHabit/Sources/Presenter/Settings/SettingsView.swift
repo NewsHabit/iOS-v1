@@ -20,6 +20,7 @@ class SettingsView: UIView {
     // MARK: - UI Components
     
     let tableView = UITableView().then {
+        $0.backgroundColor = .clear
         $0.register(SettingsCell.self, forCellReuseIdentifier: SettingsCell.reuseIdentifier)
         $0.separatorStyle = .none
     }
@@ -63,6 +64,7 @@ extension SettingsView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        backgroundColor = .clear
         delegate?.pushViewController(indexPath)
     }
     
