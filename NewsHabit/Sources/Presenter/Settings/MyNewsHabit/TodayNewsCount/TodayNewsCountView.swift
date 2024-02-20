@@ -25,6 +25,7 @@ class TodayNewsCountView: UIView {
     }
     
     let tableView = UITableView().then {
+        $0.backgroundColor = .clear
         $0.separatorStyle = .none
         $0.register(TodayNewsCountCell.self, forCellReuseIdentifier: TodayNewsCountCell.reuseIdentifier)
     }
@@ -33,7 +34,7 @@ class TodayNewsCountView: UIView {
         $0.configuration = .plain()
         $0.configuration?.attributedTitle = .init("저장", attributes: .init([.font: UIFont.labelFont]))
         $0.tintColor = .white
-        $0.backgroundColor = .newsHabitGray
+        $0.backgroundColor = .black
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 5
     }

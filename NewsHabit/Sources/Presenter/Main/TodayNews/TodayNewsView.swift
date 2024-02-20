@@ -13,6 +13,7 @@ class TodayNewsView: UIView {
     
     let tableView = UITableView().then {
         $0.register(NewsCell.self, forCellReuseIdentifier: NewsCell.reuseIdentifier)
+        $0.backgroundColor = .clear
     }
     
     // MARK: - Initializer

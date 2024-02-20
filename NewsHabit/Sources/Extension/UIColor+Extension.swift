@@ -18,10 +18,22 @@ extension UIColor {
         )
     }
     
+    private static func color(light: UIColor, dark: UIColor) -> UIColor {
+        return UIColor { traitCollection in
+            switch traitCollection.userInterfaceStyle {
+            case .dark:
+                return dark
+            default:
+                return light
+            }
+        }
+    }
+    
     static let newsHabit = UIColor(hex: 0xA6CFB2)
     static let newsHabitAccent = UIColor(hex: 0xF15454)
-    static let newsHabitLightGray = UIColor(hex: 0xD9D9D9)
-    static let newsHabitGray = UIColor(hex: 0x7C7C7C)
-    static let newsHabitDarkGray = UIColor(hex: 0x2D2D2D)
+    static let newsHabitLightGray = color(light: UIColor(hex: 0xD9D9D9), dark: UIColor(hex: 0x7C7C7C))
+    static let newsHabitGray = color(light: UIColor(hex: 0x7C7C7C), dark: UIColor(hex: 0xB4B4B4))
+    static let newsHabitDarkGray = color(light: UIColor(hex: 0x2D2D2D), dark: .black)
+    static let background = color(light: .white, dark: UIColor(hex: 0x242424))
     
 }

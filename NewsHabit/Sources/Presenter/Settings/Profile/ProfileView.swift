@@ -34,13 +34,14 @@ class ProfileView: UIView {
         $0.text = UserDefaultsManager.username
         $0.font = .labelFont
         $0.borderStyle = .roundedRect
+        $0.backgroundColor = .background
     }
     
     let saveButton = UIButton().then {
         $0.configuration = .plain()
         $0.configuration?.attributedTitle = .init("저장", attributes: .init([.font: UIFont.labelFont]))
         $0.tintColor = .white
-        $0.backgroundColor = .newsHabitGray
+        $0.backgroundColor = .black
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 5
     }
@@ -65,6 +66,8 @@ class ProfileView: UIView {
     // MARK: - Setup Methods
     
     private func setupProperty() {
+        backgroundColor = .background
+
         saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)

@@ -68,7 +68,7 @@ class MainView: UIView {
     // MARK: - Setup Methods
     
     private func setupProperty() {
-        backgroundColor = .systemBackground
+        backgroundColor = .background
         clipsToBounds = true
         layer.cornerRadius = 30
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]

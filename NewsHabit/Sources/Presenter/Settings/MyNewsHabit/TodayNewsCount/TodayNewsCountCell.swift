@@ -46,6 +46,7 @@ class TodayNewsCountCell: UITableViewCell {
     // MARK: - Setup Methods
     
     private func setupProperty() {
+        backgroundColor = .clear
         selectionStyle = .none
     }
     
@@ -68,11 +69,7 @@ class TodayNewsCountCell: UITableViewCell {
     }
     
     func setSelected(_ isSelected: Bool) {
-        if isSelected {
-            selectedButton.configuration?.image = UIImage(systemName: "circle.inset.filled")
-        } else {
-            selectedButton.configuration?.image = UIImage(systemName: "circle")
-        }
+        selectedButton.configuration?.image = isSelected ? UIImage(systemName: "circle.inset.filled") : UIImage(systemName: "circle")
     }
     
 }

@@ -21,6 +21,7 @@ class ThemeView: UIView {
     // MARK: - UI Components
     
     let tableView = UITableView().then {
+        $0.backgroundColor = .clear
         $0.separatorStyle = .none
         $0.register(ThemeCell.self, forCellReuseIdentifier: ThemeCell.reuseIdentifier)
     }
@@ -60,10 +61,12 @@ class ThemeView: UIView {
     
     func bindViewModel(_ viewModel: ThemeViewModel) {
         self.viewModel = viewModel
-        viewModel.$selectedIndex
+        viewModel.$selectedTheme
             .receive(on: RunLoop.main)
-            .sink{ [weak self] selectedIndex in
-                UserDefaultsManager.theme = ThemeType.allCases[selectedIndex].rawValue
+            .sink{ [weak self] selectedTheme in
+                guard let window = self?.window else { return }
+                UserDefaultsManager.theme = selectedTheme
+                window.overrideUserInterfaceStyle = selectedTheme.toUserInterfaceStyle()
                 self?.tableView.reloadData()
             }.store(in: &cancellables)
     }
@@ -78,7 +81,7 @@ extension ThemeView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let viewModel = viewModel else { return }
-        viewModel.selectedIndex = indexPath.row
+        viewModel.selectedTheme = ThemeType.allCases[indexPath.row]
     }
     
 }
@@ -94,7 +97,7 @@ extension ThemeView: UITableViewDataSource {
               let cell = tableView.dequeueReusableCell(withIdentifier: ThemeCell.reuseIdentifier) as? ThemeCell
         else { return UITableViewCell() }
         cell.bindThemeItem(ThemeType.allCases[indexPath.row])
-        cell.setSelected(viewModel.selectedIndex == indexPath.row)
+        cell.setSelected(viewModel.selectedTheme == ThemeType.allCases[indexPath.row])
         return cell
     }
     

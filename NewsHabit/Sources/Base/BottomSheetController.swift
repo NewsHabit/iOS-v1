@@ -24,7 +24,7 @@ class BottomSheetController<View: UIView>: UIViewController {
     }
     
     let sheetView = View().then {
-        $0.backgroundColor = .white
+        $0.backgroundColor = .background
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 30
         $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner] // 왼쪽 위, 오른쪽 위 둥글게

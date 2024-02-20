@@ -49,6 +49,7 @@ class SettingsCell: UITableViewCell {
     // MARK: - Setup Methods
     
     private func setupProperty() {
+        backgroundColor = .clear
         selectionStyle = .none
     }
     

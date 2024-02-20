@@ -22,6 +22,7 @@ class MyNewsHabitView: UIView {
     // MARK: - UI Components
     
     let tableView = UITableView().then {
+        $0.backgroundColor = .clear
         $0.separatorStyle = .none
         $0.register(MyNewsHabitCell.self, forCellReuseIdentifier: MyNewsHabitCell.reuseIdentifier)
     }

@@ -20,7 +20,7 @@ class KeywordCell: UICollectionViewCell {
     
     let label = UILabel().then {
         $0.font = .cellLabelFont
-        $0.textColor = .white
+        $0.textColor = .systemBackground
     }
     
     // MARK: - Initializer
@@ -39,6 +39,7 @@ class KeywordCell: UICollectionViewCell {
     // MARK: - Setup Methods
     
     private func setupProperty() {
+        backgroundColor = .clear
         clipsToBounds = true
         layer.cornerRadius = 15
     }
@@ -51,6 +52,10 @@ class KeywordCell: UICollectionViewCell {
         label.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
+    }
+    
+    func setSelected(_ isSelected: Bool) {
+        backgroundColor = isSelected ? .label : .newsHabitLightGray
     }
     
 }

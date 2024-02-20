@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import UIKit
 
-enum ThemeType: String, CaseIterable {
+enum ThemeType: String, Codable, CaseIterable {
     case light = "라이트"
     case dark = "다크"
     case system = "시스템 설정"
@@ -19,8 +20,12 @@ enum ThemeType: String, CaseIterable {
         case .system: "circle.righthalf.filled"
         }
     }
-
-    static func indexOf(rawValue: String) -> Int? {
-        return allCases.firstIndex { $0.rawValue == rawValue }
+    
+    func toUserInterfaceStyle() -> UIUserInterfaceStyle {
+        switch self {
+        case .light: UIUserInterfaceStyle.light
+        case .dark: UIUserInterfaceStyle.dark
+        case .system: UIUserInterfaceStyle.unspecified
+        }
     }
 }
