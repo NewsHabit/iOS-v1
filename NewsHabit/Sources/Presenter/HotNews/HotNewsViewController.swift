@@ -11,7 +11,7 @@ protocol HotNewsViewDelegate {
     func pushViewController(_ newsLink: String?)
 }
 
-class HotNewsViewController: BaseViewController<HotNewsView> {
+class HotNewsViewController: BaseViewController<HotNewsView>, BaseViewControllerProtocol {
     
     // MARK: - Properties
     
@@ -36,7 +36,7 @@ class HotNewsViewController: BaseViewController<HotNewsView> {
     
     // MARK: - BaseViewControllerProtocol
     
-    override func setupNavigationBar() {
+    func setupNavigationBar() {
         setNavigationBarBackButtonHidden(true)
         setNavigationBarLinkButtonHidden(true)
         setNavigationBarLargeTitle("🔥 지금 뜨는 뉴스")

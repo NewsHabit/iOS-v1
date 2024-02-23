@@ -11,26 +11,10 @@ import SnapKit
 import Then
 
 protocol BaseViewControllerProtocol {
-    var statusBar: UIView { get }
-    var navigationBar: NavigationBar { get }
-    var contentView: UIView { get }
-    
     func setupNavigationBar()
-    func setBackgroundColor(_ color: UIColor?)
-    func setNavigationBarTitle(_ title: String?)
-    func setNavigationBarBackButtonHidden(_ hidden: Bool)
-    func setNavigationBarLinkButtonHidden(_ hidden: Bool)
-    func setNavigationBarLinkButtonAction(_ selector: Selector)
-    func setNavigationBarLargeTitle(_ title: String?)
-    func setNavigationBarLargeTitleTextColor(_ color: UIColor?)
-    func setNavigationBarSubTitle(_ title: String?)
-    func setNavigationBarSubTitleTextColor(_ color: UIColor?)
 }
 
-/// `BaseViewController`는 커스텀 네비게이션 바를 포함하는 기본 뷰 컨트롤러입니다.
-/// 서브클래스에서 네비게이션 바를 설정하지 않으면, 모든 아이템이 기본적으로 보이는 상태로 시작합니다.
-/// `setupNavigationBar` 메서드를 오버라이드하여 네비게이션 바를 커스텀 설정해야 합니다.
-class BaseViewController<View: UIView>: UIViewController, BaseViewControllerProtocol {
+class BaseViewController<View: UIView>: UIViewController {
     
     let statusBar = UIView()
     let navigationBar = NavigationBar()
@@ -40,7 +24,7 @@ class BaseViewController<View: UIView>: UIViewController, BaseViewControllerProt
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
         navigationController?.setNavigationBarHidden(true, animated: false)
         view.backgroundColor = .background
         setupHierarchy()
@@ -83,11 +67,7 @@ class BaseViewController<View: UIView>: UIViewController, BaseViewControllerProt
         navigationController?.popViewController(animated: true)
     }
     
-    // MARK: - BaseViewControllerProtocol
-    
-    func setupNavigationBar() {
-        fatalError("\(type(of: self)): \(#function) must be overridden")
-    }
+    // MARK: - Setup NavigationBar Methods
     
     func setBackgroundColor(_ color: UIColor?) {
         view.backgroundColor = color

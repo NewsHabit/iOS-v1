@@ -11,7 +11,7 @@ protocol SettingsViewDelegate {
     func pushViewController(_ indexPath: IndexPath)
 }
 
-class SettingsViewController: BaseViewController<SettingsView> {
+class SettingsViewController: BaseViewController<SettingsView>, BaseViewControllerProtocol {
     
     // MARK: - Life Cycle
     
@@ -25,7 +25,7 @@ class SettingsViewController: BaseViewController<SettingsView> {
     
     // MARK: - BaseViewControllerProtocol
     
-    override func setupNavigationBar() {
+    func setupNavigationBar() {
         setNavigationBarBackButtonHidden(true)
         setNavigationBarLinkButtonHidden(true)
         setNavigationBarLargeTitle("설정")

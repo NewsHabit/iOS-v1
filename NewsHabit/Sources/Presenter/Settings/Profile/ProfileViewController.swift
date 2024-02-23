@@ -12,7 +12,7 @@ protocol ProfileViewDelegate {
     func popViewController()
 }
 
-class ProfileViewController: BaseViewController<ProfileView> {
+class ProfileViewController: BaseViewController<ProfileView>, BaseViewControllerProtocol {
     
     // MARK: - Life Cycle
     
@@ -26,7 +26,7 @@ class ProfileViewController: BaseViewController<ProfileView> {
     
     // MARK: - BaseViewControllerProtocol
     
-    override func setupNavigationBar() {
+    func setupNavigationBar() {
         setNavigationBarLinkButtonHidden(true)
         setNavigationBarTitle("프로필")
     }

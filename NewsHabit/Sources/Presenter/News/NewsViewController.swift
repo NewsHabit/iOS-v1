@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NewsViewController: BaseViewController<NewsView> {
+class NewsViewController: BaseViewController<NewsView>, BaseViewControllerProtocol {
     
     // MARK: - Properties
     
@@ -25,7 +25,7 @@ class NewsViewController: BaseViewController<NewsView> {
     
     // MARK: - BaseViewControllerProtocol
     
-    override func setupNavigationBar() {
+    func setupNavigationBar() {
         setNavigationBarLinkButtonAction(#selector(handleLinkButtonTap))
     }
     

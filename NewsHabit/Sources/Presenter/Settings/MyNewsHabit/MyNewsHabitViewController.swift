@@ -12,7 +12,7 @@ protocol MyNewsHabitViewDelegate {
     func updateMyNewsHabitSettings()
 }
 
-class MyNewsHabitViewController: BaseViewController<MyNewsHabitView> {
+class MyNewsHabitViewController: BaseViewController<MyNewsHabitView>, BaseViewControllerProtocol {
     
     // MARK: - Properties
     
@@ -30,7 +30,9 @@ class MyNewsHabitViewController: BaseViewController<MyNewsHabitView> {
         viewModel.input.send(.updateMyNewsHabitSettings)
     }
     
-    override func setupNavigationBar() {
+    // MARK: - BaseViewControllerProtocol
+    
+    func setupNavigationBar() {
         setNavigationBarLinkButtonHidden(true)
         setNavigationBarTitle("나의 뉴빗")
     }
