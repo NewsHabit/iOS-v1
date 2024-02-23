@@ -7,7 +7,7 @@
 
 import Foundation
 
-class NewsHabitDateFormatter: DateFormatter {
+class NewsHabitFullDateFormatter: DateFormatter {
     
     override init() {
         super.init()
@@ -20,10 +20,27 @@ class NewsHabitDateFormatter: DateFormatter {
 
 }
 
+class NewsHabitSimpleDateFormatter: DateFormatter {
+    
+    override init() {
+        super.init()
+        dateFormat = "yyMMddHH"
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+}
+
 extension Date {
     
-    func toString() -> String {
-        return NewsHabitDateFormatter().string(from: self)
+    func toFullString() -> String {
+        return NewsHabitFullDateFormatter().string(from: self)
+    }
+    
+    func toSimpleString() -> String {
+        return NewsHabitSimpleDateFormatter().string(from: self)
     }
     
 }

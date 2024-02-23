@@ -24,7 +24,7 @@ class TabBarController: UITabBarController {
                 selectedImage: UIImage(systemName: "house.fill")
             ),
             setupNavigationController(
-                viewController: TrendingNewsViewController(),
+                viewController: HotNewsViewController(),
                 image: UIImage(systemName: "flame"),
                 selectedImage: UIImage(systemName: "flame.fill")
             ),

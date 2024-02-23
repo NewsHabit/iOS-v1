@@ -71,8 +71,11 @@ extension TodayNewsView: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.reuseIdentifier) as? NewsCell else { return UITableViewCell() }
         cell.bindViewModel(NewsCellViewModel(newsItem: NewsItem(
             title: "제목이 들어올 자리입니다",
-            description: "요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 ",
-            category: "사회")))
+            category: "사회",
+            naverUrl: nil,
+            imgLink: nil,
+            description: "요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 "
+        ), isDetailCell: true))
         return cell
     }
     

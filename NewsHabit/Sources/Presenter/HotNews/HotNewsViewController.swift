@@ -1,5 +1,5 @@
 //
-//  TrendingNewsViewController.swift
+//  HotNewsViewController.swift
 //  NewsHabit
 //
 //  Created by jiyeon on 2/11/24.
@@ -7,18 +7,26 @@
 
 import UIKit
 
-class TrendingNewsViewController: BaseViewController<TrendingNewsView> {
+class HotNewsViewController: BaseViewController<HotNewsView> {
+    
+    // MARK: - Properties
+    
+    private let viewModel = HotNewsViewModel()
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        
+        guard let contentView = contentView as? HotNewsView else { return }
+        contentView.bindViewModel(viewModel)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setNavigationBarSubTitle("\(Date().toString()) 기준")
+        setNavigationBarSubTitle("\(Date().toFullString()) 기준")
+        viewModel.input.send(.viewWillAppear)
     }
     
     // MARK: - BaseViewControllerProtocol
