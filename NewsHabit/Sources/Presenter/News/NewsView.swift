@@ -20,6 +20,7 @@ class NewsView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupProperty()
         setupHierarchy()
         setupLayout()
     }
@@ -33,6 +34,10 @@ class NewsView: UIView {
     }
 
     // MARK: - Setup Methods
+    
+    private func setupProperty() {
+        webView.navigationDelegate = self
+    }
     
     private func setupHierarchy() {
         addSubview(webView)
@@ -51,5 +56,9 @@ class NewsView: UIView {
               let url = URL(string: newsLink) else { return }
         webView.load(URLRequest(url: url))
     }
+    
+}
+
+extension NewsView: WKNavigationDelegate {
     
 }

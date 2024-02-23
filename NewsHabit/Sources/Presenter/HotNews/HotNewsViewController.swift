@@ -50,7 +50,7 @@ extension HotNewsViewController: HotNewsViewDelegate {
     func pushViewController(_ newsLink: String?) {
         guard let newsLink = newsLink else { return }
         let newsViewController = NewsViewController()
-        newsViewController.newLink = newsLink
+        newsViewController.newsLink = newsLink
         navigationController?.pushViewController(newsViewController, animated: true)
     }
     
