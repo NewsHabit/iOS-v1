@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NotificationViewController: BaseViewController<NotificationView> {
+class NotificationViewController: BaseViewController<NotificationView>, BaseViewControllerProtocol {
     
     // MARK: - Properties
     
@@ -25,7 +25,7 @@ class NotificationViewController: BaseViewController<NotificationView> {
     
     // MARK: - BaseViewControllerProtocol
     
-    override func setupNavigationBar() {
+    func setupNavigationBar() {
         setNavigationBarLinkButtonHidden(true)
         setNavigationBarTitle("알림")
     }

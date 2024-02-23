@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ThemeViewController: BaseViewController<ThemeView> {
+class ThemeViewController: BaseViewController<ThemeView>, BaseViewControllerProtocol {
     
     // MARK: - Properties
     
@@ -23,7 +23,9 @@ class ThemeViewController: BaseViewController<ThemeView> {
         contentView.bindViewModel(viewModel)
     }
     
-    override func setupNavigationBar() {
+    // MARK: - BaseViewControllerProtocol
+    
+    func setupNavigationBar() {
         setNavigationBarLinkButtonHidden(true)
         setNavigationBarTitle("테마")
     }

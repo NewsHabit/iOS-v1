@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainViewController: BaseViewController<MainView> {
+class MainViewController: BaseViewController<MainView>, BaseViewControllerProtocol {
     
     // MARK: - Properties
     
@@ -30,7 +30,7 @@ class MainViewController: BaseViewController<MainView> {
     
     // MARK: - BaseViewControllerProtocol
     
-    override func setupNavigationBar() {
+    func setupNavigationBar() {
         setBackgroundColor(.newsHabitDarkGray)
         setNavigationBarBackButtonHidden(true)
         setNavigationBarLinkButtonHidden(true)

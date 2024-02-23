@@ -41,7 +41,7 @@ class KeywordCell: UICollectionViewCell {
     private func setupProperty() {
         backgroundColor = .clear
         clipsToBounds = true
-        layer.cornerRadius = 15
+        layer.cornerRadius = 13
     }
     
     private func setupHierarchy() {
