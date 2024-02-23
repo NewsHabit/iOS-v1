@@ -1,5 +1,5 @@
 //
-//  NewsViewController.swift
+//  WebViewController.swift
 //  NewsHabit
 //
 //  Created by jiyeon on 2/23/24.
@@ -7,11 +7,19 @@
 
 import UIKit
 
-class NewsViewController: BaseViewController<NewsView>, BaseViewControllerProtocol {
+class WebViewController: BaseViewController<WebView> {
     
     // MARK: - Properties
     
-    var newsLink: String?
+    var urlString: String?
+    
+    var isLinkButtonEnabled: Bool = true {
+        didSet {
+            if isLinkButtonEnabled == false {
+                setNavigationBarLinkButtonHidden(true)
+            }
+        }
+    }
     
     // MARK: - Life Cycle
     
@@ -19,8 +27,8 @@ class NewsViewController: BaseViewController<NewsView>, BaseViewControllerProtoc
         super.viewDidLoad()
         setupNavigationBar()
         
-        guard let contentView = contentView as? NewsView else { return }
-        contentView.loadLink(newsLink)
+        guard let contentView = contentView as? WebView else { return }
+        contentView.loadLink(urlString)
     }
     
     // MARK: - BaseViewControllerProtocol
@@ -32,9 +40,9 @@ class NewsViewController: BaseViewController<NewsView>, BaseViewControllerProtoc
     // MARK: - objc Function
     
     @objc private func handleLinkButtonTap() {
-        guard let newsLink = newsLink else { return }
+        guard let urlString = urlString else { return }
         let pasteboard = UIPasteboard.general
-        pasteboard.string = newsLink
+        pasteboard.string = urlString
         Toast.shared.makeToast("원본 링크를 복사했습니다")
     }
     
