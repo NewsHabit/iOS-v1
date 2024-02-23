@@ -12,6 +12,7 @@ class HotNewsView: UIView {
     
     // MARK: - Properties
     
+    var delegate: HotNewsViewDelegate?
     private var viewModel: HotNewsViewModel?
     private var cancellables = Set<AnyCancellable>()
     
@@ -76,7 +77,7 @@ extension HotNewsView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cellViewModel = viewModel?.newsCellViewModels[indexPath.row] else { return }
-        cellViewModel.isRead = true
+        delegate?.pushViewController(cellViewModel.newsLink)
     }
     
 }
