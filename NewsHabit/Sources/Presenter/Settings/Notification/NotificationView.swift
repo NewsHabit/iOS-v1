@@ -122,9 +122,47 @@ class NotificationView: UIView {
     }
     
     @objc func handleSaveButtonTap() {
+        // 1. 스택 뷰를 숨깁니다.
         stackView.isHidden = true
-        viewModel?.nofiticationTime = datePicker.date.toTimeString()
+        
+        // 2. 사용자가 선택한 시간을 뷰 모델에 저장합니다.
+        let selectedTime = datePicker.date
+        viewModel?.nofiticationTime = selectedTime.toTimeString()
+        
+        // 3. 로컬 알림 설정을 위한 센터를 가져옵니다.
+        let notificationCenter = UNUserNotificationCenter.current()
+        
+        // 4. 알림 권한 요청
+        notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if granted {
+                // 5. 기존에 설정된 알림이 있다면 모두 제거합니다.
+                notificationCenter.removeAllPendingNotificationRequests()
+                
+                // 6. 새로운 알림 내용을 설정합니다.
+                let content = UNMutableNotificationContent()
+                content.title = "뉴빗"
+                content.body = "뉴스도 습관처럼 📰\n오늘의 뉴스가 도착했어요"
+                content.sound = .default
+                
+                // 7. 트리거 설정
+                let triggerDate = Calendar.current.dateComponents([.hour, .minute], from: selectedTime)
+                let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+                
+                // 8. 알림 요청 생성 및 등록
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                notificationCenter.add(request) { error in
+                    if let error = error {
+                        // 알림 추가 실패 처리
+                        print("알림 추가 실패: \(error.localizedDescription)")
+                    }
+                }
+            } else if let error = error {
+                // 권한 요청 실패 처리
+                print("권한 요청 실패: \(error.localizedDescription)")
+            }
+        }
     }
+
     
 }
 
