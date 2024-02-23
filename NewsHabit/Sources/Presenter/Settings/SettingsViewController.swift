@@ -13,6 +13,10 @@ protocol SettingsViewDelegate {
 
 class SettingsViewController: BaseViewController<SettingsView>, BaseViewControllerProtocol {
     
+    // MARK: - Properties
+    
+    private let viewModel = SettingsViewModel()
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -21,6 +25,7 @@ class SettingsViewController: BaseViewController<SettingsView>, BaseViewControll
         
         guard let contentView = contentView as? SettingsView else { return }
         contentView.delegate = self
+        contentView.bindViewModel(viewModel)
     }
     
     // MARK: - BaseViewControllerProtocol
@@ -41,7 +46,11 @@ extension SettingsViewController: SettingsViewDelegate {
         case 1: navigationController?.pushViewController(MyNewsHabitViewController(), animated: true)
         case 2: navigationController?.pushViewController(NotificationViewController(), animated: true)
         case 3: navigationController?.pushViewController(ThemeViewController(), animated: true)
-        case 4: navigationController?.pushViewController(DeveloperInfoViewController(), animated: true)
+        case 4: 
+            let developerInfoViewcontroller = WebViewController()
+            developerInfoViewcontroller.urlString = viewModel.developerInfoLink
+            developerInfoViewcontroller.isLinkButtonEnabled = false
+            navigationController?.pushViewController(developerInfoViewcontroller, animated: true)
         default: break
         }
     }

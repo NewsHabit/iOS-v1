@@ -1,5 +1,5 @@
 //
-//  NewsView.swift
+//  WebView.swift
 //  NewsHabit
 //
 //  Created by jiyeon on 2/23/24.
@@ -11,7 +11,7 @@ import WebKit
 import SnapKit
 import Then
 
-class NewsView: UIView {
+class WebView: UIView {
     
     // MARK: - UI Components
     
@@ -65,9 +65,9 @@ class NewsView: UIView {
     
     // MARK: - Load Link
     
-    func loadLink(_ newsLink: String?) {
-        guard let newsLink = newsLink,
-              let url = URL(string: newsLink) else { return }
+    func loadLink(_ urlString: String?) {
+        guard let urlString = urlString,
+              let url = URL(string: urlString) else { return }
         webView.load(URLRequest(url: url))
     }
     
@@ -86,7 +86,7 @@ class NewsView: UIView {
     
 }
 
-extension NewsView: WKNavigationDelegate {
+extension WebView: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         // 로딩 완료 시 프로그레스 바 숨김

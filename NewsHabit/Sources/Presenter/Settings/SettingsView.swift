@@ -15,7 +15,7 @@ class SettingsView: UIView {
     // MARK: - Properties
     
     var delegate: SettingsViewDelegate?
-    let viewModel = SettingsViewModel()
+    private var viewModel: SettingsViewModel?
     
     // MARK: - UI Components
     
@@ -55,6 +55,13 @@ class SettingsView: UIView {
         }
     }
     
+    // MARK: - Bind ViewModel
+    
+    func bindViewModel(_ viewModel: SettingsViewModel) {
+        self.viewModel = viewModel
+        self.tableView.reloadData()
+    }
+    
 }
 
 extension SettingsView: UITableViewDelegate {
@@ -73,11 +80,13 @@ extension SettingsView: UITableViewDelegate {
 extension SettingsView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let viewModel = viewModel else { return 0 }
         return viewModel.settingsItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseIdentifier) as? SettingsCell else { return UITableViewCell() }
+        guard let viewModel = viewModel,
+              let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseIdentifier) as? SettingsCell else { return UITableViewCell() }
         cell.bindViewModel(viewModel.settingsItems[indexPath.row])
         return cell
     }
