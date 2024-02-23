@@ -97,20 +97,17 @@ class NotificationView: UIView {
     
     func bindViewModel(_ viewModel: NotificationViewModel) {
         self.viewModel = viewModel
-        viewModel.$isNotificationOn
+        viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
             .receive(on: RunLoop.main)
-            .sink { [weak self] isNotificationOn in
-                UserDefaultsManager.isNotificationOn = isNotificationOn
-                if self?.stackView.isHidden == false {
-                    self?.stackView.isHidden = true
+            .sink { [weak self] event in
+                switch event {
+                case .updateNotification:
+                    if self?.stackView.isHidden == false {
+                        self?.stackView.isHidden = true
+                    }
+                case .updateNotificationTime:
+                    self?.tableView.reloadData()
                 }
-            }.store(in: &cancellables)
-        viewModel.$nofiticationTime
-            .receive(on: RunLoop.main)
-            .sink { [weak self] nofiticationTime in
-                self?.datePicker.date = nofiticationTime.toDate() ?? Date()
-                self?.tableView.reloadData()
-                UserDefaultsManager.notificationTime = nofiticationTime
             }.store(in: &cancellables)
     }
     
@@ -123,9 +120,10 @@ class NotificationView: UIView {
     
     @objc func handleSaveButtonTap() {
         stackView.isHidden = true
-        viewModel?.nofiticationTime = datePicker.date.toTimeString()
+        datePicker.date = datePicker.date
+        viewModel?.input.send(.setNotificationTime(datePicker.date))
     }
-    
+
 }
 
 extension NotificationView: UITableViewDelegate {
@@ -145,8 +143,7 @@ extension NotificationView: UITableViewDelegate {
 extension NotificationView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let viewModel = viewModel else { return 0 }
-        return viewModel.isNotificationOn ? 2 : 1
+        return UserDefaultsManager.isNotificationOn ? 2 : 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -157,34 +154,30 @@ extension NotificationView: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationSwitchCell.reuseIdentifier)
                     as? NotificationSwitchCell else { return UITableViewCell() }
             cell.titleLabel.text = "알림"
-            cell.switchControl.isOn = viewModel.isNotificationOn
+            cell.switchControl.isOn = UserDefaultsManager.isNotificationOn
             cell.switchControl.addTarget(self, action: #selector(handleSwitchControlTap), for: .touchUpInside)
             return cell
-        case 1 where viewModel.isNotificationOn:
+        case 1 where UserDefaultsManager.isNotificationOn:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationTimeCell.reuseIdentifier)
                     as? NotificationTimeCell else { return UITableViewCell() }
             cell.titleLabel.text = "시간"
-            cell.timeLabel.text = viewModel.nofiticationTime
+            cell.timeLabel.text = UserDefaultsManager.notificationTime
             return cell
         default:
             return UITableViewCell()
         }
     }
     
-    @objc private func handleSwitchControlTap() {
-        guard let viewModel = viewModel else { return }
-        viewModel.isNotificationOn.toggle()
+    @objc private func handleSwitchControlTap(_ switchControl: UISwitch) {
+        viewModel?.input.send(.setNotification(switchControl.isOn))
 
-        let indexPath = IndexPath(row: 1, section: 0)
-
-        tableView.performBatchUpdates({
-            if viewModel.isNotificationOn {
-                tableView.insertRows(at: [indexPath], with: .automatic)
-            } else {
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-            }
-        }, completion: nil)
+        tableView.beginUpdates()
+        if switchControl.isOn {
+            tableView.insertRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+        } else {
+            tableView.deleteRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+        }
+        tableView.endUpdates()
     }
 
-    
 }
