@@ -13,4 +13,5 @@ enum UserDefaultsDataType: String {
     case todayNewsCount
     case notification
     case theme
+    case lastHotNewsUpdateTime
 }

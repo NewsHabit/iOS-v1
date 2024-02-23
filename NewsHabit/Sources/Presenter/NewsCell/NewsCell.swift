@@ -36,6 +36,8 @@ class NewsCell: UITableViewCell {
     let titleLabel = UILabel().then {
         $0.textColor = .label
         $0.font = .cellTitleFont
+        $0.numberOfLines = 1
+        $0.lineBreakMode = .byTruncatingTail
     }
     
     let descriptionLabel = UILabel().then {
@@ -56,6 +58,8 @@ class NewsCell: UITableViewCell {
     
     let thumbnailView = UIImageView().then {
         $0.backgroundColor = .gray
+        $0.clipsToBounds = true
+        $0.contentMode = .scaleAspectFill
     }
     
     // MARK: - Initializer
@@ -104,6 +108,7 @@ class NewsCell: UITableViewCell {
         stackView.snp.makeConstraints {
             $0.top.equalTo(thumbnailView.snp.top)
             $0.leading.equalToSuperview().inset(15)
+            $0.trailing.equalTo(thumbnailView.snp.leading).offset(-15)
         }
         
         isReadView.snp.makeConstraints {
@@ -134,15 +139,38 @@ class NewsCell: UITableViewCell {
     
     func bindViewModel(_ viewModel: NewsCellViewModel) {
         self.viewModel = viewModel
-        isReadView.isHidden = viewModel.isRead
         titleLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description
-        categoryLabel.text = viewModel.category
-        viewModel.$isRead
-            .receive(on: RunLoop.main)
-            .sink { [weak self] isRead in
-                self?.isReadView.isHidden = isRead
-            }.store(in: &cancellables)
+        loadImage(from: viewModel.imageLink)
+        if (viewModel.isDetailCell) {
+            isReadView.isHidden = viewModel.isRead
+            categoryLabel.text = viewModel.category
+            viewModel.$isRead
+                .receive(on: RunLoop.main)
+                .sink { [weak self] isRead in
+                    self?.isReadView.isHidden = isRead
+                }.store(in: &cancellables)
+        } else {
+            isReadView.isHidden = true
+            categoryLabel.isHidden = true
+        }
     }
+    
+    // MARK: - Load Image
+    
+    func loadImage(from urlString: String?) {
+        guard let urlString = urlString,
+              let url = URL(string: urlString) else { return }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if error != nil { return }
+            guard let data = data, let image = UIImage(data: data) else { return }
+            DispatchQueue.main.async {
+                self.thumbnailView.image = image
+            }
+        }
+        task.resume()
+    }
+
     
 }

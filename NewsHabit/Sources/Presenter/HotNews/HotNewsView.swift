@@ -1,26 +1,19 @@
 //
-//  TrendingNewsView.swift
+//  HotNewsView.swift
 //  NewsHabit
 //
 //  Created by jiyeon on 2/11/24.
 //
 
+import Combine
 import UIKit
 
-class TrendingNewsView: UIView {
+class HotNewsView: UIView {
     
-    var dummyDatas = [
-        NewsCellViewModel(newsItem: NewsItem.dummy),
-        NewsCellViewModel(newsItem: NewsItem.dummy),
-        NewsCellViewModel(newsItem: NewsItem.dummy),
-        NewsCellViewModel(newsItem: NewsItem.dummy),
-        NewsCellViewModel(newsItem: NewsItem.dummy),
-        NewsCellViewModel(newsItem: NewsItem.dummy),
-        NewsCellViewModel(newsItem: NewsItem.dummy),
-        NewsCellViewModel(newsItem: NewsItem.dummy),
-        NewsCellViewModel(newsItem: NewsItem.dummy),
-        NewsCellViewModel(newsItem: NewsItem.dummy)
-    ]
+    // MARK: - Properties
+    
+    private var viewModel: HotNewsViewModel?
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     
@@ -59,30 +52,47 @@ class TrendingNewsView: UIView {
         }
     }
     
+    // MARK: - Bind ViewModel
+    
+    func bindViewModel(_ viewModel: HotNewsViewModel) {
+        self.viewModel = viewModel
+        viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
+            .receive(on: RunLoop.main)
+            .sink { [weak self] event in
+                switch event {
+                case .updateHotNews:
+                    self?.tableView.reloadData()
+                }
+            }.store(in: &cancellables)
+    }
+    
 }
 
-extension TrendingNewsView: UITableViewDelegate {
+extension HotNewsView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        dummyDatas[indexPath.row].isRead = true
+        guard let cellViewModel = viewModel?.newsCellViewModels[indexPath.row] else { return }
+        cellViewModel.isRead = true
     }
     
 }
 
-extension TrendingNewsView: UITableViewDataSource {
+extension HotNewsView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dummyDatas.count
+        return viewModel?.newsCellViewModels.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.reuseIdentifier) as? NewsCell else { return UITableViewCell() }
-        cell.bindViewModel(dummyDatas[indexPath.row])
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.reuseIdentifier) as? NewsCell,
+              let cellViewModel = viewModel?.newsCellViewModels[indexPath.row] else { return UITableViewCell() }
+        cell.bindViewModel(cellViewModel)
         return cell
     }
     
 }
+

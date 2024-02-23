@@ -23,6 +23,9 @@ struct UserDefaultsManager {
 
     @UserDefaultsData(key: UserDefaultsDataType.theme.rawValue, defaultValue: ThemeType.system)
     static var theme: ThemeType
+    
+    @UserDefaultsData(key: UserDefaultsDataType.lastHotNewsUpdateTime.rawValue, defaultValue: "")
+    static var lastHotNewsUpdateTime: String
 
 }
 
