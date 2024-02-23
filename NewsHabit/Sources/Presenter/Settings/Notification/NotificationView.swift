@@ -97,20 +97,17 @@ class NotificationView: UIView {
     
     func bindViewModel(_ viewModel: NotificationViewModel) {
         self.viewModel = viewModel
-        viewModel.$isNotificationOn
+        viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
             .receive(on: RunLoop.main)
-            .sink { [weak self] isNotificationOn in
-                UserDefaultsManager.isNotificationOn = isNotificationOn
-                if self?.stackView.isHidden == false {
-                    self?.stackView.isHidden = true
+            .sink { [weak self] event in
+                switch event {
+                case .updateNotification:
+                    if self?.stackView.isHidden == false {
+                        self?.stackView.isHidden = true
+                    }
+                case .updateNotificationTime:
+                    self?.tableView.reloadData()
                 }
-            }.store(in: &cancellables)
-        viewModel.$nofiticationTime
-            .receive(on: RunLoop.main)
-            .sink { [weak self] nofiticationTime in
-                self?.datePicker.date = nofiticationTime.toDate() ?? Date()
-                self?.tableView.reloadData()
-                UserDefaultsManager.notificationTime = nofiticationTime
             }.store(in: &cancellables)
     }
     
@@ -122,48 +119,11 @@ class NotificationView: UIView {
     }
     
     @objc func handleSaveButtonTap() {
-        // 1. 스택 뷰를 숨깁니다.
         stackView.isHidden = true
-        
-        // 2. 사용자가 선택한 시간을 뷰 모델에 저장합니다.
-        let selectedTime = datePicker.date
-        viewModel?.nofiticationTime = selectedTime.toTimeString()
-        
-        // 3. 로컬 알림 설정을 위한 센터를 가져옵니다.
-        let notificationCenter = UNUserNotificationCenter.current()
-        
-        // 4. 알림 권한 요청
-        notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if granted {
-                // 5. 기존에 설정된 알림이 있다면 모두 제거합니다.
-                notificationCenter.removeAllPendingNotificationRequests()
-                
-                // 6. 새로운 알림 내용을 설정합니다.
-                let content = UNMutableNotificationContent()
-                content.title = "뉴빗"
-                content.body = "뉴스도 습관처럼 📰\n오늘의 뉴스가 도착했어요"
-                content.sound = .default
-                
-                // 7. 트리거 설정
-                let triggerDate = Calendar.current.dateComponents([.hour, .minute], from: selectedTime)
-                let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
-                
-                // 8. 알림 요청 생성 및 등록
-                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-                notificationCenter.add(request) { error in
-                    if let error = error {
-                        // 알림 추가 실패 처리
-                        print("알림 추가 실패: \(error.localizedDescription)")
-                    }
-                }
-            } else if let error = error {
-                // 권한 요청 실패 처리
-                print("권한 요청 실패: \(error.localizedDescription)")
-            }
-        }
+        datePicker.date = datePicker.date
+        viewModel?.input.send(.setNotificationTime(datePicker.date))
     }
 
-    
 }
 
 extension NotificationView: UITableViewDelegate {
@@ -183,8 +143,7 @@ extension NotificationView: UITableViewDelegate {
 extension NotificationView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let viewModel = viewModel else { return 0 }
-        return viewModel.isNotificationOn ? 2 : 1
+        return UserDefaultsManager.isNotificationOn ? 2 : 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -195,34 +154,30 @@ extension NotificationView: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationSwitchCell.reuseIdentifier)
                     as? NotificationSwitchCell else { return UITableViewCell() }
             cell.titleLabel.text = "알림"
-            cell.switchControl.isOn = viewModel.isNotificationOn
+            cell.switchControl.isOn = UserDefaultsManager.isNotificationOn
             cell.switchControl.addTarget(self, action: #selector(handleSwitchControlTap), for: .touchUpInside)
             return cell
-        case 1 where viewModel.isNotificationOn:
+        case 1 where UserDefaultsManager.isNotificationOn:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationTimeCell.reuseIdentifier)
                     as? NotificationTimeCell else { return UITableViewCell() }
             cell.titleLabel.text = "시간"
-            cell.timeLabel.text = viewModel.nofiticationTime
+            cell.timeLabel.text = UserDefaultsManager.notificationTime
             return cell
         default:
             return UITableViewCell()
         }
     }
     
-    @objc private func handleSwitchControlTap() {
-        guard let viewModel = viewModel else { return }
-        viewModel.isNotificationOn.toggle()
+    @objc private func handleSwitchControlTap(_ switchControl: UISwitch) {
+        viewModel?.input.send(.setNotification(switchControl.isOn))
 
-        let indexPath = IndexPath(row: 1, section: 0)
-
-        tableView.performBatchUpdates({
-            if viewModel.isNotificationOn {
-                tableView.insertRows(at: [indexPath], with: .automatic)
-            } else {
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-            }
-        }, completion: nil)
+        tableView.beginUpdates()
+        if switchControl.isOn {
+            tableView.insertRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+        } else {
+            tableView.deleteRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+        }
+        tableView.endUpdates()
     }
 
-    
 }
