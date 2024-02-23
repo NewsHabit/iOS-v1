@@ -57,7 +57,7 @@ class MyNewsHabitViewModel {
     }
     
     private func getKeywordString() -> String {
-        let keywordIndexArray = UserDefaultsManager.keyword
+        let keywordIndexArray = UserDefaultsManager.keywordList
         if keywordIndexArray.count > 1 {
             return "\(KeywordType.allCases[keywordIndexArray[0]].toString()) 외 \(keywordIndexArray.count - 1)개"
         } else {

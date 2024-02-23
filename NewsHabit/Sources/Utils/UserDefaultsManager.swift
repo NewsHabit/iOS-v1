@@ -9,22 +9,25 @@ import Foundation
 
 struct UserDefaultsManager {
     
-    @UserDefaultsData(key: UserDefaultsDataType.username.rawValue, defaultValue: "뉴빗 사용자")
+    @UserDefaultsData(key: "username", defaultValue: "뉴빗 사용자")
     static var username: String
     
-    @UserDefaultsData(key: UserDefaultsDataType.keyword.rawValue, defaultValue: [KeywordType.itScience.rawValue])
-    static var keyword: [Int]
+    @UserDefaultsData(key: "keywordList", defaultValue: [KeywordType.itScience.rawValue])
+    static var keywordList: [Int]
     
-    @UserDefaultsData(key: UserDefaultsDataType.todayNewsCount.rawValue, defaultValue: 3)
+    @UserDefaultsData(key: "todayNewsCount", defaultValue: 3)
     static var todayNewsCount: Int
 
-    @UserDefaultsData(key: UserDefaultsDataType.notification.rawValue, defaultValue: false)
-    static var notification: Bool
+    @UserDefaultsData(key: "isNotificationOn", defaultValue: false)
+    static var isNotificationOn: Bool
+    
+    @UserDefaultsData(key: "notificationTime", defaultValue: "09:00 AM")
+    static var notificationTime: String
 
-    @UserDefaultsData(key: UserDefaultsDataType.theme.rawValue, defaultValue: ThemeType.system)
+    @UserDefaultsData(key: "theme", defaultValue: ThemeType.system)
     static var theme: ThemeType
     
-    @UserDefaultsData(key: UserDefaultsDataType.lastHotNewsUpdateTime.rawValue, defaultValue: "")
+    @UserDefaultsData(key: "lastHotNewsUpdateTime", defaultValue: "")
     static var lastHotNewsUpdateTime: String
 
 }
