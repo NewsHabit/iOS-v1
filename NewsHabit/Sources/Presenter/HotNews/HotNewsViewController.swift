@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol HotNewsViewDelegate {
+    func pushViewController(_ newsLink: String?)
+}
+
 class HotNewsViewController: BaseViewController<HotNewsView> {
     
     // MARK: - Properties
@@ -20,6 +24,7 @@ class HotNewsViewController: BaseViewController<HotNewsView> {
         setupNavigationBar()
         
         guard let contentView = contentView as? HotNewsView else { return }
+        contentView.delegate = self
         contentView.bindViewModel(viewModel)
     }
     
@@ -36,6 +41,17 @@ class HotNewsViewController: BaseViewController<HotNewsView> {
         setNavigationBarLinkButtonHidden(true)
         setNavigationBarLargeTitle("🔥 지금 뜨는 뉴스")
         setNavigationBarSubTitleTextColor(.newsHabitGray)
+    }
+    
+}
+
+extension HotNewsViewController: HotNewsViewDelegate {
+    
+    func pushViewController(_ newsLink: String?) {
+        guard let newsLink = newsLink else { return }
+        let newsViewController = NewsViewController()
+        newsViewController.newLink = newsLink
+        navigationController?.pushViewController(newsViewController, animated: true)
     }
     
 }

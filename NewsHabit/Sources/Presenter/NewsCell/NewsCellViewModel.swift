@@ -35,6 +35,10 @@ class NewsCellViewModel {
         newsItem.imgLink
     }
     
+    var newsLink: String? {
+        newsItem.naverUrl
+    }
+    
     @Published var isRead: Bool = false
     
 }
