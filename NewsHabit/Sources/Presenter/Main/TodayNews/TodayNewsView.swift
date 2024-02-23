@@ -5,9 +5,16 @@
 //  Created by jiyeon on 2/19/24.
 //
 
+import Combine
 import UIKit
 
 class TodayNewsView: UIView {
+    
+    // MARK: - Properties
+    
+    var delegate: TodayNewsViewDelegate?
+    private var viewModel: TodayNewsViewModel?
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     
@@ -46,6 +53,22 @@ class TodayNewsView: UIView {
         }
     }
     
+    // MARK: - Bind ViewModel
+    
+    func bindViewModel(_ viewModel: TodayNewsViewModel) {
+        self.viewModel = viewModel
+        viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
+            .receive(on: RunLoop.main)
+            .sink { [weak self] event in
+                switch event {
+                case .updateTodayNews:
+                    self?.tableView.reloadData()
+                case .updateDaysAllReadCount:
+                    self?.delegate?.updateDaysAllReadCount()
+                }
+            }.store(in: &cancellables)
+    }
+    
 }
 
 extension TodayNewsView: UITableViewDelegate {
@@ -55,8 +78,9 @@ extension TodayNewsView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? NewsCell else { return }
-        cell.viewModel?.isRead = true
+        guard let viewModel = viewModel else { return }
+        viewModel.input.send(.tapNewsCell(indexPath.row))
+        delegate?.pushViewController(viewModel.newsCellViewModels[indexPath.row].newsLink)
     }
     
 }
@@ -64,18 +88,13 @@ extension TodayNewsView: UITableViewDelegate {
 extension TodayNewsView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return UserDefaultsManager.todayNewsCount
+        return UserDefaultsManager.todayNews.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.reuseIdentifier) as? NewsCell else { return UITableViewCell() }
-        cell.bindViewModel(NewsCellViewModel(newsItem: NewsItem(
-            title: "제목이 들어올 자리입니다",
-            category: "사회",
-            naverUrl: nil,
-            imgLink: nil,
-            description: "요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 요약이 들어갈 자리입니다 "
-        ), isDetailCell: true))
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.reuseIdentifier) as? NewsCell,
+              let cellViewModel = viewModel?.newsCellViewModels[indexPath.row] else { return UITableViewCell() }
+        cell.bindViewModel(cellViewModel)
         return cell
     }
     

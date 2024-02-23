@@ -27,8 +27,17 @@ struct UserDefaultsManager {
     @UserDefaultsData(key: "theme", defaultValue: ThemeType.system)
     static var theme: ThemeType
     
-    @UserDefaultsData(key: "lastHotNewsUpdateTime", defaultValue: "")
-    static var lastHotNewsUpdateTime: String
+    @UserDefaultsData(key: "todayNews", defaultValue: [])
+    static var todayNews: [NewsItem]
+    
+    @UserDefaultsData(key: "daysAllRead", defaultValue: 0)
+    static var daysAllRead: Int
+    
+    @UserDefaultsData(key: "todayReadCount", defaultValue: 0)
+    static var todayReadCount: Int
+    
+    @UserDefaultsData(key: "lastDate", defaultValue: "")
+    static var lastDate: String
 
 }
 

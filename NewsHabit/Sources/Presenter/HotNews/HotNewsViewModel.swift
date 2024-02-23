@@ -43,8 +43,8 @@ class HotNewsViewModel {
     func fetchNewsData() {
         let jsonData = Data(dummyData.utf8) // 더미 데이터 문자열을 Data 객체로 변환
         do {
-            let decodedData = try JSONDecoder().decode(HotNewsResponse.self, from: jsonData)
-            newsCellViewModels = decodedData.hotNewsResponseDtoList.map {
+            let decodedData = try JSONDecoder().decode(NewsResponse.self, from: jsonData)
+            newsCellViewModels = decodedData.newsResponseDtoList.map {
                 NewsCellViewModel(newsItem: $0, isDetailCell: false)
             }
         } catch let error {
@@ -55,7 +55,7 @@ class HotNewsViewModel {
     
     let dummyData = """
 {
-    "hotNewsResponseDtoList": [
+    "newsResponseDtoList": [
       {
         "title": "이강인 하극상 쇼크, '열애설' 이나은→'팬' 파비앙..연예계 직격탄 [Oh!쎈 이슈]",
         "category": "HOT",
