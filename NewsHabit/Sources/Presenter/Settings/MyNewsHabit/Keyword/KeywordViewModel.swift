@@ -18,7 +18,7 @@ class KeywordViewModel {
     // MARK: - Initializer
     
     init() {
-        selectedKeywordIndex = Set(UserDefaultsManager.keyword)
+        selectedKeywordIndex = Set(UserDefaultsManager.keywordList)
     }
     
     // MARK: - Functions

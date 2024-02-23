@@ -96,7 +96,7 @@ class KeywordView: UIView {
         guard let viewModel = viewModel else { return }
         var keywordIndexArray = Array(viewModel.selectedKeywordIndex)
         keywordIndexArray.sort()
-        UserDefaultsManager.keyword = keywordIndexArray
+        UserDefaultsManager.keywordList = keywordIndexArray
         delegate?.popViewController()
     }
     
