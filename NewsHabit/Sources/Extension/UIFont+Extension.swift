@@ -16,6 +16,6 @@ extension UIFont {
     static let cellLabelFont = UIFont.systemFont(ofSize: 12.0, weight: .regular)
     static let labelFont = UIFont.systemFont(ofSize: 14.0, weight: .regular)
     static let largeLabelFont = UIFont.systemFont(ofSize: 16.0, weight: .regular)
-    static let smallFont = UIFont.systemFont(ofSize: 12.0, weight: .semibold)
+    static let smallFont = UIFont.systemFont(ofSize: 10.0, weight: .bold)
     
 }

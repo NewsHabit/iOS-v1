@@ -19,7 +19,7 @@ class TodayNewsView: UIView {
     // MARK: - UI Components
     
     let tableView = UITableView().then {
-        $0.register(NewsCell.self, forCellReuseIdentifier: NewsCell.reuseIdentifier)
+        $0.register(TodayNewsCell.self, forCellReuseIdentifier: TodayNewsCell.reuseIdentifier)
         $0.backgroundColor = .clear
     }
     
@@ -80,7 +80,7 @@ extension TodayNewsView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let viewModel = viewModel else { return }
         viewModel.input.send(.tapNewsCell(indexPath.row))
-        delegate?.pushViewController(viewModel.newsCellViewModels[indexPath.row].newsLink)
+        delegate?.pushViewController(viewModel.cellViewModels[indexPath.row].newsLink)
     }
     
 }
@@ -92,8 +92,8 @@ extension TodayNewsView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.reuseIdentifier) as? NewsCell,
-              let cellViewModel = viewModel?.newsCellViewModels[indexPath.row] else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TodayNewsCell.reuseIdentifier) as? TodayNewsCell,
+              let cellViewModel = viewModel?.cellViewModels[indexPath.row] else { return UITableViewCell() }
         cell.bindViewModel(cellViewModel)
         return cell
     }

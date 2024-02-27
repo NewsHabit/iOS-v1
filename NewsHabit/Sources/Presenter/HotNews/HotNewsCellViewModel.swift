@@ -1,5 +1,5 @@
 //
-//  NewsCellViewModel.swift
+//  HotNewsCellViewModel.swift
 //  NewsHabit
 //
 //  Created by jiyeon on 2/19/24.
@@ -8,15 +8,12 @@
 import Combine
 import Foundation
 
-class NewsCellViewModel {
+class HotNewsCellViewModel {
     
     let newsItem: NewsItem
     
-    let isDetailCell: Bool
-    
-    init(newsItem: NewsItem, isDetailCell: Bool) {
+    init(newsItem: NewsItem) {
         self.newsItem = newsItem
-        self.isDetailCell = isDetailCell
     }
     
     var title: String? {
@@ -27,10 +24,6 @@ class NewsCellViewModel {
         newsItem.description
     }
     
-    var category: String? {
-        newsItem.category
-    }
-    
     var imageLink: String? {
         newsItem.imgLink
     }
@@ -38,7 +31,5 @@ class NewsCellViewModel {
     var newsLink: String? {
         newsItem.naverUrl
     }
-    
-    @Published var isRead: Bool = false
     
 }

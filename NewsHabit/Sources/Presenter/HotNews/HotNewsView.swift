@@ -20,7 +20,7 @@ class HotNewsView: UIView {
     
     let tableView = UITableView().then {
         $0.backgroundColor = .clear
-        $0.register(NewsCell.self, forCellReuseIdentifier: NewsCell.reuseIdentifier)
+        $0.register(HotNewsCell.self, forCellReuseIdentifier: HotNewsCell.reuseIdentifier)
     }
     
     // MARK: - Initializer
@@ -76,7 +76,7 @@ extension HotNewsView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cellViewModel = viewModel?.newsCellViewModels[indexPath.row] else { return }
+        guard let cellViewModel = viewModel?.cellViewModels[indexPath.row] else { return }
         delegate?.pushViewController(cellViewModel.newsLink)
     }
     
@@ -85,12 +85,12 @@ extension HotNewsView: UITableViewDelegate {
 extension HotNewsView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.newsCellViewModels.count ?? 0
+        return viewModel?.cellViewModels.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: NewsCell.reuseIdentifier) as? NewsCell,
-              let cellViewModel = viewModel?.newsCellViewModels[indexPath.row] else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: HotNewsCell.reuseIdentifier) as? HotNewsCell,
+              let cellViewModel = viewModel?.cellViewModels[indexPath.row] else { return UITableViewCell() }
         cell.bindViewModel(cellViewModel)
         return cell
     }

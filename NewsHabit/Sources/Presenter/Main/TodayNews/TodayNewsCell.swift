@@ -1,8 +1,8 @@
 //
-//  NewsCell.swift
+//  TodayNewsCell.swift
 //  NewsHabit
 //
-//  Created by jiyeon on 2/19/24.
+//  Created by jiyeon on 2/27/24.
 //
 
 import Combine
@@ -11,12 +11,12 @@ import UIKit
 import SnapKit
 import Then
 
-class NewsCell: UITableViewCell {
+class TodayNewsCell: UITableViewCell {
     
     // MARK: - Properties
     
-    static let reuseIdentifier = "NewsCell"
-    var viewModel: NewsCellViewModel?
+    static let reuseIdentifier = "TodayNewsCell"
+    var viewModel: TodayNewsCellViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
@@ -78,7 +78,6 @@ class NewsCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        isReadView.isHidden = true
         titleLabel.text = nil
         descriptionLabel.text = nil
         categoryLabel.text = nil
@@ -137,28 +136,23 @@ class NewsCell: UITableViewCell {
     
     // MARK: - Bind ViewModel
     
-    func bindViewModel(_ viewModel: NewsCellViewModel) {
+    func bindViewModel(_ viewModel: TodayNewsCellViewModel) {
         self.viewModel = viewModel
         titleLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description
         loadImage(from: viewModel.imageLink)
-        if (viewModel.isDetailCell) {
-            isReadView.isHidden = viewModel.isRead
-            categoryLabel.text = viewModel.category
-            viewModel.$isRead
-                .receive(on: RunLoop.main)
-                .sink { [weak self] isRead in
-                    self?.isReadView.isHidden = isRead
-                }.store(in: &cancellables)
-        } else {
-            isReadView.isHidden = true
-            categoryLabel.isHidden = true
-        }
+        isReadView.isHidden = viewModel.isRead
+        categoryLabel.text = viewModel.category
+        viewModel.$isRead
+            .receive(on: RunLoop.main)
+            .sink { [weak self] isRead in
+                self?.isReadView.isHidden = isRead
+            }.store(in: &cancellables)
     }
     
     // MARK: - Load Image
     
-    func loadImage(from urlString: String?) {
+    private func loadImage(from urlString: String?) {
         guard let urlString = urlString,
               let url = URL(string: urlString) else { return }
         
@@ -172,5 +166,4 @@ class NewsCell: UITableViewCell {
         task.resume()
     }
 
-    
 }

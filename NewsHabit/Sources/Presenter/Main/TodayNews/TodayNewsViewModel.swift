@@ -22,7 +22,7 @@ class TodayNewsViewModel {
     
     // MARK: - Properties
     
-    var newsCellViewModels = [NewsCellViewModel]()
+    var cellViewModels = [TodayNewsCellViewModel]()
     let input = PassthroughSubject<Input, Never>()
     private let output = PassthroughSubject<Output, Never>()
     private var cancellables = Set<AnyCancellable>()
@@ -34,10 +34,12 @@ class TodayNewsViewModel {
             switch event {
             case .getTodayNews:
                 if UserDefaultsManager.lastDate != Date().toCompactDateString() {
-                    self?.initTodayNewsData()
                     self?.fetchNewsData()
+                    self?.initTodayNewsData()
                 } else {
-                    self?.getNewsData()
+                    self?.cellViewModels = UserDefaultsManager.todayNews.map {
+                        TodayNewsCellViewModel($0)
+                    }
                 }
                 self?.output.send(.updateTodayNews)
             case let .tapNewsCell(index):
@@ -50,42 +52,39 @@ class TodayNewsViewModel {
     // MARK: - Handle News Data
     
     private func initTodayNewsData() {
-        UserDefaultsManager.todayReadCount = 0
         UserDefaultsManager.lastDate = Date().toCompactDateString()
+        UserDefaultsManager.todayNews = cellViewModels.map { $0.newsItemState }
     }
     
     private func fetchNewsData() {
         let jsonData = Data(dummyData.utf8) // 더미 데이터 문자열을 Data 객체로 변환
         do {
             let decodedData = try JSONDecoder().decode(NewsResponse.self, from: jsonData)
-            newsCellViewModels = decodedData.newsResponseDtoList.map {
-                NewsCellViewModel(newsItem: $0, isDetailCell: true)
+            cellViewModels = decodedData.newsResponseDtoList.map {
+                TodayNewsCellViewModel(NewsItemState(newsItem: $0))
             }
-            UserDefaultsManager.todayNews = decodedData.newsResponseDtoList
         } catch let error {
             print(error)
         }
     }
     
-    private func getNewsData() {
-        let newsItems = UserDefaultsManager.todayNews
-        newsCellViewModels = newsItems.map {
-            NewsCellViewModel(newsItem: $0, isDetailCell: true)
-        }
-    }
-    
     private func selectNewsItem(_ index: Int) {
-        if newsCellViewModels[index].isRead == false {
-            newsCellViewModels[index].isRead = true
-            UserDefaultsManager.todayReadCount = UserDefaultsManager.todayReadCount + 1
-            if UserDefaultsManager.todayReadCount == UserDefaultsManager.todayNews.count {
+        if cellViewModels[index].isRead == false {
+            cellViewModels[index].isRead = true
+            
+            var todayReadCount = 0
+            for viewModel in cellViewModels {
+                if viewModel.isRead {
+                    todayReadCount += 1
+                }
+            }
+            if todayReadCount == UserDefaultsManager.todayNews.count {
                 UserDefaultsManager.daysAllRead = UserDefaultsManager.daysAllRead + 1
                 output.send(.updateDaysAllReadCount)
             }
             
             // 변경된 뉴스 목록을 UserDefaults에 저장
-            let updatedNewsItems = newsCellViewModels.map { $0.newsItem }
-            UserDefaultsManager.todayNews = updatedNewsItems
+            UserDefaultsManager.todayNews = cellViewModels.map { $0.newsItemState }
         }
     }
     

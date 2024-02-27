@@ -20,7 +20,7 @@ class HotNewsViewModel {
     
     // MARK: - Properties
     
-    var newsCellViewModels = [NewsCellViewModel]()
+    var cellViewModels = [HotNewsCellViewModel]()
     let input = PassthroughSubject<Input, Never>()
     private let output = PassthroughSubject<Output, Never>()
     private var cancellables = Set<AnyCancellable>()
@@ -44,8 +44,8 @@ class HotNewsViewModel {
         let jsonData = Data(dummyData.utf8) // 더미 데이터 문자열을 Data 객체로 변환
         do {
             let decodedData = try JSONDecoder().decode(NewsResponse.self, from: jsonData)
-            newsCellViewModels = decodedData.newsResponseDtoList.map {
-                NewsCellViewModel(newsItem: $0, isDetailCell: false)
+            cellViewModels = decodedData.newsResponseDtoList.map {
+                HotNewsCellViewModel(newsItem: $0)
             }
         } catch let error {
             print(error)

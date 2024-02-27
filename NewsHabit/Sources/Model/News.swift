@@ -1,5 +1,5 @@
 //
-//  NewsItem.swift
+//  News.swift
 //  NewsHabit
 //
 //  Created by jiyeon on 2/19/24.
@@ -13,6 +13,11 @@ struct NewsItem: Codable {
     let naverUrl: String
     let imgLink: String
     let description: String
+}
+
+struct NewsItemState: Codable {
+    let newsItem: NewsItem
+    var isRead: Bool = false
 }
 
 struct NewsResponse: Codable {
