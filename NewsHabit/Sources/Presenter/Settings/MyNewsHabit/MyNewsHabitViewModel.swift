@@ -47,8 +47,8 @@ class MyNewsHabitViewModel {
     
     private func updateMyNewsHabitItems() {
         myNewsHabitItems.append(MyNewsHabitItem(
-            title: "키워드",
-            description: getKeywordString()
+            title: "카테고리",
+            description: getCategoryString()
         ))
         myNewsHabitItems.append(MyNewsHabitItem(
             title: "오늘의 뉴스 개수",
@@ -56,12 +56,12 @@ class MyNewsHabitViewModel {
         ))
     }
     
-    private func getKeywordString() -> String {
-        let keywordIndexArray = UserDefaultsManager.keywordList
-        if keywordIndexArray.count > 1 {
-            return "\(KeywordType.allCases[keywordIndexArray[0]].toString()) 외 \(keywordIndexArray.count - 1)개"
+    private func getCategoryString() -> String {
+        let categoryIndexArray = UserDefaultsManager.categoryList
+        if categoryIndexArray.count > 1 {
+            return "\(Category.allCases[categoryIndexArray[0]].toString()) 외 \(categoryIndexArray.count - 1)개"
         } else {
-            return KeywordType.allCases[keywordIndexArray[0]].toString()
+            return Category.allCases[categoryIndexArray[0]].toString()
         }
     }
     

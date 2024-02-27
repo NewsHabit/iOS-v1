@@ -1,5 +1,5 @@
 //
-//  KeywordCell.swift
+//  CategoryCell.swift
 //  NewsHabit
 //
 //  Created by jiyeon on 2/14/24.
@@ -10,11 +10,11 @@ import UIKit
 import SnapKit
 import Then
 
-class KeywordCell: UICollectionViewCell {
+class CategoryCell: UICollectionViewCell {
     
     // MARK: - Properties
     
-    static let reuseIdentifier = "KeywordCell"
+    static let reuseIdentifier = "CategoryCell"
     
     // MARK: - UI Components
     

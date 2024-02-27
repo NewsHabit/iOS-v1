@@ -44,9 +44,9 @@ extension MyNewsHabitViewController: MyNewsHabitViewDelegate {
     func present(_ indexPath: IndexPath) {
         switch indexPath.row {
         case 0: 
-            let keywordViewController = KeywordViewController(bottomSheetHeight: 400.0)
-            keywordViewController.delegate = self
-            present(keywordViewController, animated: false)
+            let categoryViewController = CategoryViewController(bottomSheetHeight: 400.0)
+            categoryViewController.delegate = self
+            present(categoryViewController, animated: false)
         case 1:
             let todayNewsCountViewController = TodayNewsCountViewController(bottomSheetHeight: 400.0)
             todayNewsCountViewController.delegate = self

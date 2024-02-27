@@ -12,8 +12,8 @@ struct UserDefaultsManager {
     @UserDefaultsData(key: "username", defaultValue: "뉴빗 사용자")
     static var username: String
     
-    @UserDefaultsData(key: "keywordList", defaultValue: [KeywordType.itScience.rawValue])
-    static var keywordList: [Int]
+    @UserDefaultsData(key: "cagetoryList", defaultValue: [Category.itScience.rawValue])
+    static var categoryList: [Int]
     
     @UserDefaultsData(key: "todayNewsCount", defaultValue: 3)
     static var todayNewsCount: Int
