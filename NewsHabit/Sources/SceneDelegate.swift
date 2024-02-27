@@ -15,9 +15,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.overrideUserInterfaceStyle = UserDefaultsManager.theme.toUserInterfaceStyle()
-        window?.rootViewController = TabBarController()
-        window?.makeKeyAndVisible()
+        guard let window = window else { return }
+        window.overrideUserInterfaceStyle = window.toUserInterfaceStyle(themeType: UserDefaultsManager.theme)
+        window.rootViewController = TabBarController()
+        window.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
