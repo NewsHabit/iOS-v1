@@ -18,7 +18,7 @@
 # 🎨 :art: style: 코드 구조/형태 개선
 # 🔥 :fire: remove: 코드/파일 삭제
 # 💄 :lipstick: design: UI 추가, 수정, 삭제
-# ♻️  :recycle: rafactor: 코드 리팩토링
+# 🔨 :hammer: rafactor: 코드 리팩토링
 # 💡 :bulb: comment: 주석 추가, 수정, 삭제
 # 💚 :green_heart: chore: 기타 변경사항
 

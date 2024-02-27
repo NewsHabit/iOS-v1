@@ -64,10 +64,10 @@ class ThemeView: UIView {
         viewModel.$selectedTheme
             .receive(on: RunLoop.main)
             .sink{ [weak self] selectedTheme in
-                guard let window = self?.window else { return }
+                guard let self = self, let window = self.window else { return }
                 UserDefaultsManager.theme = selectedTheme
-                window.overrideUserInterfaceStyle = selectedTheme.toUserInterfaceStyle()
-                self?.tableView.reloadData()
+                window.overrideUserInterfaceStyle = self.toUserInterfaceStyle(themeType: selectedTheme)
+                self.tableView.reloadData()
             }.store(in: &cancellables)
     }
     

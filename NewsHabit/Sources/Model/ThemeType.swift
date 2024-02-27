@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 enum ThemeType: String, Codable, CaseIterable {
+    
     case light = "라이트"
     case dark = "다크"
     case system = "시스템 설정"
@@ -21,11 +22,4 @@ enum ThemeType: String, Codable, CaseIterable {
         }
     }
     
-    func toUserInterfaceStyle() -> UIUserInterfaceStyle {
-        switch self {
-        case .light: UIUserInterfaceStyle.light
-        case .dark: UIUserInterfaceStyle.dark
-        case .system: UIUserInterfaceStyle.unspecified
-        }
-    }
 }

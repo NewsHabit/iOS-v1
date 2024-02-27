@@ -59,6 +59,7 @@ class MainView: UIView {
         setupHierarchy()
         setupLayout()
         setupGestureRecognizer()
+        setupViewModel()
     }
     
     required init?(coder: NSCoder) {
@@ -135,6 +136,12 @@ class MainView: UIView {
         // 스와이프 제스처 인식기 설정
         addSwipeGestureRecognizer(to: self, action: #selector(handleTodayNewsTap), direction: .right)
         addSwipeGestureRecognizer(to: self, action: #selector(handleMonthlyRecordTap), direction: .left)
+    }
+    
+    private func setupViewModel() {
+        let todayNewsViewModel = TodayNewsViewModel()
+        todayNewsView.bindViewModel(todayNewsViewModel)
+        todayNewsViewModel.input.send(.getTodayNews)
     }
     
 }

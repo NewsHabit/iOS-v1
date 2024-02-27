@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol TodayNewsViewDelegate {
+    func pushViewController(_ newsLink: String?)
+    func updateDaysAllReadCount()
+}
+
 class MainViewController: BaseViewController<MainView>, BaseViewControllerProtocol {
     
     // MARK: - Properties
@@ -20,6 +25,7 @@ class MainViewController: BaseViewController<MainView>, BaseViewControllerProtoc
         setupNavigationBar()
         
         guard let contentView = contentView as? MainView else { return }
+        contentView.todayNewsView.delegate = self
         contentView.bindViewModel(viewModel)
     }
     
@@ -35,8 +41,23 @@ class MainViewController: BaseViewController<MainView>, BaseViewControllerProtoc
         setNavigationBarBackButtonHidden(true)
         setNavigationBarLinkButtonHidden(true)
         setNavigationBarLargeTitleTextColor(.white)
-        setNavigationBarSubTitle("👀 42일 째 모두 읽으셨어요!")
+        setNavigationBarSubTitle("👀 \(UserDefaultsManager.daysAllRead)일 째 모두 읽으셨어요!")
         setNavigationBarSubTitleTextColor(.white)
+    }
+    
+}
+
+extension MainViewController: TodayNewsViewDelegate {
+    
+    func pushViewController(_ newsLink: String?) {
+        guard let newsLink = newsLink else { return }
+        let newsViewController = WebViewController()
+        newsViewController.urlString = newsLink
+        navigationController?.pushViewController(newsViewController, animated: true)
+    }
+    
+    func updateDaysAllReadCount() {
+        setNavigationBarSubTitle("👀 \(UserDefaultsManager.daysAllRead)일 째 모두 읽으셨어요!")
     }
     
 }

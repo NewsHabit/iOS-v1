@@ -7,7 +7,9 @@
 
 import Foundation
 
-class FullDateFormatter: DateFormatter {
+/// 전체 날짜 및 시간 형식을 제공하는 DateFormatter.
+/// 사용처: `HotNewsViewController`의 서브 타이틀에 날짜와 시간 표시.
+class FullDateTimeFormatter: DateFormatter {
     
     override init() {
         super.init()
@@ -17,10 +19,11 @@ class FullDateFormatter: DateFormatter {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }
 
-class SimpleDateFormatter: DateFormatter {
+/// 간략화된 날짜 형식을 제공하는 DateFormatter.
+/// 사용처: 오늘의 뉴스 데이터를 요청할지 결정하기 위해 사용.
+class CompactDateFormatter: DateFormatter {
     
     override init() {
         super.init()
@@ -30,10 +33,11 @@ class SimpleDateFormatter: DateFormatter {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }
 
-class TimeFormantter: DateFormatter {
+/// 시간 형식을 제공하는 DateFormatter.
+/// 사용처: `NotificationViewController`에서 알림 시간 표시.
+class SimpleTimeFormatter: DateFormatter {
     
     override init() {
         super.init()
@@ -43,29 +47,32 @@ class TimeFormantter: DateFormatter {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 
 extension Date {
     
-    func toFullString() -> String {
-        return FullDateFormatter().string(from: self)
+    /// 전체 날짜와 시간을 문자열로 변환합니다.
+    func toFullDateTimeString() -> String {
+        return FullDateTimeFormatter().string(from: self)
     }
     
-    func toSimpleString() -> String {
-        return SimpleDateFormatter().string(from: self)
+    /// 날짜를 간략화된 형태의 문자열로 변환합니다.
+    func toCompactDateString() -> String {
+        return CompactDateFormatter().string(from: self)
     }
     
-    func toTimeString() -> String {
-        return TimeFormantter().string(from: self)
+    /// 시간을 간단한 형태의 문자열로 변환합니다.
+    func toSimpleTimeString() -> String {
+        return SimpleTimeFormatter().string(from: self)
     }
     
 }
 
 extension String {
     
-    func toDate() -> Date? {
-        return TimeFormantter().date(from: self)
+    /// 문자열을 Date 객체로 변환합니다. 주로 알림 시간 파싱에 사용됩니다.
+    func toTimeAsDate() -> Date? {
+        return SimpleTimeFormatter().date(from: self)
     }
     
 }

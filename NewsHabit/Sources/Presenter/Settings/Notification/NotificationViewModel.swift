@@ -39,7 +39,7 @@ class NotificationViewModel {
                 }
                 self?.output.send(.updateNotification)
             case let .setNotificationTime(date):
-                UserDefaultsManager.notificationTime = date.toTimeString()
+                UserDefaultsManager.notificationTime = date.toSimpleTimeString()
                 self?.addNotification(date)
                 self?.output.send(.updateNotificationTime)
             }
