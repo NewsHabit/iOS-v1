@@ -33,7 +33,7 @@ class TodayNewsViewModel {
         input.sink { [weak self] event in
             switch event {
             case .getTodayNews:
-                if UserDefaultsManager.lastDate != Date().toSimpleString() {
+                if UserDefaultsManager.lastDate != Date().toCompactDateString() {
                     self?.initTodayNewsData()
                     self?.fetchNewsData()
                 } else {
@@ -51,7 +51,7 @@ class TodayNewsViewModel {
     
     private func initTodayNewsData() {
         UserDefaultsManager.todayReadCount = 0
-        UserDefaultsManager.lastDate = Date().toSimpleString()
+        UserDefaultsManager.lastDate = Date().toCompactDateString()
     }
     
     private func fetchNewsData() {
