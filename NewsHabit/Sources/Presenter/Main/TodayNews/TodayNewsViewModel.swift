@@ -66,10 +66,10 @@ class TodayNewsViewModel {
             "cnt": categories.count
         ]
         AF.request("http://localhost:8080/news-habit/recommendation",
-                   method: .post,
+                   method: .get,
                    parameters: parameters,
-                   encoding: JSONEncoding.default) // JSON 형식으로 인코딩
-            .publishDecodable(type: TodayNewsResponse.self) // HotNewsResponse 타입으로 디코딩
+                   encoding: URLEncoding.queryString)
+            .publishDecodable(type: TodayNewsResponse.self)
             .value() // Publisher에서 값만 추출
             .sink(receiveCompletion: { completion in
                 switch completion {
