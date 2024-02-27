@@ -35,13 +35,12 @@ class TodayNewsViewModel {
             case .getTodayNews:
                 if UserDefaultsManager.lastDate != Date().toCompactDateString() {
                     self?.fetchNewsData()
-                    self?.initTodayNewsData()
                 } else {
                     self?.cellViewModels = UserDefaultsManager.todayNews.map {
                         TodayNewsCellViewModel($0)
                     }
+                    self?.output.send(.updateTodayNews)
                 }
-                self?.output.send(.updateTodayNews)
             case let .tapNewsCell(index):
                 self?.selectNewsItem(index)
             }
@@ -59,13 +58,17 @@ class TodayNewsViewModel {
     private func fetchNewsData() {
         let jsonData = Data(dummyData.utf8) // 더미 데이터 문자열을 Data 객체로 변환
         do {
-            let decodedData = try JSONDecoder().decode(NewsResponse.self, from: jsonData)
-            cellViewModels = decodedData.newsResponseDtoList.map {
-                TodayNewsCellViewModel(NewsItemState(newsItem: $0))
+            let decodedData = try JSONDecoder().decode(TodayNewsResponse.self, from: jsonData)
+            cellViewModels = decodedData.todayNewsResponseDtoList.map {
+                TodayNewsCellViewModel(TodayNewsItemState(newsItem: $0))
             }
         } catch let error {
             print(error)
         }
+        
+        
+        self.initTodayNewsData()
+        self.output.send(.updateTodayNews)
     }
     
     private func selectNewsItem(_ index: Int) {

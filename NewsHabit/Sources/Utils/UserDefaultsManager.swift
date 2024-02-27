@@ -28,7 +28,7 @@ struct UserDefaultsManager {
     static var theme: ThemeType
     
     @UserDefaultsData(key: "todayNews", defaultValue: [])
-    static var todayNews: [NewsItemState]
+    static var todayNews: [TodayNewsItemState]
     
     @UserDefaultsData(key: "daysAllRead", defaultValue: 0)
     static var daysAllRead: Int
