@@ -58,9 +58,12 @@ class HotNewsView: UIView {
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
             .receive(on: RunLoop.main)
             .sink { [weak self] event in
+                guard let self = self else { return }
                 switch event {
                 case .updateHotNews:
-                    self?.tableView.reloadData()
+                    self.tableView.reloadData()
+                case let .navigateTo(newsLink):
+                    self.delegate?.pushViewController(newsLink)
                 }
             }.store(in: &cancellables)
     }
@@ -74,8 +77,7 @@ extension HotNewsView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cellViewModel = viewModel?.cellViewModels[indexPath.row] else { return }
-        delegate?.pushViewController(cellViewModel.newsLink)
+        viewModel?.input.send(.tapNewsCell(indexPath.row))
     }
     
 }
