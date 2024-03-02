@@ -65,8 +65,8 @@ class MyNewsHabitView: UIView {
             .sink { [weak self] event in
                 guard let self = self else { return }
                 switch event {
-                case let .navigateTo(type):
-                    self.delegate?.pushViewController(type)
+                case let .navigateTo(myNewsHabitType):
+                    self.delegate?.pushViewController(myNewsHabitType: myNewsHabitType)
                 case .updateMyNewsHabitItems:
                     self.tableView.reloadData()
                 }

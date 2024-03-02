@@ -8,7 +8,7 @@
 import UIKit
 
 protocol MyNewsHabitViewDelegate {
-    func pushViewController(_ type: MyNewsHabitType)
+    func pushViewController(myNewsHabitType: MyNewsHabitType)
     func updateMyNewsHabitSettings()
 }
 
@@ -39,7 +39,7 @@ class MyNewsHabitViewController: BaseViewController<MyNewsHabitView>, BaseViewCo
 
 extension MyNewsHabitViewController: MyNewsHabitViewDelegate {
     
-    func pushViewController(_ type: MyNewsHabitType) {
+    func pushViewController(myNewsHabitType: MyNewsHabitType) {
         switch type {
         case .keyword:
             let keywordViewController = KeywordViewController(bottomSheetHeight: 400.0)

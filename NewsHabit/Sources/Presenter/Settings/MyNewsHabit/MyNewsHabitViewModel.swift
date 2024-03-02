@@ -16,7 +16,7 @@ class MyNewsHabitViewModel {
     }
     
     enum Output {
-        case navigateTo(_type: MyNewsHabitType)
+        case navigateTo(type: MyNewsHabitType)
         case updateMyNewsHabitItems
     }
     
@@ -34,7 +34,7 @@ class MyNewsHabitViewModel {
             guard let self = self else { return }
             switch event {
             case let.tapMyNewsHabitCell(index):
-                self.output.send(.navigateTo(_type: myNewsHabitItems[index].type))
+                self.output.send(.navigateTo(type: myNewsHabitItems[index].type))
             case .updateMyNewsHabitSettings:
                 self.myNewsHabitItems.removeAll()
                 self.updateMyNewsHabitItems()
