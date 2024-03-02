@@ -10,11 +10,6 @@ import UIKit
 import SnapKit
 import Then
 
-struct SettingsItem {
-    let image: UIImage?
-    let title: String
-}
-
 class SettingsCell: UITableViewCell {
     
     static let reuseIdentifier = "SettingsCell"
@@ -22,11 +17,11 @@ class SettingsCell: UITableViewCell {
     
     // MARK: - UI Components
     
-    let image = UIImageView().then {
+    let iconImageView = UIImageView().then {
         $0.tintColor = .label
     }
     
-    let label = UILabel().then {
+    let titleLabel = UILabel().then {
         $0.font = .largeLabelFont
         $0.textColor = .label
     }
@@ -52,20 +47,20 @@ class SettingsCell: UITableViewCell {
     }
     
     private func setupHierarchy() {
-        contentView.addSubview(image)
-        contentView.addSubview(label)
+        contentView.addSubview(iconImageView)
+        contentView.addSubview(titleLabel)
     }
     
     private func setupLayout() {
-        image.snp.makeConstraints {
+        iconImageView.snp.makeConstraints {
             $0.width.height.equalTo(19)
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(20)
         }
         
-        label.snp.makeConstraints {
+        titleLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.leading.equalTo(image.snp.trailing).offset(15)
+            $0.leading.equalTo(iconImageView.snp.trailing).offset(15)
         }
     }
     
@@ -73,8 +68,8 @@ class SettingsCell: UITableViewCell {
     
     func bindViewModel(_ viewModel: SettingsItem) {
         self.viewModel = viewModel
-        image.image = viewModel.image
-        label.text = viewModel.title
+        iconImageView.image = UIImage(systemName: viewModel.imageString)
+        titleLabel.text = viewModel.type.rawValue
     }
     
 }
