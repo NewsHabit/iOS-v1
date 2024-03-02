@@ -9,8 +9,6 @@ import Combine
 import Foundation
 
 class KeywordViewModel {
-
-    // MARK: - Properties
     
     @Published var selectedKeywordIndex:Set<Int>
 

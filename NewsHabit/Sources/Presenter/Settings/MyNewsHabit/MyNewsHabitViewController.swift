@@ -14,8 +14,6 @@ protocol MyNewsHabitViewDelegate {
 
 class MyNewsHabitViewController: BaseViewController<MyNewsHabitView>, BaseViewControllerProtocol {
     
-    // MARK: - Properties
-    
     private let viewModel = MyNewsHabitViewModel()
     
     // MARK: - Life Cycle

@@ -10,9 +10,7 @@ import UIKit
 
 class MainView: UIView {
     
-    // MARK: - Properties
-    
-    var viewModel: MainViewModel?
+    private var viewModel: MainViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
@@ -146,7 +144,7 @@ class MainView: UIView {
     
 }
 
-// MARK: - ViewModel Binding
+// MARK: - Bind ViewModel
 
 extension MainView {
     
@@ -178,7 +176,7 @@ extension MainView {
     
 }
 
-// MARK: - Gesture Recognizers Setup
+// MARK: - Setup Gesture Recognizers
 
 extension MainView {
     

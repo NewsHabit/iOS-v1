@@ -13,8 +13,6 @@ import Then
 
 class ThemeView: UIView {
     
-    // MARK: - Properties
-    
     private var viewModel: ThemeViewModel?
     private var cancellables = Set<AnyCancellable>()
     

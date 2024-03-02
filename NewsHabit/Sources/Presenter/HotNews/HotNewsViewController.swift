@@ -13,8 +13,6 @@ protocol HotNewsViewDelegate {
 
 class HotNewsViewController: BaseViewController<HotNewsView>, BaseViewControllerProtocol {
     
-    // MARK: - Properties
-    
     private let viewModel = HotNewsViewModel()
     
     // MARK: - Life Cycle

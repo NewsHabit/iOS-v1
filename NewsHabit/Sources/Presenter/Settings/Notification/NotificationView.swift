@@ -10,8 +10,6 @@ import UIKit
 
 class NotificationView: UIView {
     
-    // MARK: - Properties
-    
     private var viewModel: NotificationViewModel?
     private var cancellables = Set<AnyCancellable>()
     private let feedbackGenerator = UISelectionFeedbackGenerator()

@@ -9,8 +9,6 @@ import UIKit
 
 class NotificationTimeCell: UITableViewCell {
     
-    // MARK: - Properties
-    
     static let reuseIdentifier = "NotificationTimeCell"
     
     // MARK: - UI Components

@@ -9,8 +9,6 @@ import UIKit
 
 class SettingsViewModel {
     
-    // MARK: - Properties
-    
     var settingsItems: [SettingsItem] = [
         SettingsItem(
             image: UIImage(systemName: "person.fill"),

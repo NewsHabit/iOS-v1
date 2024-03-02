@@ -10,8 +10,6 @@ import UIKit
 
 class KeywordView: UIView {
     
-    // MARK: - Properties
-    
     var delegate: KeywordViewDelegate?
     private var viewModel: KeywordViewModel?
     private var cancellables = Set<AnyCancellable>()

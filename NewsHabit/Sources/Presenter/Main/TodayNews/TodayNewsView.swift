@@ -10,8 +10,6 @@ import UIKit
 
 class TodayNewsView: UIView {
     
-    // MARK: - Properties
-    
     var delegate: TodayNewsViewDelegate?
     private var viewModel: TodayNewsViewModel?
     private var cancellables = Set<AnyCancellable>()

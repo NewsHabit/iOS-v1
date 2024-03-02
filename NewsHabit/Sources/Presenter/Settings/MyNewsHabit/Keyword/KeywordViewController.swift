@@ -13,8 +13,6 @@ protocol KeywordViewDelegate {
 
 class KeywordViewController: BottomSheetController<KeywordView> {
     
-    // MARK: - Properties
-    
     var delegate: MyNewsHabitViewDelegate?
     
     // MARK: - Life Cycle

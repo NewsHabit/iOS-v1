@@ -9,8 +9,6 @@ import UIKit
 
 class NotificationViewController: BaseViewController<NotificationView>, BaseViewControllerProtocol {
     
-    // MARK: - Properties
-    
     private let viewModel = NotificationViewModel()
     
     // MARK: - Life Cycle

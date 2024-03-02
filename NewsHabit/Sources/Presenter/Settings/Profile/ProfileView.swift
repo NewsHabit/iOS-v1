@@ -12,8 +12,6 @@ import Then
 
 class ProfileView: UIView {
     
-    // MARK: - Properties
-    
     var delegate: ProfileViewDelegate?
     
     // MARK: - UI Components

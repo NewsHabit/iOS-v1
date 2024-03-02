@@ -10,13 +10,9 @@ import Foundation
 
 class MyNewsHabitViewModel {
     
-    // MARK: - Input
-    
     enum Input {
         case updateMyNewsHabitSettings
     }
-    
-    // MARK: - Output
     
     enum Output {
         case updateMyNewsHabitItems

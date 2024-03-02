@@ -12,8 +12,6 @@ import Then
 
 class SettingsView: UIView {
     
-    // MARK: - Properties
-    
     var delegate: SettingsViewDelegate?
     private var viewModel: SettingsViewModel?
     

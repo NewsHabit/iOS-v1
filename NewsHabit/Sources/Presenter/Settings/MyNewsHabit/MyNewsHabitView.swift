@@ -13,8 +13,6 @@ import Then
 
 class MyNewsHabitView: UIView {
     
-    // MARK: - Properties
-    
     var delegate: MyNewsHabitViewDelegate?
     var viewModel: MyNewsHabitViewModel?
     private var cancellables = Set<AnyCancellable>()

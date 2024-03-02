@@ -10,8 +10,6 @@ import UIKit
 
 class HotNewsView: UIView {
     
-    // MARK: - Properties
-    
     var delegate: HotNewsViewDelegate?
     private var viewModel: HotNewsViewModel?
     private var cancellables = Set<AnyCancellable>()

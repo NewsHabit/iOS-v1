@@ -12,8 +12,6 @@ import Then
 
 class NotificationSwitchCell: UITableViewCell {
     
-    // MARK: - Properties
-    
     static let reuseIdentifier = "NotificationSwitchCell"
     
     // MARK: - UI Components

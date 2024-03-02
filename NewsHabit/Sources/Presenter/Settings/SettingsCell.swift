@@ -17,8 +17,6 @@ struct SettingsItem {
 
 class SettingsCell: UITableViewCell {
     
-    // MARK: - Properties
-    
     static let reuseIdentifier = "SettingsCell"
     private var viewModel: SettingsItem?
     

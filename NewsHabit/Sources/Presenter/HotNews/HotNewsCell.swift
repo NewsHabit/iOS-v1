@@ -13,8 +13,6 @@ import Then
 
 class HotNewsCell: UITableViewCell {
     
-    // MARK: - Properties
-    
     static let reuseIdentifier = "HotNewsCell"
     var viewModel: HotNewsCellViewModel?
     private var cancellables = Set<AnyCancellable>()

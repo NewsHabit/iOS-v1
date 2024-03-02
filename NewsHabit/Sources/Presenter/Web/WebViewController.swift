@@ -9,8 +9,6 @@ import UIKit
 
 class WebViewController: BaseViewController<WebView> {
     
-    // MARK: - Properties
-    
     var urlString: String?
     
     var isLinkButtonEnabled: Bool = true {

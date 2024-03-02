@@ -14,8 +14,6 @@ protocol TodayNewsViewDelegate {
 
 class MainViewController: BaseViewController<MainView>, BaseViewControllerProtocol {
     
-    // MARK: - Properties
-    
     private let viewModel = MainViewModel()
     
     // MARK: - Life Cycle

@@ -13,8 +13,6 @@ protocol SettingsViewDelegate {
 
 class SettingsViewController: BaseViewController<SettingsView>, BaseViewControllerProtocol {
     
-    // MARK: - Properties
-    
     private let viewModel = SettingsViewModel()
     
     // MARK: - Life Cycle

@@ -17,8 +17,6 @@ struct MyNewsHabitItem {
 
 class MyNewsHabitCell: UITableViewCell {
     
-    // MARK: - Properties
-    
     static let reuseIdentifier = "MyNewsHabitCell"
     private var viewModel: MyNewsHabitItem?
     

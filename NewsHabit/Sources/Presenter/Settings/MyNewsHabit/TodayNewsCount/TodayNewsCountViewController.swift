@@ -12,8 +12,6 @@ protocol TodayNewsCountViewDelegate {
 }
 class TodayNewsCountViewController: BottomSheetController<TodayNewsCountView> {
     
-    // MARK: - Properties
-    
     var delegate: MyNewsHabitViewDelegate?
     private let viewModel = TodayNewsCountViewModel()
     
