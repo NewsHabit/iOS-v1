@@ -17,6 +17,7 @@ class NotificationSwitchCell: UITableViewCell {
     // MARK: - UI Components
     
     let titleLabel = UILabel().then {
+        $0.text = "알림"
         $0.font = .largeLabelFont
         $0.textColor = .label
     }
@@ -60,6 +61,12 @@ class NotificationSwitchCell: UITableViewCell {
             $0.trailing.equalToSuperview().inset(20)
             $0.centerY.equalToSuperview()
         }
+    }
+    
+    // MARK: - Configure
+    
+    func configure(with isOn: Bool) {
+        switchControl.isOn = isOn
     }
     
 }

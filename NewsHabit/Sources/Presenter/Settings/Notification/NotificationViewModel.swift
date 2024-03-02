@@ -8,6 +8,7 @@
 import Combine
 import Foundation
 import UserNotifications
+import UIKit
 
 class NotificationViewModel {
     
@@ -17,8 +18,8 @@ class NotificationViewModel {
     }
     
     enum Output {
-        case updateNotificationTime
         case updateNotification
+        case showAlert
     }
     
     // MARK: - Properties
@@ -31,52 +32,34 @@ class NotificationViewModel {
     
     func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
         input.sink { [weak self] event in
+            guard let self = self else { return }
             switch event {
             case let .setNotification(isOn):
                 UserDefaultsManager.isNotificationOn = isOn
-                if !isOn {
-                    self?.removeNotification()
+                NotificationCenterManager.shared.removeAllPendingNotificationRequests()
+                if isOn {
+                    NotificationCenterManager.shared.requestAuthorization { granted, error in
+                        if granted {
+                            if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
+                                NotificationCenterManager.shared.addNotification(for: notificationTime)
+                            }
+                        } else {
+                            UserDefaultsManager.isNotificationOn = false
+                            self.output.send(.showAlert)
+                        }
+                        // 권한 요청 결과와 상관없이 UI 업데이트
+                        self.output.send(.updateNotification)
+                    }
+                } else {
+                    self.output.send(.updateNotification)
                 }
-                self?.output.send(.updateNotification)
             case let .setNotificationTime(date):
                 UserDefaultsManager.notificationTime = date.toSimpleTimeString()
-                self?.addNotification(date)
-                self?.output.send(.updateNotificationTime)
+                NotificationCenterManager.shared.addNotification(for: date)
+                output.send(.updateNotification)
             }
         }.store(in: &cancellables)
         return output.eraseToAnyPublisher()
-    }
-    
-    private func addNotification(_ date: Date) {
-        let notificationCenter = UNUserNotificationCenter.current()
-        
-        notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if granted {
-                notificationCenter.removeAllPendingNotificationRequests()
-                
-                let content = UNMutableNotificationContent()
-                content.title = "뉴빗"
-                content.body = "뉴스도 습관처럼 📰\n오늘의 뉴스가 도착했어요"
-                content.sound = .default
-                
-                let triggerDate = Calendar.current.dateComponents([.hour, .minute], from: date)
-                let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
-                
-                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-                notificationCenter.add(request) { error in
-                    if let error = error {
-                        print("알림 추가 실패: \(error.localizedDescription)")
-                    }
-                }
-            } else if let error = error {
-                print("권한 요청 실패: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    private func removeNotification() {
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.removeAllPendingNotificationRequests()
     }
     
 }

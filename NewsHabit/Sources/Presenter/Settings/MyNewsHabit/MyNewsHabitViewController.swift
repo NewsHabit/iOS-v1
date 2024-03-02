@@ -40,7 +40,7 @@ class MyNewsHabitViewController: BaseViewController<MyNewsHabitView>, BaseViewCo
 extension MyNewsHabitViewController: MyNewsHabitViewDelegate {
     
     func pushViewController(myNewsHabitType: MyNewsHabitType) {
-        switch type {
+        switch myNewsHabitType {
         case .keyword:
             let keywordViewController = KeywordViewController(bottomSheetHeight: 400.0)
             keywordViewController.delegate = self
