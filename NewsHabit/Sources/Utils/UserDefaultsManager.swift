@@ -15,8 +15,8 @@ struct UserDefaultsManager {
     @UserDefaultsData(key: "keywordList", defaultValue: [KeywordType.itScience.rawValue])
     static var keywordList: [Int]
     
-    @UserDefaultsData(key: "todayNewsCount", defaultValue: 3)
-    static var todayNewsCount: Int
+    @UserDefaultsData(key: "todayNewsCount", defaultValue: TodayNewsCountType.three)
+    static var todayNewsCount: TodayNewsCountType
 
     @UserDefaultsData(key: "isNotificationOn", defaultValue: false)
     static var isNotificationOn: Bool

@@ -10,14 +10,7 @@ import Foundation
 
 class KeywordViewModel {
     
-    @Published var selectedKeywordIndex:Set<Int>
-
-    
-    // MARK: - Initializer
-    
-    init() {
-        selectedKeywordIndex = Set(UserDefaultsManager.keywordList)
-    }
+    @Published var selectedKeywordIndex = Set(UserDefaultsManager.keywordList)
     
     // MARK: - Functions
     

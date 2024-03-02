@@ -48,7 +48,7 @@ class MyNewsHabitViewModel {
         ))
         myNewsHabitItems.append(MyNewsHabitItem(
             title: "오늘의 뉴스 개수",
-            description: String(UserDefaultsManager.todayNewsCount)
+            description: String(UserDefaultsManager.todayNewsCount.rawValue)
         ))
     }
     

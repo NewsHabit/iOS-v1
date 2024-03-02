@@ -14,13 +14,14 @@ protocol KeywordViewDelegate {
 class KeywordViewController: BottomSheetController<KeywordView> {
     
     var delegate: MyNewsHabitViewDelegate?
+    private let viewModel = KeywordViewModel()
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         sheetView.delegate = self
-        sheetView.bindViewModel(KeywordViewModel())
+        sheetView.bindViewModel(viewModel)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
