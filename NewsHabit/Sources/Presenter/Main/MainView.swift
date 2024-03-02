@@ -57,7 +57,6 @@ class MainView: UIView {
         setupHierarchy()
         setupLayout()
         setupGestureRecognizer()
-        setupViewModel()
     }
     
     required init?(coder: NSCoder) {
@@ -136,12 +135,6 @@ class MainView: UIView {
         addSwipeGestureRecognizer(to: self, action: #selector(handleMonthlyRecordTap), direction: .left)
     }
     
-    private func setupViewModel() {
-        let todayNewsViewModel = TodayNewsViewModel()
-        todayNewsView.bindViewModel(todayNewsViewModel)
-        todayNewsViewModel.input.send(.getTodayNews)
-    }
-    
 }
 
 // MARK: - Bind ViewModel
@@ -150,17 +143,28 @@ extension MainView {
     
     func bindViewModel(_ viewModel: MainViewModel) {
         self.viewModel = viewModel
-        viewModel.$selectedMenu
+        viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
             .receive(on: RunLoop.main)
-            .sink { [weak self] selectedMenu in
-                self?.updateMenuPosition(for: selectedMenu)
+            .sink { [weak self] event in
+                switch event {
+                case .initViewModel:
+                    self?.setupViewModel()
+                case let .updateMainOption(option):
+                    self?.updateMainOption(for: option)
+                }
             }
             .store(in: &cancellables)
     }
     
-    private func updateMenuPosition(for menu: MainOption) {
-        let indicatorPosition = menu == .todayNews ? todayNewsLabel : monthlyRecordLabel
-        let viewOffset = menu == .todayNews ? CGPoint(x: 0, y: 0) : CGPoint(x: scrollView.frame.width, y: 0)
+    private func setupViewModel() {
+        let todayNewsViewModel = TodayNewsViewModel()
+        todayNewsView.bindViewModel(todayNewsViewModel)
+        todayNewsViewModel.input.send(.getTodayNews)
+    }
+    
+    private func updateMainOption(for option: MainOption) {
+        let indicatorPosition = option == .todayNews ? todayNewsLabel : monthlyRecordLabel
+        let viewOffset = option == .todayNews ? CGPoint(x: 0, y: 0) : CGPoint(x: scrollView.frame.width, y: 0)
         
         UIView.animate(withDuration: 0.2) {
             self.indicator.snp.remakeConstraints {
@@ -198,11 +202,11 @@ extension MainView {
 extension MainView {
     
     @objc private func handleTodayNewsTap() {
-        viewModel?.selectedMenu = .todayNews
+        viewModel?.input.send(.setMainOption(.todayNews))
     }
     
     @objc private func handleMonthlyRecordTap() {
-        viewModel?.selectedMenu = .monthlyRecord
+        viewModel?.input.send(.setMainOption(.monthlyRecord))
     }
     
 }

@@ -25,11 +25,13 @@ class MainViewController: BaseViewController<MainView>, BaseViewControllerProtoc
         guard let contentView = contentView as? MainView else { return }
         contentView.todayNewsView.delegate = self
         contentView.bindViewModel(viewModel)
+        viewModel.input.send(.viewDidLoad)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavigationBarLargeTitle("\(UserDefaultsManager.username)님의 뉴빗")
+        setNavigationBarSubTitle("👀 \(UserDefaultsManager.daysAllRead)일 째 모두 읽으셨어요!")
     }
     
     // MARK: - BaseViewControllerProtocol
@@ -39,7 +41,6 @@ class MainViewController: BaseViewController<MainView>, BaseViewControllerProtoc
         setNavigationBarBackButtonHidden(true)
         setNavigationBarLinkButtonHidden(true)
         setNavigationBarLargeTitleTextColor(.white)
-        setNavigationBarSubTitle("👀 \(UserDefaultsManager.daysAllRead)일 째 모두 읽으셨어요!")
         setNavigationBarSubTitleTextColor(.white)
     }
     

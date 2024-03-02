@@ -17,7 +17,7 @@ class TodayNewsViewModel {
     
     enum Output {
         case updateTodayNews
-        case updateDaysAllReadCount
+        case navigateTo(newsLink: String)
     }
     
     // MARK: - Properties
@@ -31,30 +31,27 @@ class TodayNewsViewModel {
     
     func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
         input.sink { [weak self] event in
+            guard let self = self else { return }
             switch event {
             case .getTodayNews:
                 if UserDefaultsManager.lastDate != Date().toCompactDateString() {
-                    self?.fetchNewsData()
-                    self?.initTodayNewsData()
+                    self.fetchNewsData()
+                    self.initTodayNewsData()
                 } else {
-                    self?.cellViewModels = UserDefaultsManager.todayNews.map {
+                    self.cellViewModels = UserDefaultsManager.todayNews.map {
                         TodayNewsCellViewModel($0)
                     }
                 }
-                self?.output.send(.updateTodayNews)
+                self.output.send(.updateTodayNews)
             case let .tapNewsCell(index):
-                self?.selectNewsItem(index)
+                self.setReadNewsItem(index)
+                self.output.send(.navigateTo(newsLink: self.cellViewModels[index].newsLink))
             }
         }.store(in: &cancellables)
         return output.eraseToAnyPublisher()
     }
     
     // MARK: - Handle News Data
-    
-    private func initTodayNewsData() {
-        UserDefaultsManager.lastDate = Date().toCompactDateString()
-        UserDefaultsManager.todayNews = cellViewModels.map { $0.newsItemState }
-    }
     
     private func fetchNewsData() {
         let jsonData = Data(dummyData.utf8) // 더미 데이터 문자열을 Data 객체로 변환
@@ -68,23 +65,20 @@ class TodayNewsViewModel {
         }
     }
     
-    private func selectNewsItem(_ index: Int) {
-        if cellViewModels[index].isRead == false {
-            cellViewModels[index].isRead = true
-            
-            var todayReadCount = 0
-            for viewModel in cellViewModels {
-                if viewModel.isRead {
-                    todayReadCount += 1
-                }
-            }
-            if todayReadCount == UserDefaultsManager.todayNews.count {
-                UserDefaultsManager.daysAllRead = UserDefaultsManager.daysAllRead + 1
-                output.send(.updateDaysAllReadCount)
-            }
-            
-            // 변경된 뉴스 목록을 UserDefaults에 저장
-            UserDefaultsManager.todayNews = cellViewModels.map { $0.newsItemState }
+    private func initTodayNewsData() {
+        UserDefaultsManager.lastDate = Date().toCompactDateString()
+        UserDefaultsManager.todayNews = cellViewModels.map { $0.newsItemState }
+    }
+    
+    private func setReadNewsItem(_ index: Int) {
+        guard !cellViewModels[index].isRead else { return }
+        
+        cellViewModels[index].isRead = true
+        UserDefaultsManager.todayNews = cellViewModels.map { $0.newsItemState }
+        
+        let todayReadCount = cellViewModels.filter { $0.isRead }.count
+        if todayReadCount == UserDefaultsManager.todayNews.count {
+            UserDefaultsManager.daysAllRead += 1
         }
     }
     
