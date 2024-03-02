@@ -13,6 +13,8 @@ import Then
 
 class WebView: UIView {
     
+    private var progressObserver: NSKeyValueObservation?
+    
     // MARK: - UI Components
     
     let webView = WKWebView()
@@ -37,15 +39,18 @@ class WebView: UIView {
     }
     
     deinit {
+        progressObserver?.invalidate()
         webView.stopLoading()
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
     }
     
     // MARK: - Setup Methods
     
     private func setupProperty() {
         webView.navigationDelegate = self
-        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
+
+        progressObserver = webView.observe(\.estimatedProgress, options: .new) { [weak self] webView, _ in
+            self?.progressView.setProgress(Float(webView.estimatedProgress), animated: true)
+        }
     }
     
     private func setupHierarchy() {
@@ -66,23 +71,9 @@ class WebView: UIView {
     // MARK: - Load Link
     
     func loadLink(_ urlString: String?) {
-        guard let urlString = urlString,
-              let url = URL(string: urlString) else { return }
+        guard let urlString = urlString, let url = URL(string: urlString) else { return }
         webView.load(URLRequest(url: url))
     }
-    
-    // MARK: - KVO
-    
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == "estimatedProgress" {
-            // 애니메이션을 사용하여 프로그레스 바 업데이트
-            UIView.animate(withDuration: 0.3, animations: { [weak self] in
-                guard let self = self else { return }
-                self.progressView.setProgress(Float(self.webView.estimatedProgress), animated: true)
-            })
-        }
-    }
-    
     
 }
 
@@ -92,5 +83,5 @@ extension WebView: WKNavigationDelegate {
         // 로딩 완료 시 프로그레스 바 숨김
         progressView.isHidden = true
     }
-    
+
 }
