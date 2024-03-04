@@ -9,13 +9,13 @@ import Combine
 import UIKit
 
 class NotificationView: UIView {
-    
-    // MARK: - Properties
-    
+
+    var delegate: NotificationViewDelegate?
     private var viewModel: NotificationViewModel?
     private var cancellables = Set<AnyCancellable>()
     private let feedbackGenerator = UISelectionFeedbackGenerator()
-
+    private var dataSource: UITableViewDiffableDataSource<NotificationSection, NotificationCell>!
+    
     // MARK: - UI Components
     
     let tableView = UITableView().then {
@@ -52,6 +52,7 @@ class NotificationView: UIView {
         setupProperty()
         setupHierarchy()
         setupLayout()
+        setupDiffableDataSource()
     }
     
     required init?(coder: NSCoder) {
@@ -62,8 +63,9 @@ class NotificationView: UIView {
     
     private func setupProperty() {
         tableView.delegate = self
-        tableView.dataSource = self
+        
         feedbackGenerator.prepare()
+        
         datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
         saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
     }
@@ -93,6 +95,37 @@ class NotificationView: UIView {
         }
     }
     
+    private func setupDiffableDataSource() {
+        dataSource = UITableViewDiffableDataSource<NotificationSection, NotificationCell>(tableView: tableView) { [weak self] (tableView, indexPath, item) -> UITableViewCell? in
+            switch item {
+            case let .switchCell(isOn):
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationSwitchCell.reuseIdentifier) as? NotificationSwitchCell else { return UITableViewCell() }
+                cell.configure(with: isOn)
+                cell.switchControl.removeTarget(nil, action: nil, for: .touchUpInside)
+                cell.switchControl.addTarget(self, action: #selector(self?.handleSwitchControlTap), for: .touchUpInside)
+                return cell
+            case let .timeCell(time):
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationTimeCell.reuseIdentifier) as? NotificationTimeCell else { return UITableViewCell() }
+                cell.configure(with: time)
+                return cell
+            }
+        }
+        updateDataSource()
+    }
+    
+    // MARK: - Update Data Source
+    
+    private func updateDataSource() {
+        var snapshot = NSDiffableDataSourceSnapshot<NotificationSection, NotificationCell>()
+        snapshot.appendSections([.main])
+        if UserDefaultsManager.isNotificationOn {
+            snapshot.appendItems([.switchCell(UserDefaultsManager.isNotificationOn), .timeCell(UserDefaultsManager.notificationTime)], toSection: .main)
+        } else {
+            snapshot.appendItems([.switchCell(UserDefaultsManager.isNotificationOn)], toSection: .main)
+        }
+        dataSource.apply(snapshot, animatingDifferences: false)
+    }
+    
     // MARK: - Bind ViewModel
     
     func bindViewModel(_ viewModel: NotificationViewModel) {
@@ -100,13 +133,17 @@ class NotificationView: UIView {
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
             .receive(on: RunLoop.main)
             .sink { [weak self] event in
+                guard let self = self else { return }
                 switch event {
+                case .permissionDenied:
+                    guard let cell = self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? NotificationSwitchCell else { return }
+                    cell.switchControl.isOn = false
+                    delegate?.showAlert()
                 case .updateNotification:
-                    if self?.stackView.isHidden == false {
-                        self?.stackView.isHidden = true
+                    self.updateDataSource()
+                    if !self.stackView.isHidden {
+                        self.stackView.isHidden = true
                     }
-                case .updateNotificationTime:
-                    self?.tableView.reloadData()
                 }
             }.store(in: &cancellables)
     }
@@ -123,11 +160,15 @@ class NotificationView: UIView {
         datePicker.date = datePicker.date
         viewModel?.input.send(.setNotificationTime(datePicker.date))
     }
-
+    
+    @objc private func handleSwitchControlTap(_ switchControl: UISwitch) {
+        viewModel?.input.send(.setNotification(switchControl.isOn))
+    }
+    
 }
 
 extension NotificationView: UITableViewDelegate {
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
     }
@@ -138,46 +179,4 @@ extension NotificationView: UITableViewDelegate {
         }
     }
     
-}
-
-extension NotificationView: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return UserDefaultsManager.isNotificationOn ? 2 : 1
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let viewModel = viewModel else { return UITableViewCell() }
-        
-        switch indexPath.row {
-        case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationSwitchCell.reuseIdentifier)
-                    as? NotificationSwitchCell else { return UITableViewCell() }
-            cell.titleLabel.text = "알림"
-            cell.switchControl.isOn = UserDefaultsManager.isNotificationOn
-            cell.switchControl.addTarget(self, action: #selector(handleSwitchControlTap), for: .touchUpInside)
-            return cell
-        case 1 where UserDefaultsManager.isNotificationOn:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationTimeCell.reuseIdentifier)
-                    as? NotificationTimeCell else { return UITableViewCell() }
-            cell.titleLabel.text = "시간"
-            cell.timeLabel.text = UserDefaultsManager.notificationTime
-            return cell
-        default:
-            return UITableViewCell()
-        }
-    }
-    
-    @objc private func handleSwitchControlTap(_ switchControl: UISwitch) {
-        viewModel?.input.send(.setNotification(switchControl.isOn))
-
-        tableView.beginUpdates()
-        if switchControl.isOn {
-            tableView.insertRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
-        } else {
-            tableView.deleteRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
-        }
-        tableView.endUpdates()
-    }
-
 }

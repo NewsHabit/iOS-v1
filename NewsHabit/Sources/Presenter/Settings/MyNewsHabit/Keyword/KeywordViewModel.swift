@@ -9,17 +9,8 @@ import Combine
 import Foundation
 
 class KeywordViewModel {
-
-    // MARK: - Properties
     
-    @Published var selectedKeywordIndex:Set<Int>
-
-    
-    // MARK: - Initializer
-    
-    init() {
-        selectedKeywordIndex = Set(UserDefaultsManager.keywordList)
-    }
+    @Published var selectedKeywordIndex = Set(UserDefaultsManager.keywordList)
     
     // MARK: - Functions
     

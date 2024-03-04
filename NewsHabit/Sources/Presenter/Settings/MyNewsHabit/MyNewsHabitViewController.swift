@@ -8,13 +8,11 @@
 import UIKit
 
 protocol MyNewsHabitViewDelegate {
-    func present(_ indexPath: IndexPath)
+    func pushViewController(myNewsHabitType: MyNewsHabitType)
     func updateMyNewsHabitSettings()
 }
 
 class MyNewsHabitViewController: BaseViewController<MyNewsHabitView>, BaseViewControllerProtocol {
-    
-    // MARK: - Properties
     
     private let viewModel = MyNewsHabitViewModel()
     
@@ -41,17 +39,16 @@ class MyNewsHabitViewController: BaseViewController<MyNewsHabitView>, BaseViewCo
 
 extension MyNewsHabitViewController: MyNewsHabitViewDelegate {
     
-    func present(_ indexPath: IndexPath) {
-        switch indexPath.row {
-        case 0: 
+    func pushViewController(myNewsHabitType: MyNewsHabitType) {
+        switch myNewsHabitType {
+        case .keyword:
             let keywordViewController = KeywordViewController(bottomSheetHeight: 400.0)
             keywordViewController.delegate = self
             present(keywordViewController, animated: false)
-        case 1:
+        case .todayNewsCount:
             let todayNewsCountViewController = TodayNewsCountViewController(bottomSheetHeight: 400.0)
             todayNewsCountViewController.delegate = self
             present(todayNewsCountViewController, animated: false)
-        default: break
         }
     }
     

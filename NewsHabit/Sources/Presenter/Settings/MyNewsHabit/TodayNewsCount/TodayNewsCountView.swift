@@ -10,8 +10,6 @@ import UIKit
 
 class TodayNewsCountView: UIView {
     
-    // MARK: - Properties
-    
     var delegate: TodayNewsCountViewDelegate?
     private var viewModel: TodayNewsCountViewModel?
     private var cancellables = Set<AnyCancellable>()
@@ -87,7 +85,7 @@ class TodayNewsCountView: UIView {
     
     @objc private func handleSaveButtonTap() {
         guard let viewModel = viewModel else { return }
-        UserDefaultsManager.todayNewsCount = viewModel.selectedIndex + 3
+        UserDefaultsManager.todayNewsCount = TodayNewsCountType.count(from: viewModel.selectedIndex)
         delegate?.popViewController()
     }
     
@@ -121,14 +119,15 @@ extension TodayNewsCountView: UITableViewDelegate {
 extension TodayNewsCountView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return TodayNewsCountType.allCases.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let viewModel = viewModel,
               let cell = tableView.dequeueReusableCell(withIdentifier: TodayNewsCountCell.reuseIdentifier) as? TodayNewsCountCell
         else { return UITableViewCell() }
-        cell.titleLabel.text = "\(3 + indexPath.row)개"
+        let todayNewsCount = TodayNewsCountType.allCases[indexPath.row]
+        cell.titleLabel.text = "\(todayNewsCount.rawValue)개"
         cell.setSelected(viewModel.selectedIndex == indexPath.row)
         return cell
     }

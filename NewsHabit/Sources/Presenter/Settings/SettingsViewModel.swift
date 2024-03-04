@@ -5,35 +5,65 @@
 //  Created by jiyeon on 2/13/24.
 //
 
+import Combine
 import UIKit
 
 class SettingsViewModel {
     
+    enum Input {
+        case viewDidLoad
+        case tapSettingsCell(_ index: Int)
+    }
+    
+    enum Output {
+        case initSettingItems
+        case navigateTo(type: SettingsType)
+    }
+    
     // MARK: - Properties
     
-    var settingsItems: [SettingsItem] = [
+    let developerInfoLink = "https://pewter-stew-6eb.notion.site/NewsHabit-4e3d8f5374b94fb393be12c2b04fd434?pvs=4"
+    
+    var settingsItems = [
         SettingsItem(
-            image: UIImage(systemName: "person.fill"),
-            title: "프로필"
+            type: .profile,
+            imageString: "person.fill"
         ),
         SettingsItem(
-            image: UIImage(systemName: "newspaper"),
-            title: "나의 뉴빗"
+            type: .myNewsHabit,
+            imageString: "newspaper"
         ),
         SettingsItem(
-            image: UIImage(systemName: "bell"),
-            title: "알림"
+            type: .notification,
+            imageString: "bell"
         ),
         SettingsItem(
-            image: UIImage(systemName: "sun.max"),
-            title: "테마"
+            type: .theme,
+            imageString: "sun.max"
         ),
         SettingsItem(
-            image: UIImage(systemName: "info.circle"),
-            title: "개발자 정보"
+            type: .developer,
+            imageString: "info.circle"
         )
     ]
     
-    let developerInfoLink = "https://pewter-stew-6eb.notion.site/NewsHabit-4e3d8f5374b94fb393be12c2b04fd434?pvs=4"
-
+    let input = PassthroughSubject<Input, Never>()
+    private let output = PassthroughSubject<Output, Never>()
+    private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: - Input -> Output
+    
+    func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
+        input.sink { [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .viewDidLoad:
+                self.output.send(.initSettingItems)
+            case let .tapSettingsCell(index):
+                self.output.send(.navigateTo(type: settingsItems[index].type))
+            }
+        }.store(in: &cancellables)
+        return output.eraseToAnyPublisher()
+    }
+    
 }

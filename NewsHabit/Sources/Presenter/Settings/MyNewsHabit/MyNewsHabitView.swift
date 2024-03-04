@@ -13,10 +13,8 @@ import Then
 
 class MyNewsHabitView: UIView {
     
-    // MARK: - Properties
-    
     var delegate: MyNewsHabitViewDelegate?
-    var viewModel: MyNewsHabitViewModel?
+    private var viewModel: MyNewsHabitViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
@@ -65,9 +63,12 @@ class MyNewsHabitView: UIView {
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
             .receive(on: RunLoop.main)
             .sink { [weak self] event in
+                guard let self = self else { return }
                 switch event {
+                case let .navigateTo(myNewsHabitType):
+                    self.delegate?.pushViewController(myNewsHabitType: myNewsHabitType)
                 case .updateMyNewsHabitItems:
-                    self?.tableView.reloadData()
+                    self.tableView.reloadData()
                 }
             }.store(in: &cancellables)
     }
@@ -81,7 +82,7 @@ extension MyNewsHabitView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.present(indexPath)
+        viewModel?.input.send(.tapMyNewsHabitCell(indexPath.row))
     }
     
 }
@@ -89,14 +90,13 @@ extension MyNewsHabitView: UITableViewDelegate {
 extension MyNewsHabitView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let viewModel = viewModel else { return 0 }
-        return viewModel.myNewsHabitItems.count
+        return viewModel?.myNewsHabitItems.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let viewModel = viewModel,
+        guard let cellViewModel = viewModel?.myNewsHabitItems[indexPath.row],
               let cell = tableView.dequeueReusableCell(withIdentifier: MyNewsHabitCell.reuseIdentifier) as? MyNewsHabitCell else { return UITableViewCell() }
-        cell.bindViewModel(viewModel.myNewsHabitItems[indexPath.row])
+        cell.bindViewModel(cellViewModel)
         return cell
     }
     

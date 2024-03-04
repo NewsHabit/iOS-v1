@@ -27,7 +27,8 @@ class BottomSheetController<View: UIView>: UIViewController {
         $0.backgroundColor = .background
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 30
-        $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner] // 왼쪽 위, 오른쪽 위 둥글게
+        // 왼쪽 위, 오른쪽 위 둥글게
+        $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }
     
     let indicator = UIView().then {
@@ -109,10 +110,8 @@ class BottomSheetController<View: UIView>: UIViewController {
     @objc private func handleDownGesture(_ swipeRecognizer: UISwipeGestureRecognizer) {
         if swipeRecognizer.state == .ended {
             switch swipeRecognizer.direction {
-            case .down:
-                hideBottomSheets()
-            default:
-                break
+            case .down: hideBottomSheets()
+            default: break
             }
         }
     }

@@ -9,8 +9,6 @@ import UIKit
 
 class ThemeViewController: BaseViewController<ThemeView>, BaseViewControllerProtocol {
     
-    // MARK: - Properties
-    
     private let viewModel = ThemeViewModel()
     
     // MARK: - Life Cycle

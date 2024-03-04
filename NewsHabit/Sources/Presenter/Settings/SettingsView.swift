@@ -5,6 +5,7 @@
 //  Created by jiyeon on 2/11/24.
 //
 
+import Combine
 import UIKit
 
 import SnapKit
@@ -12,16 +13,15 @@ import Then
 
 class SettingsView: UIView {
     
-    // MARK: - Properties
-    
     var delegate: SettingsViewDelegate?
     private var viewModel: SettingsViewModel?
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     
     let tableView = UITableView().then {
-        $0.backgroundColor = .clear
         $0.register(SettingsCell.self, forCellReuseIdentifier: SettingsCell.reuseIdentifier)
+        $0.backgroundColor = .clear
         $0.separatorStyle = .none
     }
     
@@ -59,7 +59,17 @@ class SettingsView: UIView {
     
     func bindViewModel(_ viewModel: SettingsViewModel) {
         self.viewModel = viewModel
-        self.tableView.reloadData()
+        viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
+            .receive(on: RunLoop.main)
+            .sink { [weak self] event in
+                guard let self = self else { return }
+                switch event {
+                case .initSettingItems:
+                    self.tableView.reloadData()
+                case let .navigateTo(settingsType):
+                    self.delegate?.pushViewController(settingsType: settingsType)
+                }
+            }.store(in: &cancellables)
     }
     
 }
@@ -71,8 +81,7 @@ extension SettingsView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        backgroundColor = .clear
-        delegate?.pushViewController(indexPath)
+        viewModel?.input.send(.tapSettingsCell(indexPath.row))
     }
     
 }
@@ -80,14 +89,14 @@ extension SettingsView: UITableViewDelegate {
 extension SettingsView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let viewModel = viewModel else { return 0 }
-        return viewModel.settingsItems.count
+        return viewModel?.settingsItems.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let viewModel = viewModel,
-              let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseIdentifier) as? SettingsCell else { return UITableViewCell() }
-        cell.bindViewModel(viewModel.settingsItems[indexPath.row])
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseIdentifier) as? SettingsCell,
+              let settingsItem = viewModel?.settingsItems[indexPath.row]
+        else { return UITableViewCell() }
+        cell.bindViewModel(settingsItem)
         return cell
     }
     

@@ -13,8 +13,6 @@ import Then
 
 class TodayNewsCell: UITableViewCell {
     
-    // MARK: - Properties
-    
     static let reuseIdentifier = "TodayNewsCell"
     var viewModel: TodayNewsCellViewModel?
     private var cancellables = Set<AnyCancellable>()
@@ -77,12 +75,10 @@ class TodayNewsCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
         titleLabel.text = nil
         descriptionLabel.text = nil
         categoryLabel.text = nil
         thumbnailView.image = nil
-        
         // Combine 구독 취소
         cancellables.removeAll()
     }
@@ -138,11 +134,13 @@ class TodayNewsCell: UITableViewCell {
     
     func bindViewModel(_ viewModel: TodayNewsCellViewModel) {
         self.viewModel = viewModel
+        // 초기 데이터 설정
         titleLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description
         loadImage(from: viewModel.imageLink)
         isReadView.isHidden = viewModel.isRead
         categoryLabel.text = viewModel.category
+        
         viewModel.$isRead
             .receive(on: RunLoop.main)
             .sink { [weak self] isRead in

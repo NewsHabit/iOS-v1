@@ -12,10 +12,12 @@ class HotNewsViewModel {
     
     enum Input {
         case viewWillAppear
+        case tapNewsCell(_ index: Int)
     }
     
     enum Output {
         case updateHotNews
+        case navigateTo(newsLink: String)
     }
     
     // MARK: - Properties
@@ -29,16 +31,19 @@ class HotNewsViewModel {
     
     func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
         input.sink { [weak self] event in
+            guard let self = self else { return }
             switch event {
             case .viewWillAppear:
-                self?.fetchNewsData()
-                self?.output.send(.updateHotNews)
+                self.fetchNewsData()
+                self.output.send(.updateHotNews)
+            case let .tapNewsCell(index):
+                self.output.send(.navigateTo(newsLink: cellViewModels[index].newsLink))
             }
         }.store(in: &cancellables)
         return output.eraseToAnyPublisher()
     }
     
-    // MARK: - Fetch News Data
+    // MARK: - Handle News Data
     
     func fetchNewsData() {
         let jsonData = Data(dummyData.utf8) // 더미 데이터 문자열을 Data 객체로 변환

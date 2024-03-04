@@ -12,8 +12,6 @@ import Then
 
 class KeywordCell: UICollectionViewCell {
     
-    // MARK: - Properties
-    
     static let reuseIdentifier = "KeywordCell"
     
     // MARK: - UI Components

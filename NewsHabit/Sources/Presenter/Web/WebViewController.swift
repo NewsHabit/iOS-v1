@@ -9,17 +9,7 @@ import UIKit
 
 class WebViewController: BaseViewController<WebView> {
     
-    // MARK: - Properties
-    
     var urlString: String?
-    
-    var isLinkButtonEnabled: Bool = true {
-        didSet {
-            if isLinkButtonEnabled == false {
-                setNavigationBarLinkButtonHidden(true)
-            }
-        }
-    }
     
     // MARK: - Life Cycle
     
@@ -44,6 +34,10 @@ class WebViewController: BaseViewController<WebView> {
         let pasteboard = UIPasteboard.general
         pasteboard.string = urlString
         Toast.shared.makeToast("원본 링크를 복사했습니다")
+    }
+    
+    func setLinkButtonEnabled(_ isEnabled: Bool) {
+        setNavigationBarLinkButtonHidden(!isEnabled)
     }
     
 }

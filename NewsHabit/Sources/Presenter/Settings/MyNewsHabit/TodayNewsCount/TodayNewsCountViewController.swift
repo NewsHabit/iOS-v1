@@ -10,9 +10,8 @@ import UIKit
 protocol TodayNewsCountViewDelegate {
     func popViewController()
 }
+
 class TodayNewsCountViewController: BottomSheetController<TodayNewsCountView> {
-    
-    // MARK: - Properties
     
     var delegate: MyNewsHabitViewDelegate?
     private let viewModel = TodayNewsCountViewModel()

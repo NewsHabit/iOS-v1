@@ -16,19 +16,19 @@ class HotNewsCellViewModel {
         self.newsItem = newsItem
     }
     
-    var title: String? {
+    var title: String {
         newsItem.title
     }
     
-    var description: String? {
+    var description: String {
         newsItem.description
     }
     
-    var imageLink: String? {
+    var imageLink: String {
         newsItem.imgLink
     }
     
-    var newsLink: String? {
+    var newsLink: String {
         newsItem.naverUrl
     }
     

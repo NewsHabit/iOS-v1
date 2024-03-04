@@ -10,15 +10,13 @@ import Foundation
 
 class MyNewsHabitViewModel {
     
-    // MARK: - Input
-    
     enum Input {
+        case tapMyNewsHabitCell(_ index: Int)
         case updateMyNewsHabitSettings
     }
     
-    // MARK: - Output
-    
     enum Output {
+        case navigateTo(type: MyNewsHabitType)
         case updateMyNewsHabitItems
     }
     
@@ -33,11 +31,14 @@ class MyNewsHabitViewModel {
     
     func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
         input.sink { [weak self] event in
+            guard let self = self else { return }
             switch event {
+            case let.tapMyNewsHabitCell(index):
+                self.output.send(.navigateTo(type: myNewsHabitItems[index].type))
             case .updateMyNewsHabitSettings:
-                self?.myNewsHabitItems.removeAll()
-                self?.updateMyNewsHabitItems()
-                self?.output.send(.updateMyNewsHabitItems)
+                self.myNewsHabitItems.removeAll()
+                self.updateMyNewsHabitItems()
+                self.output.send(.updateMyNewsHabitItems)
             }
         }.store(in: &cancellables)
         return output.eraseToAnyPublisher()
@@ -47,12 +48,12 @@ class MyNewsHabitViewModel {
     
     private func updateMyNewsHabitItems() {
         myNewsHabitItems.append(MyNewsHabitItem(
-            title: "키워드",
+            type: .keyword,
             description: getKeywordString()
         ))
         myNewsHabitItems.append(MyNewsHabitItem(
-            title: "오늘의 뉴스 개수",
-            description: String(UserDefaultsManager.todayNewsCount)
+            type: .todayNewsCount,
+            description: String(UserDefaultsManager.todayNewsCount.rawValue)
         ))
     }
     
