@@ -10,7 +10,7 @@ import Foundation
 
 class KeywordViewModel {
     
-    @Published var selectedKeywordIndex = Set(UserDefaultsManager.keywordList)
+    @Published var selectedKeywordIndex = Set(UserDefaultsManager.categoryList)
     
     // MARK: - Functions
     

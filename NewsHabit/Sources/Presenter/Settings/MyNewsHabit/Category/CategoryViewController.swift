@@ -14,7 +14,7 @@ protocol CategoryViewDelegate {
 class CategoryViewController: BottomSheetController<CategoryView> {
     
     var delegate: MyNewsHabitViewDelegate?
-    private let viewModel = KeywordViewModel()
+    private let viewModel = CategoryViewModel()
     
     // MARK: - Life Cycle
     

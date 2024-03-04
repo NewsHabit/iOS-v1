@@ -38,7 +38,7 @@ enum Category: Int, CaseIterable {
         }
     }
     
-    func fromAPIString(_ apiString: String) -> String? {
+    static func fromAPIString(_ apiString: String) -> String? {
         guard let category = Category.allCases.first(where: { $0.toAPIString() == apiString }) else {
             return nil
         }

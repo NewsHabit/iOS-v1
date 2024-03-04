@@ -139,7 +139,7 @@ class TodayNewsCell: UITableViewCell {
         descriptionLabel.text = viewModel.description
         loadImage(from: viewModel.imageLink)
         isReadView.isHidden = viewModel.isRead
-        categoryLabel.text = viewModel.category
+        categoryLabel.text = Category.fromAPIString(viewModel.category)
         
         viewModel.$isRead
             .receive(on: RunLoop.main)

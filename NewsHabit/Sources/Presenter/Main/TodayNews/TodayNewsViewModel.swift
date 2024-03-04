@@ -35,15 +35,15 @@ class TodayNewsViewModel {
             guard let self = self else { return }
             switch event {
             case .getTodayNews:
-                if UserDefaultsManager.lastDate != Date().toCompactDateString() {
-                    self.fetchNewsData()
-                    self.initTodayNewsData()
-                } else {
-                    self.cellViewModels = UserDefaultsManager.todayNews.map {
-                        TodayNewsCellViewModel($0)
-                    }
-                }
-                self.output.send(.updateTodayNews)
+                self.fetchNewsData()
+//                if UserDefaultsManager.lastDate != Date().toCompactDateString() {
+//                    self.fetchNewsData()
+//                } else {
+//                    self.cellViewModels = UserDefaultsManager.todayNews.map {
+//                        TodayNewsCellViewModel($0)
+//                    }
+//                    self.output.send(.updateTodayNews)
+//                }
             case let .tapNewsCell(index):
                 self.setReadNewsItem(index)
                 self.output.send(.navigateTo(newsLink: self.cellViewModels[index].newsLink))
@@ -60,12 +60,18 @@ class TodayNewsViewModel {
         }
         let parameters:[String: Any] = [
             "categories": categories,
-            "cnt": categories.count
+            "cnt": UserDefaultsManager.todayNewsCount.rawValue
         ]
+        let customEncoding = URLEncoding(
+            destination: .queryString,
+            arrayEncoding: .noBrackets,
+            boolEncoding: .literal
+        )
+        
         AF.request("http://localhost:8080/news-habit/recommendation",
                    method: .get,
                    parameters: parameters,
-                   encoding: URLEncoding.queryString)
+                   encoding: customEncoding)
             .publishDecodable(type: TodayNewsResponse.self)
             .value() // Publisher에서 값만 추출
             .sink(receiveCompletion: { completion in
