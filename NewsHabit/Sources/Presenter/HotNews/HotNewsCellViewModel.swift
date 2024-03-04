@@ -10,9 +10,9 @@ import Foundation
 
 class HotNewsCellViewModel {
     
-    let newsItem: NewsItem
+    let newsItem: HotNewsItem
     
-    init(newsItem: NewsItem) {
+    init(newsItem: HotNewsItem) {
         self.newsItem = newsItem
     }
     

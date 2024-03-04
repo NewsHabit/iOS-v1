@@ -1,5 +1,5 @@
 //
-//  KeywordViewController.swift
+//  CategoryViewController.swift
 //  NewsHabit
 //
 //  Created by jiyeon on 2/14/24.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-protocol KeywordViewDelegate {
+protocol CategoryViewDelegate {
     func popViewController()
 }
 
-class KeywordViewController: BottomSheetController<KeywordView> {
+class CategoryViewController: BottomSheetController<CategoryView> {
     
     var delegate: MyNewsHabitViewDelegate?
     private let viewModel = KeywordViewModel()
@@ -31,7 +31,7 @@ class KeywordViewController: BottomSheetController<KeywordView> {
     
 }
 
-extension KeywordViewController: KeywordViewDelegate {
+extension CategoryViewController: CategoryViewDelegate {
     
     func popViewController() {
         super.hideBottomSheets()

@@ -42,7 +42,7 @@ extension MyNewsHabitViewController: MyNewsHabitViewDelegate {
     func pushViewController(myNewsHabitType: MyNewsHabitType) {
         switch myNewsHabitType {
         case .keyword:
-            let keywordViewController = KeywordViewController(bottomSheetHeight: 400.0)
+            let keywordViewController = CategoryViewController(bottomSheetHeight: 400.0)
             keywordViewController.delegate = self
             present(keywordViewController, animated: false)
         case .todayNewsCount:

@@ -1,5 +1,5 @@
 //
-//  KeywordView.swift
+//  CategoryView.swift
 //  NewsHabit
 //
 //  Created by jiyeon on 2/14/24.
@@ -8,10 +8,10 @@
 import Combine
 import UIKit
 
-class KeywordView: UIView {
+class CategoryView: UIView {
     
-    var delegate: KeywordViewDelegate?
-    private var viewModel: KeywordViewModel?
+    var delegate: CategoryViewDelegate?
+    private var viewModel: CategoryViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
@@ -28,7 +28,7 @@ class KeywordView: UIView {
         collectionViewLayout: UICollectionViewFlowLayout()
     ).then {
         $0.backgroundColor = .clear
-        $0.register(KeywordCell.self, forCellWithReuseIdentifier: KeywordCell.reuseIdentifier)
+        $0.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.reuseIdentifier)
         if let layout = $0.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.minimumLineSpacing = 20
             layout.invalidateLayout()
@@ -92,17 +92,17 @@ class KeywordView: UIView {
     
     @objc private func handleSaveButtonTap() {
         guard let viewModel = viewModel else { return }
-        var keywordIndexArray = Array(viewModel.selectedKeywordIndex)
-        keywordIndexArray.sort()
-        UserDefaultsManager.keywordList = keywordIndexArray
+        var categoryIndexArray = Array(viewModel.selectedCategoryIndex)
+        categoryIndexArray.sort()
+        UserDefaultsManager.categoryList = categoryIndexArray
         delegate?.popViewController()
     }
     
     // MARK: - Bind ViewModel
     
-    func bindViewModel(_ viewModel: KeywordViewModel) {
+    func bindViewModel(_ viewModel: CategoryViewModel) {
         self.viewModel = viewModel
-        viewModel.$selectedKeywordIndex
+        viewModel.$selectedCategoryIndex
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.collectionView.reloadData()
@@ -114,20 +114,20 @@ class KeywordView: UIView {
 
 // MARK: - CollectionView Extension
 
-extension KeywordView: UICollectionViewDelegate {
+extension CategoryView: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel?.selectKeyword(at: indexPath)
+        viewModel?.selectCategory(at: indexPath)
     }
     
 }
 
-extension KeywordView: UICollectionViewDelegateFlowLayout {
+extension CategoryView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let label = UILabel().then {
             $0.font = .cellLabelFont
-            $0.text = KeywordType.allCases[indexPath.row].toString()
+            $0.text = Category.allCases[indexPath.row].toString()
             $0.sizeToFit()
         }
         let size = label.frame.size
@@ -137,18 +137,18 @@ extension KeywordView: UICollectionViewDelegateFlowLayout {
     
 }
 
-extension KeywordView: UICollectionViewDataSource {
+extension CategoryView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return KeywordType.allCases.count
+        return Category.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let viewModel = viewModel,
-              let cell = collectionView.dequeueReusableCell(withReuseIdentifier: KeywordCell.reuseIdentifier, for: indexPath) as? KeywordCell
+              let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.reuseIdentifier, for: indexPath) as? CategoryCell
         else { return UICollectionViewCell() }
-        cell.label.text = KeywordType.allCases[indexPath.row].toString()
-        cell.setSelected(viewModel.selectedKeywordIndex.contains(indexPath.row))
+        cell.label.text = Category.allCases[indexPath.row].toString()
+        cell.setSelected(viewModel.selectedCategoryIndex.contains(indexPath.row))
         return cell
     }
     

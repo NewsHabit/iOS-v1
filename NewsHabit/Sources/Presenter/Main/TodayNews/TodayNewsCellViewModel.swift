@@ -9,7 +9,7 @@ import Foundation
 
 class TodayNewsCellViewModel {
     
-    var newsItemState: NewsItemState
+    var newsItemState: TodayNewsItemState
     
     @Published var isRead: Bool {
         didSet {
@@ -17,7 +17,7 @@ class TodayNewsCellViewModel {
         }
     }
     
-    init(_ newsItemState: NewsItemState) {
+    init(_ newsItemState: TodayNewsItemState) {
         self.newsItemState = newsItemState
         isRead = newsItemState.isRead
     }
