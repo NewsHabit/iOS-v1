@@ -24,7 +24,7 @@ class ThemeViewController: BaseViewController<ThemeView>, BaseViewControllerProt
     // MARK: - BaseViewControllerProtocol
     
     func setupNavigationBar() {
-        setNavigationBarLinkButtonHidden(true)
+        setNavigationBarShareButtonHidden(true)
         setNavigationBarTitle("테마")
     }
     

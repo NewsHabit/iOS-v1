@@ -33,7 +33,7 @@ class NotificationViewController: BaseViewController<NotificationView>, BaseView
     // MARK: - BaseViewControllerProtocol
     
     func setupNavigationBar() {
-        setNavigationBarLinkButtonHidden(true)
+        setNavigationBarShareButtonHidden(true)
         setNavigationBarTitle("알림")
     }
     

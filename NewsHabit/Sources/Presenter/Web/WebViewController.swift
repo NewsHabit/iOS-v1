@@ -24,20 +24,20 @@ class WebViewController: BaseViewController<WebView> {
     // MARK: - BaseViewControllerProtocol
     
     func setupNavigationBar() {
-        setNavigationBarLinkButtonAction(#selector(handleLinkButtonTap))
+        setNavigationBarShareButtonAction(#selector(handleShareButtonTap))
     }
     
     // MARK: - objc Function
     
-    @objc private func handleLinkButtonTap() {
+    @objc private func handleShareButtonTap() {
         guard let urlString = urlString else { return }
         let pasteboard = UIPasteboard.general
         pasteboard.string = urlString
         Toast.shared.makeToast("원본 링크를 복사했습니다")
     }
     
-    func setLinkButtonEnabled(_ isEnabled: Bool) {
-        setNavigationBarLinkButtonHidden(!isEnabled)
+    func setShareButtonEnabled(_ isEnabled: Bool) {
+        setNavigationBarShareButtonHidden(!isEnabled)
     }
     
 }
