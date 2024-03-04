@@ -10,15 +10,8 @@ import UIKit
 
 class CategoryView: UIView {
     
-<<<<<<< HEAD:NewsHabit/Sources/Presenter/Settings/MyNewsHabit/Category/CategoryView.swift
-    // MARK: - Properties
-    
     var delegate: CategoryViewDelegate?
     private var viewModel: CategoryViewModel?
-=======
-    var delegate: KeywordViewDelegate?
-    private var viewModel: KeywordViewModel?
->>>>>>> 94cc61ccd02e21ab174bd548d59972abc9802ace:NewsHabit/Sources/Presenter/Settings/MyNewsHabit/Keyword/KeywordView.swift
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components

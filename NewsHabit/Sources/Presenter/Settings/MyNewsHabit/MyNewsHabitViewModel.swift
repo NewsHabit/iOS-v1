@@ -48,13 +48,8 @@ class MyNewsHabitViewModel {
     
     private func updateMyNewsHabitItems() {
         myNewsHabitItems.append(MyNewsHabitItem(
-<<<<<<< HEAD
-            title: "카테고리",
-            description: getCategoryString()
-=======
             type: .keyword,
-            description: getKeywordString()
->>>>>>> 94cc61ccd02e21ab174bd548d59972abc9802ace
+            description: getCategoryString()
         ))
         myNewsHabitItems.append(MyNewsHabitItem(
             type: .todayNewsCount,

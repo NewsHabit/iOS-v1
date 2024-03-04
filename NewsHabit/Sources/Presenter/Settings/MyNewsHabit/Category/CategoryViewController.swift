@@ -21,11 +21,7 @@ class CategoryViewController: BottomSheetController<CategoryView> {
     override func viewDidLoad() {
         super.viewDidLoad()
         sheetView.delegate = self
-<<<<<<< HEAD:NewsHabit/Sources/Presenter/Settings/MyNewsHabit/Category/CategoryViewController.swift
-        sheetView.bindViewModel(CategoryViewModel())
-=======
         sheetView.bindViewModel(viewModel)
->>>>>>> 94cc61ccd02e21ab174bd548d59972abc9802ace:NewsHabit/Sources/Presenter/Settings/MyNewsHabit/Keyword/KeywordViewController.swift
     }
     
     override func viewWillDisappear(_ animated: Bool) {
