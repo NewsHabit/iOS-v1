@@ -31,7 +31,7 @@ class SettingsViewController: BaseViewController<SettingsView>, BaseViewControll
     
     func setupNavigationBar() {
         setNavigationBarBackButtonHidden(true)
-        setNavigationBarLinkButtonHidden(true)
+        setNavigationBarShareButtonHidden(true)
         setNavigationBarLargeTitle("설정")
     }
     
@@ -52,7 +52,7 @@ extension SettingsViewController: SettingsViewDelegate {
         case .developer:
             let developerInfoViewcontroller = WebViewController()
             developerInfoViewcontroller.urlString = viewModel.developerInfoLink
-            developerInfoViewcontroller.setLinkButtonEnabled(false)
+            developerInfoViewcontroller.setShareButtonEnabled(false)
             navigationController?.pushViewController(developerInfoViewcontroller, animated: true)
         }
     }

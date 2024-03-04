@@ -39,7 +39,7 @@ class MainViewController: BaseViewController<MainView>, BaseViewControllerProtoc
     func setupNavigationBar() {
         setBackgroundColor(.newsHabitDarkGray)
         setNavigationBarBackButtonHidden(true)
-        setNavigationBarLinkButtonHidden(true)
+        setNavigationBarShareButtonHidden(true)
         setNavigationBarLargeTitleTextColor(.white)
         setNavigationBarSubTitleTextColor(.white)
     }

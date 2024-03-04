@@ -31,7 +31,7 @@ class MyNewsHabitViewController: BaseViewController<MyNewsHabitView>, BaseViewCo
     // MARK: - BaseViewControllerProtocol
     
     func setupNavigationBar() {
-        setNavigationBarLinkButtonHidden(true)
+        setNavigationBarShareButtonHidden(true)
         setNavigationBarTitle("나의 뉴빗")
     }
     

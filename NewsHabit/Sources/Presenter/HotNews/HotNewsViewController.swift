@@ -36,7 +36,7 @@ class HotNewsViewController: BaseViewController<HotNewsView>, BaseViewController
     
     func setupNavigationBar() {
         setNavigationBarBackButtonHidden(true)
-        setNavigationBarLinkButtonHidden(true)
+        setNavigationBarShareButtonHidden(true)
         setNavigationBarLargeTitle("🔥 지금 뜨는 뉴스")
         setNavigationBarSubTitleTextColor(.newsHabitGray)
     }

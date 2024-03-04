@@ -87,12 +87,12 @@ class BaseViewController<View: UIView>: UIViewController, UIGestureRecognizerDel
         navigationBar.backButton.isHidden = hidden
     }
     
-    func setNavigationBarLinkButtonHidden(_ hidden: Bool) {
-        navigationBar.linkButton.isHidden = hidden
+    func setNavigationBarShareButtonHidden(_ hidden: Bool) {
+        navigationBar.shareButton.isHidden = hidden
     }
     
-    func setNavigationBarLinkButtonAction(_ selector: Selector) {
-        navigationBar.linkButton.addTarget(self, action: selector, for: .touchUpInside)
+    func setNavigationBarShareButtonAction(_ selector: Selector) {
+        navigationBar.shareButton.addTarget(self, action: selector, for: .touchUpInside)
     }
     
     func setNavigationBarLargeTitle(_ title: String?) {
