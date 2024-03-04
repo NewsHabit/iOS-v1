@@ -88,7 +88,7 @@ extension TodayNewsView: UITableViewDelegate {
 extension TodayNewsView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return UserDefaultsManager.todayNews.count
+        return viewModel?.cellViewModels.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

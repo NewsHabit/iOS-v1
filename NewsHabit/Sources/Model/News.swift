@@ -21,7 +21,7 @@ struct TodayNewsItemState: Codable {
 }
 
 struct TodayNewsResponse: Codable {
-    let todayNewsResponseDtoList: [TodayNewsItem]
+    let recommendedNewsResponseDtoList: [TodayNewsItem]
 }
 
 struct HotNewsItem: Codable {

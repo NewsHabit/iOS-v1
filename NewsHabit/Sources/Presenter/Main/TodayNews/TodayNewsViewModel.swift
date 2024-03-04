@@ -62,7 +62,7 @@ class TodayNewsViewModel {
             Category.allCases[$0].toAPIString()
         }
         let parameters:[String: Any] = [
-            "category": categories,
+            "categories": categories,
             "cnt": categories.count
         ]
         AF.request("http://localhost:8080/news-habit/recommendation",
@@ -76,10 +76,10 @@ class TodayNewsViewModel {
                 case .finished: break
                 case .failure(let error): print("Error: \(error)")
                 }
-            }, receiveValue: { [weak self] toadyNewsResponse in
+            }, receiveValue: { [weak self] todayNewsResponse in
                 // 성공적으로 응답 받은 경우의 처리
                 guard let self = self else { return }
-                self.cellViewModels = toadyNewsResponse.todayNewsResponseDtoList.map {
+                self.cellViewModels = todayNewsResponse.recommendedNewsResponseDtoList.map {
                     TodayNewsCellViewModel(TodayNewsItemState(newsItem: $0))
                 }
                 self.initTodayNewsData()
