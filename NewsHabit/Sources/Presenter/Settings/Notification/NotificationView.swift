@@ -101,8 +101,8 @@ class NotificationView: UIView {
             case let .switchCell(isOn):
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationSwitchCell.reuseIdentifier) as? NotificationSwitchCell else { return UITableViewCell() }
                 cell.configure(with: isOn)
-                cell.switchControl.removeTarget(nil, action: nil, for: .valueChanged)
-                cell.switchControl.addTarget(self, action: #selector(self?.handleSwitchControlTap), for: .valueChanged)
+                cell.switchControl.removeTarget(nil, action: nil, for: .touchUpInside)
+                cell.switchControl.addTarget(self, action: #selector(self?.handleSwitchControlTap), for: .touchUpInside)
                 return cell
             case let .timeCell(time):
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationTimeCell.reuseIdentifier) as? NotificationTimeCell else { return UITableViewCell() }
@@ -135,13 +135,15 @@ class NotificationView: UIView {
             .sink { [weak self] event in
                 guard let self = self else { return }
                 switch event {
+                case .permissionDenied:
+                    guard let cell = self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? NotificationSwitchCell else { return }
+                    cell.switchControl.isOn = false
+                    delegate?.showAlert()
                 case .updateNotification:
                     self.updateDataSource()
                     if !self.stackView.isHidden {
                         self.stackView.isHidden = true
                     }
-                case .showAlert:
-                    delegate?.showAlert()
                 }
             }.store(in: &cancellables)
     }

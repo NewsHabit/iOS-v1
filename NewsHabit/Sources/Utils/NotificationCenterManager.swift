@@ -14,6 +14,21 @@ class NotificationCenterManager {
     
     private init() {}
     
+    func checkNotificationAuthorization(completion: @escaping (Bool) -> Void) {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                switch settings.authorizationStatus {
+                case .authorized, .provisional: // 권한이 있을 경우
+                    completion(true)
+                case .denied, .notDetermined, .ephemeral: // 권한이 없거나 아직 결정되지 않았을 경우
+                    completion(false)
+                @unknown default: // 알 수 없는 새로운 상태일 경우
+                    completion(false)
+                }
+            }
+        }
+    }
+    
     func requestAuthorization(completion: @escaping (Bool, Error?) -> Void) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             DispatchQueue.main.async {

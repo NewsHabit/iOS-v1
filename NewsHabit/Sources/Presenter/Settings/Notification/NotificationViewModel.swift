@@ -18,8 +18,8 @@ class NotificationViewModel {
     }
     
     enum Output {
+        case permissionDenied
         case updateNotification
-        case showAlert
     }
     
     // MARK: - Properties
@@ -35,31 +35,43 @@ class NotificationViewModel {
             guard let self = self else { return }
             switch event {
             case let .setNotification(isOn):
-                UserDefaultsManager.isNotificationOn = isOn
-                NotificationCenterManager.shared.removeAllPendingNotificationRequests()
-                if isOn {
-                    NotificationCenterManager.shared.requestAuthorization { granted, error in
-                        if granted {
-                            if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
-                                NotificationCenterManager.shared.addNotification(for: notificationTime)
-                            }
-                        } else {
-                            UserDefaultsManager.isNotificationOn = false
-                            self.output.send(.showAlert)
-                        }
-                        // 권한 요청 결과와 상관없이 UI 업데이트
-                        self.output.send(.updateNotification)
-                    }
-                } else {
-                    self.output.send(.updateNotification)
-                }
+                self.handleNotification(isOn)
             case let .setNotificationTime(date):
-                UserDefaultsManager.notificationTime = date.toSimpleTimeString()
-                NotificationCenterManager.shared.addNotification(for: date)
-                output.send(.updateNotification)
+                self.handleNotificationTime(date)
             }
         }.store(in: &cancellables)
         return output.eraseToAnyPublisher()
+    }
+    
+    private func handleNotification(_ isOn: Bool) {
+        UserDefaultsManager.isNotificationOn = isOn
+        
+        if !isOn { // 알림을 끄는 경우 설정했던 모든 알림을 제거합니다.
+            NotificationCenterManager.shared.removeAllPendingNotificationRequests()
+            self.output.send(.updateNotification)
+            return
+        }
+        
+        NotificationCenterManager.shared.requestAuthorization { [weak self] granted, error in
+            guard let self = self else { return }
+            // 알림 권한 거부
+            guard granted else {
+                UserDefaultsManager.isNotificationOn = false
+                self.output.send(.permissionDenied)
+                return
+            }
+            // 알림 권한 허용
+            if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
+                NotificationCenterManager.shared.addNotification(for: notificationTime)
+                self.output.send(.updateNotification)
+            }
+        }
+    }
+    
+    private func handleNotificationTime(_ date: Date) {
+        UserDefaultsManager.notificationTime = date.toSimpleTimeString()
+        NotificationCenterManager.shared.addNotification(for: date)
+        output.send(.updateNotification)
     }
     
 }

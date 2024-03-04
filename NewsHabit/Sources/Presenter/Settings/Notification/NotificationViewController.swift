@@ -43,22 +43,23 @@ extension NotificationViewController: NotificationViewDelegate {
     
     func showAlert() {
         let alertController = UIAlertController(
-            title: "알림 허용 요청",
-            message: "알림을 '허용'으로 변경해주세요.",
+            title: "알림 권한 필요",
+            message: "알림을 통해 키워드 뉴스를 바로 받아보세요. 설정에서 언제든지 이를 변경할 수 있습니다.",
             preferredStyle: .alert
         )
         
         let action = UIAlertAction(
-            title: "설정창 이동",
+            title: "설정으로 이동",
             style: .default,
-            handler: foo
+            handler: openAppSettings
         )
         alertController.addAction(action)
         
-        self.present(alertController, animated: true)
+        present(alertController, animated: true)
     }
     
-    private func foo(_ sender: UIAlertAction) {
+    private func openAppSettings(_ sender: UIAlertAction) {
         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        navigationController?.popViewController(animated: false)
     }
 }
