@@ -30,10 +30,10 @@ class WebViewController: BaseViewController<WebView> {
     // MARK: - objc Function
     
     @objc private func handleShareButtonTap() {
-        guard let urlString = urlString else { return }
-        let pasteboard = UIPasteboard.general
-        pasteboard.string = urlString
-        Toast.shared.makeToast("원본 링크를 복사했습니다")
+        guard let urlString = urlString, let url = URL(string: urlString) else { return }
+        
+        let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        self.present(activityViewController, animated: true)
     }
     
     func setShareButtonEnabled(_ isEnabled: Bool) {
