@@ -13,10 +13,12 @@ class HotNewsViewModel {
     
     enum Input {
         case viewWillAppear
+        case tapNewsCell(_ index: Int)
     }
     
     enum Output {
         case updateHotNews
+        case navigateTo(newsLink: String)
     }
     
     // MARK: - Properties
@@ -30,15 +32,19 @@ class HotNewsViewModel {
     
     func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
         input.sink { [weak self] event in
+            guard let self = self else { return }
             switch event {
             case .viewWillAppear:
-                self?.fetchNewsData()
+                self.fetchNewsData()
+                self.output.send(.updateHotNews)
+            case let .tapNewsCell(index):
+                self.output.send(.navigateTo(newsLink: cellViewModels[index].newsLink))
             }
         }.store(in: &cancellables)
         return output.eraseToAnyPublisher()
     }
     
-    // MARK: - Fetch News Data
+    // MARK: - Handle News Data
     
     func fetchNewsData() {
         AF.request("http://localhost:8080/news-habit/issue")

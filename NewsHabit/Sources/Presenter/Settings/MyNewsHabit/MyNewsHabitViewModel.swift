@@ -10,15 +10,13 @@ import Foundation
 
 class MyNewsHabitViewModel {
     
-    // MARK: - Input
-    
     enum Input {
+        case tapMyNewsHabitCell(_ index: Int)
         case updateMyNewsHabitSettings
     }
     
-    // MARK: - Output
-    
     enum Output {
+        case navigateTo(type: MyNewsHabitType)
         case updateMyNewsHabitItems
     }
     
@@ -33,11 +31,14 @@ class MyNewsHabitViewModel {
     
     func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
         input.sink { [weak self] event in
+            guard let self = self else { return }
             switch event {
+            case let.tapMyNewsHabitCell(index):
+                self.output.send(.navigateTo(type: myNewsHabitItems[index].type))
             case .updateMyNewsHabitSettings:
-                self?.myNewsHabitItems.removeAll()
-                self?.updateMyNewsHabitItems()
-                self?.output.send(.updateMyNewsHabitItems)
+                self.myNewsHabitItems.removeAll()
+                self.updateMyNewsHabitItems()
+                self.output.send(.updateMyNewsHabitItems)
             }
         }.store(in: &cancellables)
         return output.eraseToAnyPublisher()
@@ -47,12 +48,17 @@ class MyNewsHabitViewModel {
     
     private func updateMyNewsHabitItems() {
         myNewsHabitItems.append(MyNewsHabitItem(
+<<<<<<< HEAD
             title: "카테고리",
             description: getCategoryString()
+=======
+            type: .keyword,
+            description: getKeywordString()
+>>>>>>> 94cc61ccd02e21ab174bd548d59972abc9802ace
         ))
         myNewsHabitItems.append(MyNewsHabitItem(
-            title: "오늘의 뉴스 개수",
-            description: String(UserDefaultsManager.todayNewsCount)
+            type: .todayNewsCount,
+            description: String(UserDefaultsManager.todayNewsCount.rawValue)
         ))
     }
     

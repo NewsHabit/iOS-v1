@@ -7,8 +7,8 @@
 
 import Foundation
 
-/// 전체 날짜 및 시간 형식을 제공하는 DateFormatter.
-/// 사용처: `HotNewsViewController`의 서브 타이틀에 날짜와 시간 표시.
+/// 전체 날짜 및 시간 형식을 제공하는 DateFormatter
+/// 사용처: `HotNewsViewController`의 서브 타이틀에 날짜와 시간 표시
 class FullDateTimeFormatter: DateFormatter {
     
     override init() {
@@ -21,8 +21,8 @@ class FullDateTimeFormatter: DateFormatter {
     }
 }
 
-/// 간략화된 날짜 형식을 제공하는 DateFormatter.
-/// 사용처: 오늘의 뉴스 데이터를 요청할지 결정하기 위해 사용.
+/// 간략화된 날짜 형식을 제공하는 DateFormatter
+/// 사용처: 오늘의 뉴스 데이터를 요청할지 결정하기 위해 사용
 class CompactDateFormatter: DateFormatter {
     
     override init() {
@@ -35,8 +35,8 @@ class CompactDateFormatter: DateFormatter {
     }
 }
 
-/// 시간 형식을 제공하는 DateFormatter.
-/// 사용처: `NotificationViewController`에서 알림 시간 표시.
+/// 시간 형식을 제공하는 DateFormatter
+/// 사용처: `NotificationViewController`에서 알림 시간 표시
 class SimpleTimeFormatter: DateFormatter {
     
     override init() {
@@ -51,17 +51,17 @@ class SimpleTimeFormatter: DateFormatter {
 
 extension Date {
     
-    /// 전체 날짜와 시간을 문자열로 변환합니다.
+    /// 전체 날짜와 시간을 문자열로 변환
     func toFullDateTimeString() -> String {
         return FullDateTimeFormatter().string(from: self)
     }
     
-    /// 날짜를 간략화된 형태의 문자열로 변환합니다.
+    /// 날짜를 간략화된 형태의 문자열로 변환
     func toCompactDateString() -> String {
         return CompactDateFormatter().string(from: self)
     }
     
-    /// 시간을 간단한 형태의 문자열로 변환합니다.
+    /// 시간을 간단한 형태의 문자열로 변환
     func toSimpleTimeString() -> String {
         return SimpleTimeFormatter().string(from: self)
     }
@@ -70,7 +70,7 @@ extension Date {
 
 extension String {
     
-    /// 문자열을 Date 객체로 변환합니다. 주로 알림 시간 파싱에 사용됩니다.
+    /// 문자열을 Date 객체로 변환
     func toTimeAsDate() -> Date? {
         return SimpleTimeFormatter().date(from: self)
     }

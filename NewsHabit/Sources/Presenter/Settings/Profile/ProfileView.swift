@@ -12,8 +12,6 @@ import Then
 
 class ProfileView: UIView {
     
-    // MARK: - Properties
-    
     var delegate: ProfileViewDelegate?
     
     // MARK: - UI Components
@@ -67,10 +65,11 @@ class ProfileView: UIView {
     
     private func setupProperty() {
         backgroundColor = .background
-
-        saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
         textField.becomeFirstResponder()
     }
     
@@ -103,7 +102,7 @@ class ProfileView: UIView {
         }
     }
     
-    // MARK: - Functions
+    // MARK: - Action Functions
     
     @objc private func handleSaveButtonTap() {
         guard let username = textField.text else { return }
@@ -112,15 +111,11 @@ class ProfileView: UIView {
         delegate?.popViewController()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        endEditing(true)
-    }
-    
     @objc private func keyboardWillShow(notification: NSNotification) {
         guard let delegate = delegate,
               let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
         else { return }
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.35) {
             self.saveButton.transform = CGAffineTransform(
                 translationX: 0,
                 y: delegate.getTabBarHeight() - keyboardSize.height // 탭바 크기
@@ -129,9 +124,13 @@ class ProfileView: UIView {
     }
     
     @objc private func keyboardWillHide(notification: NSNotification) {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.35) {
             self.saveButton.transform = .identity
         }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        endEditing(true)
     }
     
 }

@@ -10,14 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-struct MyNewsHabitItem {
-    let title: String
-    let description: String
-}
-
 class MyNewsHabitCell: UITableViewCell {
-    
-    // MARK: - Properties
     
     static let reuseIdentifier = "MyNewsHabitCell"
     private var viewModel: MyNewsHabitItem?
@@ -88,7 +81,7 @@ class MyNewsHabitCell: UITableViewCell {
     
     func bindViewModel(_ viewModel: MyNewsHabitItem) {
         self.viewModel = viewModel
-        titleLabel.text = viewModel.title
+        titleLabel.text = viewModel.type.rawValue
         descriptionLabel.text = viewModel.description
     }
     

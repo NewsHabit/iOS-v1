@@ -15,7 +15,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
+        
         guard let window = window else { return }
+        // 앱의 테마 설정
         window.overrideUserInterfaceStyle = window.toUserInterfaceStyle(themeType: UserDefaultsManager.theme)
         window.rootViewController = TabBarController()
         window.makeKeyAndVisible()
@@ -41,6 +43,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
+        NotificationCenterManager.shared.checkNotificationAuthorization { isAuthorized in
+            UserDefaultsManager.isNotificationOn = isAuthorized
+        }
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {

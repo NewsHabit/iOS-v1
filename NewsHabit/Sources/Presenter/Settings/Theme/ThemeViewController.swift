@@ -9,8 +9,6 @@ import UIKit
 
 class ThemeViewController: BaseViewController<ThemeView>, BaseViewControllerProtocol {
     
-    // MARK: - Properties
-    
     private let viewModel = ThemeViewModel()
     
     // MARK: - Life Cycle
@@ -26,7 +24,7 @@ class ThemeViewController: BaseViewController<ThemeView>, BaseViewControllerProt
     // MARK: - BaseViewControllerProtocol
     
     func setupNavigationBar() {
-        setNavigationBarLinkButtonHidden(true)
+        setNavigationBarShareButtonHidden(true)
         setNavigationBarTitle("테마")
     }
     

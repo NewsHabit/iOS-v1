@@ -9,17 +9,7 @@ import UIKit
 
 class WebViewController: BaseViewController<WebView> {
     
-    // MARK: - Properties
-    
     var urlString: String?
-    
-    var isLinkButtonEnabled: Bool = true {
-        didSet {
-            if isLinkButtonEnabled == false {
-                setNavigationBarLinkButtonHidden(true)
-            }
-        }
-    }
     
     // MARK: - Life Cycle
     
@@ -34,16 +24,20 @@ class WebViewController: BaseViewController<WebView> {
     // MARK: - BaseViewControllerProtocol
     
     func setupNavigationBar() {
-        setNavigationBarLinkButtonAction(#selector(handleLinkButtonTap))
+        setNavigationBarShareButtonAction(#selector(handleShareButtonTap))
     }
     
     // MARK: - objc Function
     
-    @objc private func handleLinkButtonTap() {
-        guard let urlString = urlString else { return }
-        let pasteboard = UIPasteboard.general
-        pasteboard.string = urlString
-        Toast.shared.makeToast("원본 링크를 복사했습니다")
+    @objc private func handleShareButtonTap() {
+        guard let urlString = urlString, let url = URL(string: urlString) else { return }
+        
+        let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        self.present(activityViewController, animated: true)
+    }
+    
+    func setShareButtonEnabled(_ isEnabled: Bool) {
+        setNavigationBarShareButtonHidden(!isEnabled)
     }
     
 }

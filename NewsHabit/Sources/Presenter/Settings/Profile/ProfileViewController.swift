@@ -27,7 +27,7 @@ class ProfileViewController: BaseViewController<ProfileView>, BaseViewController
     // MARK: - BaseViewControllerProtocol
     
     func setupNavigationBar() {
-        setNavigationBarLinkButtonHidden(true)
+        setNavigationBarShareButtonHidden(true)
         setNavigationBarTitle("프로필")
     }
     

@@ -28,11 +28,11 @@ class NavigationBar: UIView {
         )
     }
     
-    let linkButton = UIButton().then {
+    let shareButton = UIButton().then {
         $0.tintColor = .label
         $0.configuration = .plain()
         $0.configuration?.image = UIImage(
-            systemName: "link",
+            systemName: "square.and.arrow.up",
             withConfiguration: UIImage.SymbolConfiguration(pointSize: 15.0, weight: .medium) // 📌
         )
     }
@@ -69,7 +69,7 @@ class NavigationBar: UIView {
     private func setupHierarchy() {
         addSubview(title)
         addSubview(backButton)
-        addSubview(linkButton)
+        addSubview(shareButton)
         addSubview(largeTitleView)
         largeTitleView.addArrangedSubview(largeTitle)
         largeTitleView.addArrangedSubview(subTitle)
@@ -87,7 +87,7 @@ class NavigationBar: UIView {
             $0.width.equalTo(23)
         }
         
-        linkButton.snp.makeConstraints {
+        shareButton.snp.makeConstraints {
             $0.centerY.equalTo(title.snp.centerY)
             $0.trailing.equalToSuperview().inset(20)
             $0.width.equalTo(23)

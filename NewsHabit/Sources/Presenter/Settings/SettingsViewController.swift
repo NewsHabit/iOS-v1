@@ -8,12 +8,10 @@
 import UIKit
 
 protocol SettingsViewDelegate {
-    func pushViewController(_ indexPath: IndexPath)
+    func pushViewController(settingsType: SettingsType)
 }
 
 class SettingsViewController: BaseViewController<SettingsView>, BaseViewControllerProtocol {
-    
-    // MARK: - Properties
     
     private let viewModel = SettingsViewModel()
     
@@ -26,13 +24,14 @@ class SettingsViewController: BaseViewController<SettingsView>, BaseViewControll
         guard let contentView = contentView as? SettingsView else { return }
         contentView.delegate = self
         contentView.bindViewModel(viewModel)
+        viewModel.input.send(.viewDidLoad)
     }
     
     // MARK: - BaseViewControllerProtocol
     
     func setupNavigationBar() {
         setNavigationBarBackButtonHidden(true)
-        setNavigationBarLinkButtonHidden(true)
+        setNavigationBarShareButtonHidden(true)
         setNavigationBarLargeTitle("설정")
     }
     
@@ -40,18 +39,21 @@ class SettingsViewController: BaseViewController<SettingsView>, BaseViewControll
 
 extension SettingsViewController: SettingsViewDelegate {
     
-    func pushViewController(_ indexPath: IndexPath) {
-        switch indexPath.row {
-        case 0: navigationController?.pushViewController(ProfileViewController(), animated: true)
-        case 1: navigationController?.pushViewController(MyNewsHabitViewController(), animated: true)
-        case 2: navigationController?.pushViewController(NotificationViewController(), animated: true)
-        case 3: navigationController?.pushViewController(ThemeViewController(), animated: true)
-        case 4: 
+    func pushViewController(settingsType: SettingsType) {
+        switch settingsType {
+        case .profile:
+            navigationController?.pushViewController(ProfileViewController(), animated: true)
+        case .myNewsHabit: 
+            navigationController?.pushViewController(MyNewsHabitViewController(), animated: true)
+        case .notification:
+            navigationController?.pushViewController(NotificationViewController(), animated: true)
+        case .theme:
+            navigationController?.pushViewController(ThemeViewController(), animated: true)
+        case .developer:
             let developerInfoViewcontroller = WebViewController()
             developerInfoViewcontroller.urlString = viewModel.developerInfoLink
-            developerInfoViewcontroller.isLinkButtonEnabled = false
+            developerInfoViewcontroller.setShareButtonEnabled(false)
             navigationController?.pushViewController(developerInfoViewcontroller, animated: true)
-        default: break
         }
     }
     

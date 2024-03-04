@@ -12,8 +12,6 @@ import Then
 
 class ThemeCell: UITableViewCell {
     
-    // MARK: - Properties
-    
     static let reuseIdentifier = "ThemeCell"
     
     // MARK: - UI Components

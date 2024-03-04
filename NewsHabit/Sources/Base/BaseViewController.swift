@@ -14,7 +14,7 @@ protocol BaseViewControllerProtocol {
     func setupNavigationBar()
 }
 
-class BaseViewController<View: UIView>: UIViewController {
+class BaseViewController<View: UIView>: UIViewController, UIGestureRecognizerDelegate {
     
     let statusBar = UIView()
     let navigationBar = NavigationBar()
@@ -24,15 +24,19 @@ class BaseViewController<View: UIView>: UIViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.interactivePopGestureRecognizer?.delegate = nil
-        navigationController?.setNavigationBarHidden(true, animated: false)
-        view.backgroundColor = .background
+        setupProperty()
         setupHierarchy()
         setupLayout()
         setupGestureRecognizer()
     }
     
     // MARK: - Setup Methods
+    
+    private func setupProperty() {
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        view.backgroundColor = .background
+    }
     
     private func setupHierarchy() {
         view.addSubview(statusBar)
@@ -62,6 +66,8 @@ class BaseViewController<View: UIView>: UIViewController {
         navigationBar.backButton.addTarget(self, action: #selector(handleBackButtonTap), for: .touchUpInside)
     }
     
+    // MARK: - Action Function
+    
     @objc private func handleBackButtonTap() {
         contentView.endEditing(true)
         navigationController?.popViewController(animated: true)
@@ -81,12 +87,12 @@ class BaseViewController<View: UIView>: UIViewController {
         navigationBar.backButton.isHidden = hidden
     }
     
-    func setNavigationBarLinkButtonHidden(_ hidden: Bool) {
-        navigationBar.linkButton.isHidden = hidden
+    func setNavigationBarShareButtonHidden(_ hidden: Bool) {
+        navigationBar.shareButton.isHidden = hidden
     }
     
-    func setNavigationBarLinkButtonAction(_ selector: Selector) {
-        navigationBar.linkButton.addTarget(self, action: selector, for: .touchUpInside)
+    func setNavigationBarShareButtonAction(_ selector: Selector) {
+        navigationBar.shareButton.addTarget(self, action: selector, for: .touchUpInside)
     }
     
     func setNavigationBarLargeTitle(_ title: String?) {
@@ -103,6 +109,14 @@ class BaseViewController<View: UIView>: UIViewController {
     
     func setNavigationBarSubTitleTextColor(_ color: UIColor?) {
         navigationBar.subTitle.textColor = color
+    }
+    
+    // MARK: - UIGestureRecognizerDelegate
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let navigationController = navigationController else { return false }
+        // Navigation Stack에 쌓인 뷰가 1개를 초과할 때 스와이프 제스처 허용
+        return navigationController.viewControllers.count > 1
     }
     
 }

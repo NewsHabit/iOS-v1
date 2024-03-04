@@ -16,7 +16,11 @@ class TabBarController: UITabBarController {
         setupTabBar()
     }
     
+    // MARK: - Setup TabBar
+    
     private func setupTabBar() {
+        tabBar.tintColor = .label
+        tabBar.backgroundColor = .background
         viewControllers = [
             setupNavigationController(
                 viewController: MainViewController(),
@@ -34,8 +38,6 @@ class TabBarController: UITabBarController {
                 selectedImage: UIImage(systemName: "gearshape.fill")
             )
         ]
-        tabBar.tintColor = .label
-        tabBar.backgroundColor = .background
     }
     
     private func setupNavigationController(viewController: UIViewController, image: UIImage?, selectedImage: UIImage?) -> UIViewController {

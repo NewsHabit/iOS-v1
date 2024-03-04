@@ -12,8 +12,6 @@ import Then
 
 class TodayNewsCountCell: UITableViewCell {
     
-    // MARK: - Properties
-    
     static let reuseIdentifier = "TodayNewsCountCell"
     
     // MARK: - UI Components

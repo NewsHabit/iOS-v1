@@ -12,9 +12,13 @@ import Then
 
 class CategoryCell: UICollectionViewCell {
     
+<<<<<<< HEAD:NewsHabit/Sources/Presenter/Settings/MyNewsHabit/Category/CategoryCell.swift
     // MARK: - Properties
     
     static let reuseIdentifier = "CategoryCell"
+=======
+    static let reuseIdentifier = "KeywordCell"
+>>>>>>> 94cc61ccd02e21ab174bd548d59972abc9802ace:NewsHabit/Sources/Presenter/Settings/MyNewsHabit/Keyword/KeywordCell.swift
     
     // MARK: - UI Components
     

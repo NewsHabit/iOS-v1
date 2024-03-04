@@ -10,8 +10,6 @@ import UIKit
 
 class TodayNewsView: UIView {
     
-    // MARK: - Properties
-    
     var delegate: TodayNewsViewDelegate?
     private var viewModel: TodayNewsViewModel?
     private var cancellables = Set<AnyCancellable>()
@@ -63,8 +61,8 @@ class TodayNewsView: UIView {
                 switch event {
                 case .updateTodayNews:
                     self?.tableView.reloadData()
-                case .updateDaysAllReadCount:
-                    self?.delegate?.updateDaysAllReadCount()
+                case let .navigateTo(newsLink):
+                    self?.delegate?.pushViewController(newsLink)
                 }
             }.store(in: &cancellables)
     }
@@ -78,9 +76,7 @@ extension TodayNewsView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let viewModel = viewModel else { return }
-        viewModel.input.send(.tapNewsCell(indexPath.row))
-        delegate?.pushViewController(viewModel.cellViewModels[indexPath.row].newsLink)
+        viewModel?.input.send(.tapNewsCell(indexPath.row))
     }
     
 }

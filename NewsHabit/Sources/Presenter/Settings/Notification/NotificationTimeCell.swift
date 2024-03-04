@@ -9,13 +9,12 @@ import UIKit
 
 class NotificationTimeCell: UITableViewCell {
     
-    // MARK: - Properties
-    
     static let reuseIdentifier = "NotificationTimeCell"
     
     // MARK: - UI Components
     
     let titleLabel = UILabel().then {
+        $0.text = "시간"
         $0.font = .largeLabelFont
         $0.textColor = .label
     }
@@ -60,6 +59,12 @@ class NotificationTimeCell: UITableViewCell {
             $0.trailing.equalToSuperview().inset(20)
             $0.centerY.equalToSuperview()
         }
+    }
+    
+    // MARK: - Configure
+    
+    func configure(with time: String) {
+        timeLabel.text = time
     }
     
 }

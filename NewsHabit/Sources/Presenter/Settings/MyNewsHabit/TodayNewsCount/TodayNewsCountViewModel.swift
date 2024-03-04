@@ -10,15 +10,6 @@ import Foundation
 
 class TodayNewsCountViewModel {
     
-    @Published var selectedIndex: Int
-    
-    init() {
-        switch UserDefaultsManager.todayNewsCount {
-        case 3: selectedIndex = 0
-        case 4: selectedIndex = 1
-        case 5: selectedIndex = 2
-        default: fatalError()
-        }
-    }
+    @Published var selectedIndex = TodayNewsCountType.index(from: UserDefaultsManager.todayNewsCount.rawValue)
 
 }
