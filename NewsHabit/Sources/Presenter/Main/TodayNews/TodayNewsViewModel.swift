@@ -19,6 +19,7 @@ class TodayNewsViewModel {
     
     enum Output {
         case updateTodayNews
+        case fetchFailed
         case navigateTo(newsLink: String)
     }
     
@@ -37,14 +38,14 @@ class TodayNewsViewModel {
             switch event {
             case .getTodayNews:
                 self.fetchNewsData()
-//                if UserDefaultsManager.lastDate != Date().toCompactDateString() {
-//                    self.fetchNewsData()
-//                } else {
-//                    self.cellViewModels = UserDefaultsManager.todayNews.map {
-//                        TodayNewsCellViewModel($0)
-//                    }
-//                    self.output.send(.updateTodayNews)
-//                }
+                //                if UserDefaultsManager.lastDate != Date().toCompactDateString() {
+                //                    self.fetchNewsData()
+                //                } else {
+                //                    self.cellViewModels = UserDefaultsManager.todayNews.map {
+                //                        TodayNewsCellViewModel($0)
+                //                    }
+                //                    self.output.send(.updateTodayNews)
+                //                }
             case let .tapNewsCell(index):
                 self.setReadNewsItem(index)
                 self.output.send(.navigateTo(newsLink: self.cellViewModels[index].newsLink))
@@ -70,18 +71,20 @@ class TodayNewsViewModel {
                 destination: .queryString,
                 arrayEncoding: .noBrackets,
                 boolEncoding: .literal
-            ), 
-            completion: { (result: Result<TodayNewsResponse, AFError>) in
-            switch result {
-            case let .success(response):
-                self.cellViewModels = response.recommendedNewsResponseDtoList.map { TodayNewsCellViewModel(TodayNewsItemState(newsItem: $0))
+            ),
+            completion: { [weak self] (result: Result<TodayNewsResponse, AFError>) in
+                guard let self = self else { return }
+                switch result {
+                case let .success(response):
+                    self.cellViewModels = response.recommendedNewsResponseDtoList.map { TodayNewsCellViewModel(TodayNewsItemState(newsItem: $0))
+                    }
+                    self.initTodayNewsData()
+                    self.output.send(.updateTodayNews)
+                case let .failure(error):
+                    print("TodayNewsViewModel fetch data : \(error)")
+                    self.output.send(.fetchFailed)
                 }
-                self.initTodayNewsData()
-                self.output.send(.updateTodayNews)
-            case let .failure(error):
-                print("Error: \(error)")
-            }
-        })
+            })
     }
     
     private func initTodayNewsData() {

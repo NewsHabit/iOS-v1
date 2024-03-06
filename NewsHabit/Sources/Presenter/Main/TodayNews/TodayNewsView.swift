@@ -21,6 +21,23 @@ class TodayNewsView: UIView {
         $0.backgroundColor = .clear
     }
     
+    let stackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 10
+        $0.alignment = .center
+    }
+    
+    let faceLabel = UILabel().then {
+        $0.text = "😵‍💫😵‍💫😵‍💫"
+        $0.font = .largeFont
+    }
+    
+    let errorLabel = UILabel().then {
+        $0.text = "아이쿠! 문제가 발생했어요"
+        $0.font = .subTitleFont
+        $0.textColor = .newsHabitGray
+    }
+    
     // MARK: - Initializer
     
     override init(frame: CGRect) {
@@ -43,11 +60,19 @@ class TodayNewsView: UIView {
     
     private func setupHierarchy() {
         addSubview(tableView)
+        tableView.addSubview(stackView)
+        stackView.addArrangedSubview(faceLabel)
+        stackView.addArrangedSubview(errorLabel)
     }
     
     private func setupLayout() {
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        stackView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(30)
+            $0.centerX.equalToSuperview()
         }
     }
     
@@ -58,11 +83,15 @@ class TodayNewsView: UIView {
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
             .receive(on: RunLoop.main)
             .sink { [weak self] event in
+                guard let self = self else { return }
                 switch event {
                 case .updateTodayNews:
-                    self?.tableView.reloadData()
+                    self.stackView.isHidden = true
+                    self.tableView.reloadData()
+                case .fetchFailed:
+                    self.stackView.isHidden = false
                 case let .navigateTo(newsLink):
-                    self?.delegate?.pushViewController(newsLink)
+                    self.delegate?.pushViewController(newsLink)
                 }
             }.store(in: &cancellables)
     }

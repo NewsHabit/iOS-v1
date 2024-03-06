@@ -21,6 +21,23 @@ class HotNewsView: UIView {
         $0.register(HotNewsCell.self, forCellReuseIdentifier: HotNewsCell.reuseIdentifier)
     }
     
+    let stackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 10
+        $0.alignment = .center
+    }
+    
+    let faceLabel = UILabel().then {
+        $0.text = "😵‍💫😵‍💫😵‍💫"
+        $0.font = .largeFont
+    }
+    
+    let errorLabel = UILabel().then {
+        $0.text = "아이쿠! 문제가 발생했어요"
+        $0.font = .subTitleFont
+        $0.textColor = .newsHabitGray
+    }
+    
     // MARK: - Initializer
     
     override init(frame: CGRect) {
@@ -43,11 +60,19 @@ class HotNewsView: UIView {
     
     private func setupHierarchy() {
         addSubview(tableView)
+        tableView.addSubview(stackView)
+        stackView.addArrangedSubview(faceLabel)
+        stackView.addArrangedSubview(errorLabel)
     }
     
     private func setupLayout() {
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        stackView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(30)
+            $0.centerX.equalToSuperview()
         }
     }
     
@@ -61,7 +86,10 @@ class HotNewsView: UIView {
                 guard let self = self else { return }
                 switch event {
                 case .updateHotNews:
+                    self.stackView.isHidden = true
                     self.tableView.reloadData()
+                case .fetchFailed:
+                    self.stackView.isHidden = false
                 case let .navigateTo(newsLink):
                     self.delegate?.pushViewController(newsLink)
                 }

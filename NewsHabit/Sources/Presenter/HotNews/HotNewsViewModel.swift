@@ -19,6 +19,7 @@ class HotNewsViewModel {
     
     enum Output {
         case updateHotNews
+        case fetchFailed
         case navigateTo(newsLink: String)
     }
     
@@ -48,16 +49,21 @@ class HotNewsViewModel {
     // MARK: - Handle News Data
     
     private func fetchNewsData() {
-        APIManager.shared.fetchData("http://localhost:8080/news-habit/issue", completion: { (result: Result<HotNewsResponse, AFError>) in
-            switch result {
-            case let .success(response):
-                self.cellViewModels = response.hotNewsResponseDtoList.map {
-                    HotNewsCellViewModel(newsItem: $0)
+        APIManager.shared.fetchData(
+            "http://localhost:8080/news-habit/issue",
+            completion: { [weak self] (result: Result<HotNewsResponse, AFError>) in
+                guard let self = self else { return }
+                switch result {
+                case .success(let response):
+                    self.cellViewModels = response.hotNewsResponseDtoList.map {
+                        HotNewsCellViewModel(newsItem: $0)
+                    }
+                    self.output.send(.updateHotNews)
+                case .failure(let error):
+                    print("HotNewsViewModel fetch data : \(error)")
+                    self.output.send(.fetchFailed)
                 }
-                self.output.send(.updateHotNews)
-            case let .failure(error):
-                print("Error: \(error)")
-            }
-        })
+            })
     }
+    
 }
