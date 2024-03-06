@@ -21,7 +21,9 @@ class TodayNewsView: UIView {
         $0.backgroundColor = .clear
     }
     
-    let stackView = UIStackView().then {
+    let refreshControl = UIRefreshControl()
+    
+    let errorView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 10
         $0.alignment = .center
@@ -56,13 +58,15 @@ class TodayNewsView: UIView {
     private func setupProperty() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
     
     private func setupHierarchy() {
         addSubview(tableView)
-        tableView.addSubview(stackView)
-        stackView.addArrangedSubview(faceLabel)
-        stackView.addArrangedSubview(errorLabel)
+        tableView.addSubview(errorView)
+        errorView.addArrangedSubview(faceLabel)
+        errorView.addArrangedSubview(errorLabel)
     }
     
     private func setupLayout() {
@@ -70,10 +74,14 @@ class TodayNewsView: UIView {
             $0.edges.equalToSuperview()
         }
         
-        stackView.snp.makeConstraints {
+        errorView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(30)
             $0.centerX.equalToSuperview()
         }
+    }
+    
+    @objc private func handleRefreshControl() {
+        self.viewModel?.input.send(.getTodayNews)
     }
     
     // MARK: - Bind ViewModel
@@ -86,10 +94,12 @@ class TodayNewsView: UIView {
                 guard let self = self else { return }
                 switch event {
                 case .updateTodayNews:
-                    self.stackView.isHidden = true
+                    self.errorView.isHidden = true
                     self.tableView.reloadData()
+                    self.refreshControl.endRefreshing()
                 case .fetchFailed:
-                    self.stackView.isHidden = false
+                    self.errorView.isHidden = false
+                    self.refreshControl.endRefreshing()
                 case let .navigateTo(newsLink):
                     self.delegate?.pushViewController(newsLink)
                 }

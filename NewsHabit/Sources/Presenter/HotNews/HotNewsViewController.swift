@@ -29,7 +29,7 @@ class HotNewsViewController: BaseViewController<HotNewsView>, BaseViewController
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavigationBarSubTitle("\(Date().toFullDateTimeString()) 기준")
-        viewModel.input.send(.viewWillAppear)
+        viewModel.input.send(.getHotNews)
     }
     
     // MARK: - BaseViewControllerProtocol

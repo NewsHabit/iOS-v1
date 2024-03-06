@@ -13,7 +13,7 @@ import Alamofire
 class HotNewsViewModel {
     
     enum Input {
-        case viewWillAppear
+        case getHotNews
         case tapNewsCell(_ index: Int)
     }
     
@@ -36,7 +36,7 @@ class HotNewsViewModel {
         input.sink { [weak self] event in
             guard let self = self else { return }
             switch event {
-            case .viewWillAppear:
+            case .getHotNews:
                 self.fetchNewsData()
                 self.output.send(.updateHotNews)
             case let .tapNewsCell(index):
