@@ -5,9 +5,10 @@
 //  Created by jiyeon on 2/24/24.
 //
 
-import Alamofire
 import Combine
 import Foundation
+
+import Alamofire
 
 class TodayNewsViewModel {
     
@@ -62,33 +63,25 @@ class TodayNewsViewModel {
             "categories": categories,
             "cnt": UserDefaultsManager.todayNewsCount.rawValue
         ]
-        let customEncoding = URLEncoding(
-            destination: .queryString,
-            arrayEncoding: .noBrackets,
-            boolEncoding: .literal
-        )
-        
-        AF.request("http://localhost:8080/news-habit/recommendation",
-                   method: .get,
-                   parameters: parameters,
-                   encoding: customEncoding)
-            .publishDecodable(type: TodayNewsResponse.self)
-            .value() // Publisher에서 값만 추출
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished: break
-                case .failure(let error): print("Error: \(error)")
-                }
-            }, receiveValue: { [weak self] todayNewsResponse in
-                // 성공적으로 응답 받은 경우의 처리
-                guard let self = self else { return }
-                self.cellViewModels = todayNewsResponse.recommendedNewsResponseDtoList.map {
-                    TodayNewsCellViewModel(TodayNewsItemState(newsItem: $0))
+        APIManager.shared.fetchData(
+            "http://localhost:8080/news-habit/recommendation",
+            parameters: parameters,
+            encoding: URLEncoding(
+                destination: .queryString,
+                arrayEncoding: .noBrackets,
+                boolEncoding: .literal
+            ), 
+            completion: { (result: Result<TodayNewsResponse, AFError>) in
+            switch result {
+            case let .success(response):
+                self.cellViewModels = response.recommendedNewsResponseDtoList.map { TodayNewsCellViewModel(TodayNewsItemState(newsItem: $0))
                 }
                 self.initTodayNewsData()
                 self.output.send(.updateTodayNews)
-            })
-            .store(in: &cancellables)
+            case let .failure(error):
+                print("Error: \(error)")
+            }
+        })
     }
     
     private func initTodayNewsData() {

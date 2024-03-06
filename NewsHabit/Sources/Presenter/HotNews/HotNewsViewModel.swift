@@ -5,9 +5,10 @@
 //  Created by jiyeon on 2/22/24.
 //
 
-import Alamofire
 import Combine
 import Foundation
+
+import Alamofire
 
 class HotNewsViewModel {
     
@@ -46,22 +47,17 @@ class HotNewsViewModel {
     
     // MARK: - Handle News Data
     
-    func fetchNewsData() {
-        AF.request("http://localhost:8080/news-habit/issue")
-            .publishDecodable(type: HotNewsResponse.self)
-            .value() // Publisher에서 값만 추출
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished: break
-                case .failure(let error): print("Error: \(error)")
-                }
-            }, receiveValue: { [weak self] hotNewsResponse in
-                guard let self = self else { return }
-                self.cellViewModels = hotNewsResponse.hotNewsResponseDtoList.map {
+    private func fetchNewsData() {
+        APIManager.shared.fetchData("http://localhost:8080/news-habit/issue", completion: { (result: Result<HotNewsResponse, AFError>) in
+            switch result {
+            case let .success(response):
+                self.cellViewModels = response.hotNewsResponseDtoList.map {
                     HotNewsCellViewModel(newsItem: $0)
                 }
                 self.output.send(.updateHotNews)
-            })
-            .store(in: &cancellables)
+            case let .failure(error):
+                print("Error: \(error)")
+            }
+        })
     }
 }
