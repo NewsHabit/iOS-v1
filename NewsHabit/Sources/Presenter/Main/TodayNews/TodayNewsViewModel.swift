@@ -65,7 +65,7 @@ class TodayNewsViewModel {
             "cnt": UserDefaultsManager.todayNewsCount.rawValue
         ]
         APIManager.shared.fetchData(
-            "http://localhost:8080/news-habit/recommendation",
+            "https://3.38.7.130:8080/news-habit/recommendation",
             parameters: parameters,
             encoding: URLEncoding(
                 destination: .queryString,
