@@ -14,11 +14,13 @@ final class APIManager {
     
     static let shared = APIManager()
     private var cancellables = Set<AnyCancellable>()
+    private let serverIP = "http://localhost:8080/news-habit/"
+//    private let serverIP = "https://3.38.7.130/news-habit/"
     
     private init() {}
     
-    func fetchData<T: Decodable>(_ url: String, method: HTTPMethod = .get, parameters: [String: Any]? = nil, encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
-        AF.request(url, method: method, parameters: parameters, encoding: encoding, headers: headers)
+    func fetchData<T: Decodable>(_ uri: String, method: HTTPMethod = .get, parameters: [String: Any]? = nil, encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<T, AFError>) -> Void) {
+        AF.request(serverIP + uri, method: method, parameters: parameters, encoding: encoding, headers: headers)
             .validate()
             .publishDecodable(type: T.self)
             .value()

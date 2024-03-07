@@ -8,6 +8,7 @@
 import UIKit
 
 protocol HotNewsViewDelegate {
+    func updateDate()
     func pushViewController(_ newsLink: String?)
 }
 
@@ -28,7 +29,6 @@ class HotNewsViewController: BaseViewController<HotNewsView>, BaseViewController
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setNavigationBarSubTitle("\(Date().toFullDateTimeString()) 기준")
         viewModel.input.send(.getHotNews)
     }
     
@@ -44,6 +44,10 @@ class HotNewsViewController: BaseViewController<HotNewsView>, BaseViewController
 }
 
 extension HotNewsViewController: HotNewsViewDelegate {
+    
+    func updateDate() {
+        setNavigationBarSubTitle("\(Date().toFullDateTimeString()) 기준")
+    }
     
     func pushViewController(_ newsLink: String?) {
         guard let newsLink = newsLink else { return }

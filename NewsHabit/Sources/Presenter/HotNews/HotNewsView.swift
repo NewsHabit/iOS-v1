@@ -27,6 +27,7 @@ class HotNewsView: UIView {
         $0.axis = .vertical
         $0.spacing = 10
         $0.alignment = .center
+        $0.isHidden = true
     }
     
     let faceLabel = UILabel().then {
@@ -97,6 +98,7 @@ class HotNewsView: UIView {
                     self.errorView.isHidden = true
                     self.tableView.reloadData()
                     self.refreshControl.endRefreshing()
+                    self.delegate?.updateDate()
                 case .fetchFailed:
                     self.errorView.isHidden = false
                     self.refreshControl.endRefreshing()

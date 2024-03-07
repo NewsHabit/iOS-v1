@@ -50,7 +50,7 @@ class HotNewsViewModel {
     
     private func fetchNewsData() {
         APIManager.shared.fetchData(
-            "https://3.38.7.130:8080/news-habit/issue",
+            "issue",
             completion: { [weak self] (result: Result<HotNewsResponse, AFError>) in
                 guard let self = self else { return }
                 switch result {

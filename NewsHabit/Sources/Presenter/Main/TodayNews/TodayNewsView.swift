@@ -27,6 +27,7 @@ class TodayNewsView: UIView {
         $0.axis = .vertical
         $0.spacing = 10
         $0.alignment = .center
+        $0.isHidden = true
     }
     
     let faceLabel = UILabel().then {
