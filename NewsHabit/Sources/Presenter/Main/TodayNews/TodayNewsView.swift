@@ -21,6 +21,26 @@ class TodayNewsView: UIView {
         $0.backgroundColor = .clear
     }
     
+    let refreshControl = UIRefreshControl()
+    
+    let errorView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 10
+        $0.alignment = .center
+        $0.isHidden = true
+    }
+    
+    let faceLabel = UILabel().then {
+        $0.text = "😵‍💫😵‍💫😵‍💫"
+        $0.font = .largeFont
+    }
+    
+    let errorLabel = UILabel().then {
+        $0.text = "아이쿠! 문제가 발생했어요"
+        $0.font = .subTitleFont
+        $0.textColor = .newsHabitGray
+    }
+    
     // MARK: - Initializer
     
     override init(frame: CGRect) {
@@ -39,16 +59,30 @@ class TodayNewsView: UIView {
     private func setupProperty() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
     
     private func setupHierarchy() {
         addSubview(tableView)
+        tableView.addSubview(errorView)
+        errorView.addArrangedSubview(faceLabel)
+        errorView.addArrangedSubview(errorLabel)
     }
     
     private func setupLayout() {
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        errorView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(30)
+            $0.centerX.equalToSuperview()
+        }
+    }
+    
+    @objc private func handleRefreshControl() {
+        self.viewModel?.input.send(.getTodayNews)
     }
     
     // MARK: - Bind ViewModel
@@ -58,11 +92,17 @@ class TodayNewsView: UIView {
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
             .receive(on: RunLoop.main)
             .sink { [weak self] event in
+                guard let self = self else { return }
                 switch event {
                 case .updateTodayNews:
-                    self?.tableView.reloadData()
+                    self.errorView.isHidden = true
+                    self.tableView.reloadData()
+                    self.refreshControl.endRefreshing()
+                case .fetchFailed:
+                    self.errorView.isHidden = false
+                    self.refreshControl.endRefreshing()
                 case let .navigateTo(newsLink):
-                    self?.delegate?.pushViewController(newsLink)
+                    self.delegate?.pushViewController(newsLink)
                 }
             }.store(in: &cancellables)
     }

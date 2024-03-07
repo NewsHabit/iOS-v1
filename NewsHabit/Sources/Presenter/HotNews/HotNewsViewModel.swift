@@ -5,19 +5,21 @@
 //  Created by jiyeon on 2/22/24.
 //
 
-import Alamofire
 import Combine
 import Foundation
+
+import Alamofire
 
 class HotNewsViewModel {
     
     enum Input {
-        case viewWillAppear
+        case getHotNews
         case tapNewsCell(_ index: Int)
     }
     
     enum Output {
         case updateHotNews
+        case fetchFailed
         case navigateTo(newsLink: String)
     }
     
@@ -34,7 +36,7 @@ class HotNewsViewModel {
         input.sink { [weak self] event in
             guard let self = self else { return }
             switch event {
-            case .viewWillAppear:
+            case .getHotNews:
                 self.fetchNewsData()
                 self.output.send(.updateHotNews)
             case let .tapNewsCell(index):
@@ -46,22 +48,22 @@ class HotNewsViewModel {
     
     // MARK: - Handle News Data
     
-    func fetchNewsData() {
-        AF.request("http://localhost:8080/news-habit/issue")
-            .publishDecodable(type: HotNewsResponse.self)
-            .value() // Publisher에서 값만 추출
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished: break
-                case .failure(let error): print("Error: \(error)")
-                }
-            }, receiveValue: { [weak self] hotNewsResponse in
+    private func fetchNewsData() {
+        APIManager.shared.fetchData(
+            "issue",
+            completion: { [weak self] (result: Result<HotNewsResponse, AFError>) in
                 guard let self = self else { return }
-                self.cellViewModels = hotNewsResponse.hotNewsResponseDtoList.map {
-                    HotNewsCellViewModel(newsItem: $0)
+                switch result {
+                case .success(let response):
+                    self.cellViewModels = response.hotNewsResponseDtoList.map {
+                        HotNewsCellViewModel(newsItem: $0)
+                    }
+                    self.output.send(.updateHotNews)
+                case .failure(let error):
+                    print("HotNewsViewModel fetch data : \(error)")
+                    self.output.send(.fetchFailed)
                 }
-                self.output.send(.updateHotNews)
             })
-            .store(in: &cancellables)
     }
+    
 }

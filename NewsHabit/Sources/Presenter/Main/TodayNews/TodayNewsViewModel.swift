@@ -5,9 +5,10 @@
 //  Created by jiyeon on 2/24/24.
 //
 
-import Alamofire
 import Combine
 import Foundation
+
+import Alamofire
 
 class TodayNewsViewModel {
     
@@ -18,6 +19,7 @@ class TodayNewsViewModel {
     
     enum Output {
         case updateTodayNews
+        case fetchFailed
         case navigateTo(newsLink: String)
     }
     
@@ -35,15 +37,15 @@ class TodayNewsViewModel {
             guard let self = self else { return }
             switch event {
             case .getTodayNews:
-                if UserDefaultsManager.lastDate != Date().toCompactDateString() {
-                    self.fetchNewsData()
-                    self.initTodayNewsData()
-                } else {
-                    self.cellViewModels = UserDefaultsManager.todayNews.map {
-                        TodayNewsCellViewModel($0)
-                    }
-                }
-                self.output.send(.updateTodayNews)
+                self.fetchNewsData()
+                //                if UserDefaultsManager.lastDate != Date().toCompactDateString() {
+                //                    self.fetchNewsData()
+                //                } else {
+                //                    self.cellViewModels = UserDefaultsManager.todayNews.map {
+                //                        TodayNewsCellViewModel($0)
+                //                    }
+                //                    self.output.send(.updateTodayNews)
+                //                }
             case let .tapNewsCell(index):
                 self.setReadNewsItem(index)
                 self.output.send(.navigateTo(newsLink: self.cellViewModels[index].newsLink))
@@ -60,29 +62,29 @@ class TodayNewsViewModel {
         }
         let parameters:[String: Any] = [
             "categories": categories,
-            "cnt": categories.count
+            "cnt": UserDefaultsManager.todayNewsCount.rawValue
         ]
-        AF.request("http://localhost:8080/news-habit/recommendation",
-                   method: .get,
-                   parameters: parameters,
-                   encoding: URLEncoding.queryString)
-            .publishDecodable(type: TodayNewsResponse.self)
-            .value() // Publisher에서 값만 추출
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished: break
-                case .failure(let error): print("Error: \(error)")
-                }
-            }, receiveValue: { [weak self] todayNewsResponse in
-                // 성공적으로 응답 받은 경우의 처리
+        APIManager.shared.fetchData(
+            "recommendation",
+            parameters: parameters,
+            encoding: URLEncoding(
+                destination: .queryString,
+                arrayEncoding: .noBrackets,
+                boolEncoding: .literal
+            ),
+            completion: { [weak self] (result: Result<TodayNewsResponse, AFError>) in
                 guard let self = self else { return }
-                self.cellViewModels = todayNewsResponse.recommendedNewsResponseDtoList.map {
-                    TodayNewsCellViewModel(TodayNewsItemState(newsItem: $0))
+                switch result {
+                case let .success(response):
+                    self.cellViewModels = response.recommendedNewsResponseDtoList.map { TodayNewsCellViewModel(TodayNewsItemState(newsItem: $0))
+                    }
+                    self.initTodayNewsData()
+                    self.output.send(.updateTodayNews)
+                case let .failure(error):
+                    print("TodayNewsViewModel fetch data : \(error)")
+                    self.output.send(.fetchFailed)
                 }
-                self.initTodayNewsData()
-                self.output.send(.updateTodayNews)
             })
-            .store(in: &cancellables)
     }
     
     private func initTodayNewsData() {

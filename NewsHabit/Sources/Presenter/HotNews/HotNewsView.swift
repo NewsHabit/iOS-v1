@@ -21,6 +21,26 @@ class HotNewsView: UIView {
         $0.register(HotNewsCell.self, forCellReuseIdentifier: HotNewsCell.reuseIdentifier)
     }
     
+    let refreshControl = UIRefreshControl()
+    
+    let errorView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 10
+        $0.alignment = .center
+        $0.isHidden = true
+    }
+    
+    let faceLabel = UILabel().then {
+        $0.text = "😵‍💫😵‍💫😵‍💫"
+        $0.font = .largeFont
+    }
+    
+    let errorLabel = UILabel().then {
+        $0.text = "아이쿠! 문제가 발생했어요"
+        $0.font = .subTitleFont
+        $0.textColor = .newsHabitGray
+    }
+    
     // MARK: - Initializer
     
     override init(frame: CGRect) {
@@ -39,16 +59,30 @@ class HotNewsView: UIView {
     private func setupProperty() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
     }
     
     private func setupHierarchy() {
         addSubview(tableView)
+        tableView.addSubview(errorView)
+        errorView.addArrangedSubview(faceLabel)
+        errorView.addArrangedSubview(errorLabel)
     }
     
     private func setupLayout() {
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        errorView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(30)
+            $0.centerX.equalToSuperview()
+        }
+    }
+    
+    @objc private func handleRefreshControl() {
+        self.viewModel?.input.send(.getHotNews)
     }
     
     // MARK: - Bind ViewModel
@@ -61,7 +95,13 @@ class HotNewsView: UIView {
                 guard let self = self else { return }
                 switch event {
                 case .updateHotNews:
+                    self.errorView.isHidden = true
                     self.tableView.reloadData()
+                    self.refreshControl.endRefreshing()
+                    self.delegate?.updateDate()
+                case .fetchFailed:
+                    self.errorView.isHidden = false
+                    self.refreshControl.endRefreshing()
                 case let .navigateTo(newsLink):
                     self.delegate?.pushViewController(newsLink)
                 }
