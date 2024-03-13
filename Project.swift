@@ -24,7 +24,8 @@ class NewsHabitFactory: ProjectFactory {
     
     let infoPlist: [String: Plist.Value] = [
         "ITSAppUsesNonExemptEncryption": .boolean(false),
-        "CFBundleName": .string("NewsHabit"),
+        "CFBundleDisplayName": .string("뉴빗"),
+        "CFBundleName": .string("뉴빗"),
         "CFBundleShortVersionString": .string("1.2.1"),
         "CFBundleVersion": .string("1"),
         "UILaunchStoryboardName": .string("LaunchScreen"),
