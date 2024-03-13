@@ -45,9 +45,7 @@ class MainView: UIView {
     
     let todayNewsView = TodayNewsView()
     
-    let monthlyRecordView = UIView().then {
-        $0.backgroundColor = .systemYellow.withAlphaComponent(0.1)
-    }
+    let monthlyRecordView = MonthlyRecordView()
     
     // MARK: - Initializer
     
