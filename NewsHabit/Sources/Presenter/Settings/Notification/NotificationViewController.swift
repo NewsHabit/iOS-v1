@@ -48,12 +48,15 @@ extension NotificationViewController: NotificationViewDelegate {
             preferredStyle: .alert
         )
         
-        let action = UIAlertAction(
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        let navigateAction = UIAlertAction(
             title: "설정으로 이동",
             style: .default,
             handler: openAppSettings
         )
-        alertController.addAction(action)
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(navigateAction)
         
         present(alertController, animated: true)
     }
