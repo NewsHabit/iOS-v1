@@ -22,8 +22,6 @@ class SettingsViewModel {
     
     // MARK: - Properties
     
-    let developerInfoLink = "https://pewter-stew-6eb.notion.site/NewsHabit-4e3d8f5374b94fb393be12c2b04fd434?pvs=4"
-    
     var settingsItems = [
         SettingsItem(
             type: .profile,

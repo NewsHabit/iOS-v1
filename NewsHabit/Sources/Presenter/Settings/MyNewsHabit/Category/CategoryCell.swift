@@ -37,7 +37,6 @@ class CategoryCell: UICollectionViewCell {
     // MARK: - Setup Methods
     
     private func setupProperty() {
-        backgroundColor = .clear
         clipsToBounds = true
         layer.cornerRadius = 13
     }

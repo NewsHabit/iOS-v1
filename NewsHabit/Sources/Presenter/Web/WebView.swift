@@ -8,6 +8,7 @@
 import UIKit
 import WebKit
 
+import Alamofire
 import SnapKit
 import Then
 
@@ -47,7 +48,7 @@ class WebView: UIView {
     
     private func setupProperty() {
         webView.navigationDelegate = self
-
+        
         progressObserver = webView.observe(\.estimatedProgress, options: .new) { [weak self] webView, _ in
             self?.progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         }
@@ -68,11 +69,26 @@ class WebView: UIView {
         }
     }
     
-    // MARK: - Load Link
+    // MARK: - Load
     
     func loadLink(_ urlString: String?) {
         guard let urlString = urlString, let url = URL(string: urlString) else { return }
         webView.load(URLRequest(url: url))
+    }
+    
+    func loadHtmlContent() {
+        
+        APIManager.shared.fetchHtmlContent("") { result in
+            switch result {
+            case .success(let htmlData):
+                DispatchQueue.main.async {
+                    guard let baseURL = URL(string: APIManager.shared.serverIP) else { return }
+                    self.webView.load(htmlData, mimeType: "text/html", characterEncodingName: "UTF-8", baseURL: baseURL)
+                }
+            case .failure(let error):
+                print("Error fetching HTML content: \(error)")
+            }
+        }
     }
     
 }
@@ -83,5 +99,5 @@ extension WebView: WKNavigationDelegate {
         // 로딩 완료 시 프로그레스 바 숨김
         progressView.isHidden = true
     }
-
+    
 }

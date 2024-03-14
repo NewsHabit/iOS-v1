@@ -111,7 +111,7 @@ class HotNewsCell: UITableViewCell {
     private func loadImage(from urlString: String?) {
         guard let urlString = urlString else { return }
         
-        APIManager.shared.downloadImageData(from: urlString) { [weak self] result in
+        APIManager.shared.fetchImageData(from: urlString) { [weak self] result in
             switch result {
             case .success(let data):
                 guard let image = UIImage(data: data) else { return }

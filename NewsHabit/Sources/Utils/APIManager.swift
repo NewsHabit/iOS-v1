@@ -14,7 +14,7 @@ final class APIManager {
     
     static let shared = APIManager()
     private var cancellables = Set<AnyCancellable>()
-    private let serverIP = "https://newshabit.org/news-habit/"
+    let serverIP = "https://newshabit.org/news-habit"
     
     private init() {}
     
@@ -35,10 +35,16 @@ final class APIManager {
             .store(in: &cancellables)
     }
     
-    func downloadImageData(from urlString: String, completion: @escaping (Result<Data, AFError>) -> Void) {
+    func fetchImageData(from urlString: String, completion: @escaping (Result<Data, AFError>) -> Void) {
         AF.request(urlString).responseData { response in
             completion(response.result)
         }
+    }
+    
+    func fetchHtmlContent(_ uri: String, method: HTTPMethod = .get, parameters: [String: Any]? = nil, encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<Data, AFError>) -> Void) {
+        AF.request(serverIP + uri, method: method, parameters: parameters, encoding: encoding, headers: headers).responseData { response in
+                completion(response.result)
+            }
     }
     
 }
