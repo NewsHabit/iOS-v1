@@ -8,6 +8,7 @@
 import UIKit
 import WebKit
 
+import Alamofire
 import SnapKit
 import Then
 
@@ -76,11 +77,13 @@ class WebView: UIView {
     }
     
     func loadHtmlContent() {
+        
         APIManager.shared.fetchHtmlContent("") { result in
             switch result {
-            case .success(let htmlString):
+            case .success(let htmlData):
                 DispatchQueue.main.async {
-                    self.webView.loadHTMLString(htmlString, baseURL: nil)
+                    guard let baseURL = URL(string: APIManager.shared.serverIP) else { return }
+                    self.webView.load(htmlData, mimeType: "text/html", characterEncodingName: "UTF-8", baseURL: baseURL)
                 }
             case .failure(let error):
                 print("Error fetching HTML content: \(error)")

@@ -64,7 +64,7 @@ class TodayNewsViewModel {
             "cnt": UserDefaultsManager.todayNewsCount.rawValue
         ]
         APIManager.shared.fetchData(
-            "recommendation",
+            "/recommendation",
             parameters: parameters,
             encoding: URLEncoding(
                 destination: .queryString,

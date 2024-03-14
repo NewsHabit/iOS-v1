@@ -14,7 +14,7 @@ final class APIManager {
     
     static let shared = APIManager()
     private var cancellables = Set<AnyCancellable>()
-    let serverIP = "https://newshabit.org/news-habit/"
+    let serverIP = "https://newshabit.org/news-habit"
     
     private init() {}
     
@@ -41,10 +41,8 @@ final class APIManager {
         }
     }
     
-    func fetchHtmlContent(_ uri: String, method: HTTPMethod = .get, parameters: [String: Any]? = nil, encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<String, AFError>) -> Void) {
-        AF.request(serverIP + uri, method: method, parameters: parameters, encoding: encoding, headers: headers)
-            .validate()
-            .responseString { response in
+    func fetchHtmlContent(_ uri: String, method: HTTPMethod = .get, parameters: [String: Any]? = nil, encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<Data, AFError>) -> Void) {
+        AF.request(serverIP + uri, method: method, parameters: parameters, encoding: encoding, headers: headers).responseData { response in
                 completion(response.result)
             }
     }
