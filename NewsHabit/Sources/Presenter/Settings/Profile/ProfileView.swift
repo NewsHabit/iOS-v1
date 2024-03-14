@@ -29,6 +29,7 @@ class ProfileView: UIView {
     }
     
     let textField = UITextField().then {
+        $0.placeholder = "이름 (최대 6글자)"
         $0.text = UserDefaultsManager.username
         $0.font = .labelFont
         $0.borderStyle = .roundedRect
@@ -70,6 +71,8 @@ class ProfileView: UIView {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
+        
+        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         textField.becomeFirstResponder()
     }
     
@@ -105,11 +108,20 @@ class ProfileView: UIView {
     // MARK: - Action Functions
     
     @objc private func handleSaveButtonTap() {
-        guard let username = textField.text else { return }
+        guard let username = textField.text, !username.isEmpty, username.count <= 6 else { return }
         UserDefaultsManager.username = username
         endEditing(true)
         delegate?.popViewController()
     }
+    
+    @objc private func textFieldDidChange(_ textField: UITextField) {
+        if let text = textField.text {
+            let isValid = !text.isEmpty && text.count <= 6
+            saveButton.isEnabled = isValid
+            saveButton.backgroundColor = isValid ? .black : .newsHabitLightGray
+        }
+    }
+
     
     @objc private func keyboardWillShow(notification: NSNotification) {
         guard let delegate = delegate,
