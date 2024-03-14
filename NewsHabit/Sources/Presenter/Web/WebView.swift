@@ -47,7 +47,7 @@ class WebView: UIView {
     
     private func setupProperty() {
         webView.navigationDelegate = self
-
+        
         progressObserver = webView.observe(\.estimatedProgress, options: .new) { [weak self] webView, _ in
             self?.progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         }
@@ -68,11 +68,24 @@ class WebView: UIView {
         }
     }
     
-    // MARK: - Load Link
+    // MARK: - Load
     
     func loadLink(_ urlString: String?) {
         guard let urlString = urlString, let url = URL(string: urlString) else { return }
         webView.load(URLRequest(url: url))
+    }
+    
+    func loadHtmlContent() {
+        APIManager.shared.fetchHtmlContent("") { result in
+            switch result {
+            case .success(let htmlString):
+                DispatchQueue.main.async {
+                    self.webView.loadHTMLString(htmlString, baseURL: nil)
+                }
+            case .failure(let error):
+                print("Error fetching HTML content: \(error)")
+            }
+        }
     }
     
 }
@@ -83,5 +96,5 @@ extension WebView: WKNavigationDelegate {
         // 로딩 완료 시 프로그레스 바 숨김
         progressView.isHidden = true
     }
-
+    
 }

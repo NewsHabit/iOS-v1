@@ -55,8 +55,7 @@ class MonthlyRecordView: UIView {
     
     private func setupLayout() {
         stackView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(50)
-            $0.centerX.equalToSuperview()
+            $0.center.equalToSuperview()
         }
     }
     
