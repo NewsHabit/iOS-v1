@@ -23,23 +23,7 @@ class TodayNewsView: UIView {
     
     let refreshControl = UIRefreshControl()
     
-    let errorView = UIStackView().then {
-        $0.axis = .vertical
-        $0.spacing = 10
-        $0.alignment = .center
-        $0.isHidden = true
-    }
-    
-    let faceLabel = UILabel().then {
-        $0.text = "😵‍💫😵‍💫😵‍💫"
-        $0.font = .largeFont
-    }
-    
-    let errorLabel = UILabel().then {
-        $0.text = "아이쿠! 문제가 발생했어요"
-        $0.font = .subTitleFont
-        $0.textColor = .newsHabitGray
-    }
+    let errorView = ErrorView()
     
     // MARK: - Initializer
     
@@ -66,8 +50,6 @@ class TodayNewsView: UIView {
     private func setupHierarchy() {
         addSubview(tableView)
         tableView.addSubview(errorView)
-        errorView.addArrangedSubview(faceLabel)
-        errorView.addArrangedSubview(errorLabel)
     }
     
     private func setupLayout() {
@@ -76,8 +58,7 @@ class TodayNewsView: UIView {
         }
         
         errorView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(30)
-            $0.centerX.equalToSuperview()
+            $0.center.equalToSuperview()
         }
     }
     

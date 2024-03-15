@@ -26,6 +26,10 @@ class WebView: UIView {
         $0.sizeToFit()
     }
     
+    let errorView = ErrorView().then {
+        $0.isHidden = true
+    }
+    
     // MARK: - Initializer
     
     override init(frame: CGRect) {
@@ -57,6 +61,7 @@ class WebView: UIView {
     private func setupHierarchy() {
         addSubview(webView)
         addSubview(progressView)
+        addSubview(errorView)
     }
     
     private func setupLayout() {
@@ -66,6 +71,10 @@ class WebView: UIView {
         
         progressView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
+        }
+        
+        errorView.snp.makeConstraints {
+            $0.center.equalToSuperview()
         }
     }
     
@@ -77,7 +86,6 @@ class WebView: UIView {
     }
     
     func loadHtmlContent() {
-        
         APIManager.shared.fetchHtmlContent("") { result in
             switch result {
             case .success(let htmlData):
@@ -87,6 +95,8 @@ class WebView: UIView {
                 }
             case .failure(let error):
                 print("Error fetching HTML content: \(error)")
+                self.webView.isHidden = true
+                self.errorView.isHidden = false
             }
         }
     }
