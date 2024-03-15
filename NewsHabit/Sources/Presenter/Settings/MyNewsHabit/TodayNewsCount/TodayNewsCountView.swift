@@ -22,6 +22,12 @@ class TodayNewsCountView: UIView {
         $0.font = .cellTitleFont
     }
     
+    let subTitleLabel = UILabel().then {
+        $0.text = "변경 시 내일부터 적용돼요"
+        $0.textColor = .newsHabitGray
+        $0.font = .subTitleFont
+    }
+    
     let tableView = UITableView().then {
         $0.backgroundColor = .clear
         $0.separatorStyle = .none
@@ -60,6 +66,7 @@ class TodayNewsCountView: UIView {
     
     private func setupHierarchy() {
         addSubview(titleLabel)
+        addSubview(subTitleLabel)
         addSubview(tableView)
         addSubview(saveButton)
     }
@@ -70,8 +77,13 @@ class TodayNewsCountView: UIView {
             $0.leading.equalToSuperview().inset(30)
         }
         
+        subTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(5)
+            $0.leading.equalTo(titleLabel.snp.leading)
+        }
+        
         tableView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(30)
+            $0.top.equalTo(subTitleLabel.snp.bottom).offset(30)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(saveButton.snp.top).offset(20)
         }

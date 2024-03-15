@@ -39,8 +39,8 @@ class NotificationCenterManager {
     
     func addNotification(for date: Date, with identifier: String = UUID().uuidString) {
         let content = UNMutableNotificationContent()
-        content.title = "뉴빗"
-        content.body = "뉴스도 습관처럼 📰\n오늘의 뉴스가 도착했어요"
+        content.title = "뉴스를 습관처럼"
+        content.body = "\(UserDefaultsManager.username)님을 위한 뉴스가 도착했어요"
         content.sound = .default
         
         let triggerDate = Calendar.current.dateComponents([.hour, .minute], from: date)

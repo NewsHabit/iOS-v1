@@ -17,10 +17,16 @@ class CategoryView: UIView {
     // MARK: - UI Components
     
     let titleLabel = UILabel().then {
-        $0.text = "선택한 키워드와 관련된 기사를 매일 추천해드릴게요"
+        $0.text = "선택한 카테고리와 관련된 기사를 매일 추천해드릴게요"
         $0.textColor = .label
         $0.font = .cellTitleFont
         $0.numberOfLines = 0
+    }
+    
+    let subTitleLabel = UILabel().then {
+        $0.text = "변경 시 내일부터 적용돼요"
+        $0.textColor = .newsHabitGray
+        $0.font = .subTitleFont
     }
     
     let collectionView = UICollectionView(
@@ -67,6 +73,7 @@ class CategoryView: UIView {
     
     private func setupHierarchy() {
         addSubview(titleLabel)
+        addSubview(subTitleLabel)
         addSubview(collectionView)
         addSubview(saveButton)
     }
@@ -77,8 +84,13 @@ class CategoryView: UIView {
             $0.leading.equalToSuperview().inset(30)
         }
         
+        subTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(5)
+            $0.leading.equalTo(titleLabel.snp.leading)
+        }
+        
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(30)
+            $0.top.equalTo(subTitleLabel.snp.bottom).offset(30)
             $0.leading.trailing.equalToSuperview().inset(30)
             $0.bottom.equalTo(saveButton.snp.top).offset(20)
         }

@@ -14,7 +14,7 @@ final class APIManager {
     
     static let shared = APIManager()
     private var cancellables = Set<AnyCancellable>()
-    let serverIP = "https://newshabit.org/news-habit"
+    let serverIP = "https://newshabit.org"
     
     private init() {}
     
