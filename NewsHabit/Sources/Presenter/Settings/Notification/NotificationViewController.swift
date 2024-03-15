@@ -43,8 +43,8 @@ extension NotificationViewController: NotificationViewDelegate {
     
     func showAlert() {
         let alertController = UIAlertController(
-            title: "알림 권한 필요",
-            message: "알림을 통해 키워드 뉴스를 바로 받아보세요. 설정에서 언제든지 이를 변경할 수 있습니다.",
+            title: "알림 권한 요청",
+            message: "알림을 통해 추천 뉴스를 바로 받아보세요. 설정에서 언제든지 이를 변경할 수 있습니다.",
             preferredStyle: .alert
         )
         

@@ -45,9 +45,9 @@ class NotificationViewModel {
     
     private func handleNotification(_ isOn: Bool) {
         UserDefaultsManager.isNotificationOn = isOn
+        NotificationCenterManager.shared.removeAllPendingNotificationRequests()
         
-        if !isOn { // 알림을 끄는 경우 설정했던 모든 알림을 제거합니다.
-            NotificationCenterManager.shared.removeAllPendingNotificationRequests()
+        if !isOn {
             self.output.send(.updateNotification)
             return
         }

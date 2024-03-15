@@ -31,7 +31,7 @@ class MainViewController: BaseViewController<MainView>, BaseViewControllerProtoc
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavigationBarLargeTitle("\(UserDefaultsManager.username)님의 뉴빗")
-        setNavigationBarSubTitle("👀 \(UserDefaultsManager.daysAllRead)일 째 모두 읽으셨어요!")
+        setNavigationBarSubTitle("👀 \(UserDefaultsManager.daysAllRead)일 째 모두 읽었어요!")
     }
     
     // MARK: - BaseViewControllerProtocol
