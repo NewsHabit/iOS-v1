@@ -27,7 +27,7 @@ class CompactDateFormatter: DateFormatter {
     
     override init() {
         super.init()
-        dateFormat = "yyMMddHH"
+        dateFormat = "yyMMdd"
     }
 
     required init?(coder: NSCoder) {
