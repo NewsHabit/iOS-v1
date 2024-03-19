@@ -20,6 +20,7 @@ class TodayNewsViewModel {
     enum Output {
         case updateTodayNews
         case fetchFailed
+        case updateDaysAllRead
         case navigateTo(newsLink: String)
     }
     
@@ -99,7 +100,9 @@ class TodayNewsViewModel {
         
         let todayReadCount = cellViewModels.filter { $0.isRead }.count
         if todayReadCount == UserDefaultsManager.todayNews.count {
-            UserDefaultsManager.daysAllRead += 1
+            UserDefaultsManager.numOfDaysAllRead += 1
+            UserDefaultsManager.daysAllRead.append(Date().toDayString())
+            output.send(.updateDaysAllRead)
         }
     }
     

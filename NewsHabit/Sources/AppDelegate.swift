@@ -12,6 +12,11 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // 이번 달 기록 설정
+        if UserDefaultsManager.lastMonth != Date().toMonthString() {
+            UserDefaultsManager.lastMonth = Date().toMonthString()
+            UserDefaultsManager.daysAllRead = []
+        }
         // 알림 센터의 delegate 설정
         UNUserNotificationCenter.current().delegate = self
         return true

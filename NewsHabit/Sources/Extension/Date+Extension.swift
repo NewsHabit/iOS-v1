@@ -42,11 +42,39 @@ class SimpleTimeFormatter: DateFormatter {
     override init() {
         super.init()
         dateFormat = "hh:mm a"
+        locale = Locale(identifier: "en_US_POSIX") // 12시간제 AM/PM 표기 로케일
+        timeZone = TimeZone(identifier: "Asia/Seoul")
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+class MonthFormatter: DateFormatter {
+    
+    override init() {
+        super.init()
+        dateFormat = "yyMM"
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
+class DayFormatter: DateFormatter {
+    
+    override init() {
+        super.init()
+        dateFormat = "dd"
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 }
 
 extension Date {
@@ -64,6 +92,14 @@ extension Date {
     /// 시간을 간단한 형태의 문자열로 변환
     func toSimpleTimeString() -> String {
         return SimpleTimeFormatter().string(from: self)
+    }
+    
+    func toMonthString() -> String {
+        return MonthFormatter().string(from: self)
+    }
+    
+    func toDayString() -> String {
+        return DayFormatter().string(from: self)
     }
     
 }
