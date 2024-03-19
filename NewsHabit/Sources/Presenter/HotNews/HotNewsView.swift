@@ -49,7 +49,7 @@ class HotNewsView: UIView {
     
     private func setupHierarchy() {
         addSubview(tableView)
-        tableView.addSubview(errorView)
+        addSubview(errorView)
     }
     
     private func setupLayout() {
@@ -77,11 +77,13 @@ class HotNewsView: UIView {
                 switch event {
                 case .updateHotNews:
                     self.errorView.isHidden = true
+                    self.tableView.isHidden = false
                     self.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                     self.delegate?.updateDate()
                 case .fetchFailed:
                     self.errorView.isHidden = false
+                    self.tableView.isHidden = true
                     self.refreshControl.endRefreshing()
                 case let .navigateTo(newsLink):
                     self.delegate?.pushViewController(newsLink)

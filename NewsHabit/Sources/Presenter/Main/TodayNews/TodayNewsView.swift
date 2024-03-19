@@ -77,10 +77,12 @@ class TodayNewsView: UIView {
                 switch event {
                 case .updateTodayNews:
                     self.errorView.isHidden = true
+                    self.tableView.isHidden = false
                     self.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 case .fetchFailed:
                     self.errorView.isHidden = false
+                    self.tableView.isHidden = true
                     self.refreshControl.endRefreshing()
                 case let .navigateTo(newsLink):
                     self.delegate?.pushViewController(newsLink)

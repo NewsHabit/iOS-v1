@@ -38,7 +38,6 @@ class HotNewsViewModel {
             switch event {
             case .getHotNews:
                 self.fetchNewsData()
-                self.output.send(.updateHotNews)
             case let .tapNewsCell(index):
                 self.output.send(.navigateTo(newsLink: cellViewModels[index].newsLink))
             }
