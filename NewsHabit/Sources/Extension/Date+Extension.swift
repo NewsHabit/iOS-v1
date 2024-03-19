@@ -42,6 +42,8 @@ class SimpleTimeFormatter: DateFormatter {
     override init() {
         super.init()
         dateFormat = "hh:mm a"
+        locale = Locale(identifier: "en_US_POSIX") // 12시간제 AM/PM 표기 로케일
+        timeZone = TimeZone(identifier: "Asia/Seoul")
     }
 
     required init?(coder: NSCoder) {
@@ -53,7 +55,7 @@ class MonthFormatter: DateFormatter {
     
     override init() {
         super.init()
-        dateFormat = "MM"
+        dateFormat = "yyMM"
     }
 
     required init?(coder: NSCoder) {

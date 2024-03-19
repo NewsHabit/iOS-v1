@@ -32,7 +32,8 @@ class NotificationView: UIView {
     
     let datePicker = UIDatePicker().then {
         $0.datePickerMode = .time
-        $0.timeZone = .current
+        $0.locale = Locale(identifier: "en_US_POSIX") // 12시간제 AM/PM 표기 로케일
+        $0.timeZone = TimeZone(identifier: "Asia/Seoul")
         $0.preferredDatePickerStyle = .wheels
     }
     
