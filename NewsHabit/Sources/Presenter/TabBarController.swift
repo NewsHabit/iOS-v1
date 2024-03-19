@@ -14,6 +14,7 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBar()
+        delegate = self
     }
     
     // MARK: - Setup TabBar
@@ -21,6 +22,7 @@ class TabBarController: UITabBarController {
     private func setupTabBar() {
         tabBar.tintColor = .label
         tabBar.backgroundColor = .background
+        
         viewControllers = [
             setupNavigationController(
                 viewController: MainViewController(),
@@ -49,4 +51,25 @@ class TabBarController: UITabBarController {
         return UINavigationController(rootViewController: viewController)
     }
     
+}
+
+extension TabBarController: UITabBarControllerDelegate {
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        if let currentVC = selectedViewController, currentVC == viewController {
+            if let navVC = viewController as? UINavigationController, let topVC = navVC.viewControllers.first {
+                scrollToTop(viewController: topVC)
+            }
+            return false // 같은 탭을 다시 선택했을 때의 기본 동작을 방지
+        }
+        return true
+    }
+    
+    private func scrollToTop(viewController: UIViewController) {
+        if let mainViewController = viewController as? MainViewController {
+            mainViewController.scrollToTop()
+        } else if let hotViewController = viewController as? HotNewsViewController {
+            hotViewController.scrollToTop()
+        }
+    }
 }

@@ -10,6 +10,7 @@ import UIKit
 protocol TodayNewsViewDelegate {
     func pushViewController(_ newsLink: String?)
     func updateDaysAllReadCount()
+    func scrollToTop()
 }
 
 class MainViewController: BaseViewController<MainView>, BaseViewControllerProtocol {
@@ -57,6 +58,11 @@ extension MainViewController: TodayNewsViewDelegate {
     
     func updateDaysAllReadCount() {
         setNavigationBarSubTitle("👀 \(UserDefaultsManager.daysAllRead)일 째 모두 읽으셨어요!")
+    }
+    
+    func scrollToTop() {
+        guard let contentView = contentView as? MainView else { return }
+        contentView.todayNewsView.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
     }
     
 }
