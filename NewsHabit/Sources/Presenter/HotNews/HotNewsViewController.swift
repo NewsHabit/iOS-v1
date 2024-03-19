@@ -10,6 +10,7 @@ import UIKit
 protocol HotNewsViewDelegate {
     func updateDate()
     func pushViewController(_ newsLink: String?)
+    func scrollToTop()
 }
 
 class HotNewsViewController: BaseViewController<HotNewsView>, BaseViewControllerProtocol {
@@ -54,6 +55,11 @@ extension HotNewsViewController: HotNewsViewDelegate {
         let newsViewController = WebViewController()
         newsViewController.urlString = newsLink
         navigationController?.pushViewController(newsViewController, animated: true)
+    }
+    
+    func scrollToTop() {
+        guard let contentView = contentView as? HotNewsView else { return }
+        contentView.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
     }
     
 }
