@@ -30,11 +30,17 @@ struct UserDefaultsManager {
     @UserDefaultsData(key: "todayNews", defaultValue: [])
     static var todayNews: [TodayNewsItemState]
     
-    @UserDefaultsData(key: "daysAllRead", defaultValue: 0)
-    static var daysAllRead: Int
+    @UserDefaultsData(key: "numOfDaysAllRead", defaultValue: 0)
+    static var numOfDaysAllRead: Int
     
     @UserDefaultsData(key: "lastDate", defaultValue: "")
     static var lastDate: String
+    
+    @UserDefaultsData(key: "lastMonth", defaultValue: "")
+    static var lastMonth: String
+    
+    @UserDefaultsData(key: "daysAllRead", defaultValue: [])
+    static var daysAllRead: [String]
 
 }
 

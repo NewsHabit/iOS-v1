@@ -12,31 +12,38 @@ import Then
 
 class MonthlyRecordView: UIView {
     
+    var daysInCurrentMonth: Int {
+        let calendar = Calendar.current
+        let range = calendar.range(of: .day, in: .month, for: Date())!
+        return range.count
+    }
+    
+    var firstWeekdayInCurrentMonth: Int {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month], from: Date())
+        let startOfMonth = calendar.date(from: components)!
+        return calendar.component(.weekday, from: startOfMonth)
+    }
+    
     // MARK: - UI Components
     
-    let stackView = UIStackView().then {
-        $0.axis = .vertical
-        $0.spacing = 10
-        $0.alignment = .center
-    }
-    
-    let emoticon = UILabel().then {
-        $0.text = "🗒️"
-        $0.font = .largeFont
-    }
-    
-    let label = UILabel().then {
-        $0.text = "공사중이에요!\n조금만 기다려주세요 🤍"
-        $0.numberOfLines = 0
-        $0.textAlignment = .center
-        $0.font = .subTitleFont
-        $0.textColor = .newsHabitGray
+    let collectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout()
+    ).then {
+        $0.backgroundColor = .clear
+        $0.register(MonthlyRecordCell.self, forCellWithReuseIdentifier: MonthlyRecordCell.reuseIdentifier)
+        if let layout = $0.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.minimumLineSpacing = 20
+            layout.invalidateLayout()
+        }
     }
     
     // MARK: - Initializer
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupProperty()
         setupHierarchy()
         setupLayout()
     }
@@ -47,16 +54,61 @@ class MonthlyRecordView: UIView {
     
     // MARK: - Setup Methods
     
+    private func setupProperty() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+    }
+    
     private func setupHierarchy() {
-        addSubview(stackView)
-        stackView.addArrangedSubview(emoticon)
-        stackView.addArrangedSubview(label)
+        addSubview(collectionView)
     }
     
     private func setupLayout() {
-        stackView.snp.makeConstraints {
-            $0.center.equalToSuperview()
+        collectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(50)
         }
+    }
+    
+}
+
+// MARK: - CollectionView Extension
+
+extension MonthlyRecordView: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let collectionViewWidth = collectionView.frame.width
+        let width = (collectionViewWidth - 60) / 7
+        return CGSize(width: width, height: width)
+    }
+    
+}
+
+extension MonthlyRecordView: UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // 현재 달의 일수 + 시작 요일의 오프셋
+        return daysInCurrentMonth + firstWeekdayInCurrentMonth - 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MonthlyRecordCell.reuseIdentifier, for: indexPath)
+                as? MonthlyRecordCell else { return UICollectionViewCell() }
+        let dayIndex = indexPath.row - (firstWeekdayInCurrentMonth - 1)
+        let dayString = String(format: "%02d", dayIndex + 1)
+        if dayIndex >= 0 {
+            cell.setRead(isDayRead(dayString), isToday(dayString), dayString)
+        } else {
+            cell.setEmpty()
+        }
+        return cell
+    }
+    
+    private func isDayRead(_ dayString: String) -> Bool {
+        return UserDefaultsManager.daysAllRead.contains(dayString)
+    }
+    
+    private func isToday(_ dayString: String) -> Bool {
+        return Date().toDayString() == dayString
     }
     
 }

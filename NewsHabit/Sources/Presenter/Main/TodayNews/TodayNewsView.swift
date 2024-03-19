@@ -84,6 +84,8 @@ class TodayNewsView: UIView {
                     self.errorView.isHidden = false
                     self.tableView.isHidden = true
                     self.refreshControl.endRefreshing()
+                case .updateDaysAllRead:
+                    self.delegate?.updateDaysAllReadCount()
                 case let .navigateTo(newsLink):
                     self.delegate?.pushViewController(newsLink)
                 }
