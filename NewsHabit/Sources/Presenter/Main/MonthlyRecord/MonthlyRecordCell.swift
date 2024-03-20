@@ -63,16 +63,14 @@ class MonthlyRecordCell: UICollectionViewCell {
     }
     
     func setRead(_ isRead: Bool, _ isToday: Bool, _ dayString: String) {
-        if isToday {
-            label.textColor = .newsHabit
-            layer.borderWidth = 1
-            layer.borderColor = UIColor.newsHabit.cgColor
-        }
+        label.text = dayString
+        label.textColor = .newsHabitGray
         if isRead {
             backgroundColor = .newsHabit.withAlphaComponent(0.7)
-            label.text = ["🥰", "☺️", "🥳", "😎", "🤩", "😆"].randomElement()
-        } else {
-            label.text = dayString
+        }
+        if isToday {
+            layer.borderWidth = 2
+            layer.borderColor = UIColor.newsHabit.cgColor
         }
     }
     

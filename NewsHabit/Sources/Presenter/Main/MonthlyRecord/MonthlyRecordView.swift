@@ -27,6 +27,13 @@ class MonthlyRecordView: UIView {
     
     // MARK: - UI Components
     
+    let titleLabel = UILabel().then {
+        $0.text = Date().toYearMonthString()
+        $0.font = .titleFont
+        $0.textColor = .newsHabit
+        $0.textAlignment = .center
+    }
+    
     let collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
@@ -60,12 +67,20 @@ class MonthlyRecordView: UIView {
     }
     
     private func setupHierarchy() {
+        addSubview(titleLabel)
         addSubview(collectionView)
     }
     
     private func setupLayout() {
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(30)
+            $0.leading.trailing.equalToSuperview()
+        }
+        
         collectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(50)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(50)
+            $0.bottom.equalToSuperview()
         }
     }
     
