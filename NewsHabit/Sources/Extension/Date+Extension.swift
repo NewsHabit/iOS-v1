@@ -81,7 +81,7 @@ class YearMonthFormatter: DateFormatter {
     
     override init() {
         super.init()
-        dateFormat = "yyyy.MM"
+        dateFormat = "yyyy년 MM월"
     }
 
     required init?(coder: NSCoder) {

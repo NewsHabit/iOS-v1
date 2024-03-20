@@ -13,6 +13,7 @@ import Then
 class ProfileView: UIView {
     
     var delegate: ProfileViewDelegate?
+    let maxNameLength = 8
     
     // MARK: - UI Components
     
@@ -29,7 +30,6 @@ class ProfileView: UIView {
     }
     
     let textField = UITextField().then {
-        $0.placeholder = "이름 (최대 6글자)"
         $0.text = UserDefaultsManager.username
         $0.font = .labelFont
         $0.borderStyle = .roundedRect
@@ -72,6 +72,7 @@ class ProfileView: UIView {
         
         saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
         
+        textField.placeholder = "최대 \(maxNameLength)글자"
         textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         textField.becomeFirstResponder()
     }
@@ -116,7 +117,7 @@ class ProfileView: UIView {
     
     @objc private func textFieldDidChange(_ textField: UITextField) {
         if let text = textField.text {
-            let isValid = !text.isEmpty && text.count <= 6
+            let isValid = !text.isEmpty && text.count <= maxNameLength
             saveButton.isEnabled = isValid
             saveButton.backgroundColor = isValid ? .black : .newsHabitLightGray
         }
