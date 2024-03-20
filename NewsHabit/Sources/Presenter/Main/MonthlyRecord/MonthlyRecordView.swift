@@ -73,7 +73,7 @@ class MonthlyRecordView: UIView {
     
     private func setupLayout() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(40)
+            $0.top.equalToSuperview().inset(30)
             $0.leading.trailing.equalToSuperview()
         }
         
