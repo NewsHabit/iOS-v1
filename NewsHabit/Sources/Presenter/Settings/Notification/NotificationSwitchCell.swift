@@ -17,7 +17,7 @@ class NotificationSwitchCell: UITableViewCell {
     // MARK: - UI Components
     
     let titleLabel = UILabel().then {
-        $0.text = "알림"
+        $0.text = "오늘의 뉴스 알림"
         $0.font = .largeLabelFont
         $0.textColor = .label
     }

@@ -30,8 +30,7 @@ class MonthlyRecordView: UIView {
     let titleLabel = UILabel().then {
         $0.text = Date().toYearMonthString()
         $0.font = .titleFont
-        $0.textColor = .newsHabit
-        $0.textAlignment = .center
+        $0.textColor = .label
     }
     
     let collectionView = UICollectionView(
@@ -74,7 +73,7 @@ class MonthlyRecordView: UIView {
     private func setupLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(30)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(50)
         }
         
         collectionView.snp.makeConstraints {
