@@ -17,7 +17,7 @@ class HotNewsView: UIView {
     // MARK: - UI Components
     
     let tableView = UITableView().then {
-        $0.backgroundColor = .clear
+        $0.backgroundColor = .background
         $0.register(HotNewsCell.self, forCellReuseIdentifier: HotNewsCell.reuseIdentifier)
     }
     

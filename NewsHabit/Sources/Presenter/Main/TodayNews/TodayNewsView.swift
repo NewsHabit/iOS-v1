@@ -16,9 +16,22 @@ class TodayNewsView: UIView {
     
     // MARK: - UI Components
     
+    let messageView = UIView().then {
+        $0.backgroundColor = .tertiarySystemGroupedBackground
+        $0.clipsToBounds = true
+        $0.layer.cornerRadius = 8
+        $0.isHidden = true
+    }
+    
+    let messageLabel = UILabel().then {
+        $0.text = "💬 습관 하루 적립 !  내일도 추천해드릴게요"
+        $0.font = .cellLabelFont
+        $0.textColor = .label
+    }
+    
     let tableView = UITableView().then {
         $0.register(TodayNewsCell.self, forCellReuseIdentifier: TodayNewsCell.reuseIdentifier)
-        $0.backgroundColor = .clear
+        $0.backgroundColor = .background
     }
     
     let refreshControl = UIRefreshControl()
@@ -29,9 +42,9 @@ class TodayNewsView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupProperty()
         setupHierarchy()
         setupLayout()
+        setupProperty()
     }
     
     required init?(coder: NSCoder) {
@@ -45,14 +58,29 @@ class TodayNewsView: UIView {
         tableView.dataSource = self
         tableView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        if UserDefaultsManager.daysAllRead.contains(Date().toDayString()) {
+            showAllReadMessage()
+        }
     }
     
     private func setupHierarchy() {
+        addSubview(messageView)
+        messageView.addSubview(messageLabel)
         addSubview(tableView)
         tableView.addSubview(errorView)
     }
     
     private func setupLayout() {
+        messageView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview().inset(15)
+            $0.height.equalTo(44)
+        }
+        
+        messageLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(20)
+            $0.centerY.equalToSuperview()
+        }
+        
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -64,6 +92,23 @@ class TodayNewsView: UIView {
     
     @objc private func handleRefreshControl() {
         self.viewModel?.input.send(.getTodayNews)
+    }
+    
+    private func showAllReadMessage() {
+        messageView.isHidden = false
+        
+        tableView.snp.remakeConstraints {
+            $0.top.equalTo(messageView.snp.bottom)
+            $0.leading.bottom.trailing.equalToSuperview()
+        }
+    }
+    
+    private func hideAllReadMessage() {
+        messageView.isHidden = true
+        
+        tableView.snp.remakeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
     
     // MARK: - Bind ViewModel
@@ -86,6 +131,9 @@ class TodayNewsView: UIView {
                     self.refreshControl.endRefreshing()
                 case .updateDaysAllRead:
                     self.delegate?.updateDaysAllReadCount()
+                    self.showAllReadMessage()
+                case .dayChanged:
+                    self.hideAllReadMessage()
                 case let .navigateTo(newsLink):
                     self.delegate?.pushViewController(newsLink)
                 }

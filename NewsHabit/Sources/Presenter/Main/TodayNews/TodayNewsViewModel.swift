@@ -21,6 +21,7 @@ class TodayNewsViewModel {
         case updateTodayNews
         case fetchFailed
         case updateDaysAllRead
+        case dayChanged
         case navigateTo(newsLink: String)
     }
     
@@ -80,6 +81,7 @@ class TodayNewsViewModel {
                     }
                     self.initTodayNewsData()
                     self.output.send(.updateTodayNews)
+                    self.output.send(.dayChanged)
                 case let .failure(error):
                     print("TodayNewsViewModel fetch data : \(error)")
                     self.output.send(.fetchFailed)

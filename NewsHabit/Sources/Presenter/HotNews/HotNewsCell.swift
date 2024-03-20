@@ -66,7 +66,7 @@ class HotNewsCell: UITableViewCell {
     // MARK: - Setup Methods
     
     private func setupProperty() {
-        backgroundColor = .clear
+        backgroundColor = .background
         selectionStyle = .none
     }
     
