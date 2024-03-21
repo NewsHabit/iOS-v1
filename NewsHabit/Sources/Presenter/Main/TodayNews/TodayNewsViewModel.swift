@@ -39,14 +39,15 @@ class TodayNewsViewModel {
             guard let self = self else { return }
             switch event {
             case .getTodayNews:
-                if UserDefaultsManager.lastDate != Date().toCompactDateString() {
-                    self.fetchNewsData()
-                } else {
-                    self.cellViewModels = UserDefaultsManager.todayNews.map {
-                        TodayNewsCellViewModel($0)
-                    }
-                    self.output.send(.updateTodayNews)
-                }
+                self.fetchNewsData()
+//                if UserDefaultsManager.lastDate != Date().toCompactDateString() {
+//                    self.fetchNewsData()
+//                } else {
+//                    self.cellViewModels = UserDefaultsManager.todayNews.map {
+//                        TodayNewsCellViewModel($0)
+//                    }
+//                    self.output.send(.updateTodayNews)
+//                }
             case let .tapNewsCell(index):
                 self.setReadNewsItem(index)
                 self.output.send(.navigateTo(newsLink: self.cellViewModels[index].newsLink))
