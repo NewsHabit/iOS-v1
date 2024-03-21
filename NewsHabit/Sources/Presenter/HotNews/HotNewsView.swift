@@ -44,7 +44,9 @@ class HotNewsView: UIView {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(refreshNews), for: .valueChanged)
+        errorView.isUserInteractionEnabled = true
+        errorView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(refreshNews)))
     }
     
     private func setupHierarchy() {
@@ -62,7 +64,7 @@ class HotNewsView: UIView {
         }
     }
     
-    @objc private func handleRefreshControl() {
+    @objc private func refreshNews() {
         self.viewModel?.input.send(.getHotNews)
     }
     
