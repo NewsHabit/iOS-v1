@@ -41,12 +41,4 @@ final class APIManager {
         }
     }
     
-    func fetchHtmlContent(_ uri: String, method: HTTPMethod = .get, parameters: [String: Any]? = nil, encoding: ParameterEncoding = URLEncoding.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<Data, AFError>) -> Void) {
-        AF.request(serverIP + uri, method: method, parameters: parameters, encoding: encoding, headers: headers)
-            .validate()
-            .responseData { response in
-                completion(response.result)
-            }
-    }
-    
 }

@@ -18,11 +18,10 @@ class WebViewController: BaseViewController<WebView> {
         setupNavigationBar()
         
         guard let contentView = contentView as? WebView else { return }
-        if urlString != nil {
-            contentView.loadLink(urlString)
-        } else {
-            contentView.loadHtmlContent()
+        if urlString == nil {
+            urlString = "https://newshabit.org"
         }
+        contentView.loadLink(urlString)
     }
     
     // MARK: - BaseViewControllerProtocol

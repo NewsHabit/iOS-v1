@@ -85,22 +85,6 @@ class WebView: UIView {
         webView.load(URLRequest(url: url))
     }
     
-    func loadHtmlContent() {
-        APIManager.shared.fetchHtmlContent("") { result in
-            switch result {
-            case .success(let htmlData):
-                DispatchQueue.main.async {
-                    guard let baseURL = URL(string: APIManager.shared.serverIP) else { return }
-                    self.webView.load(htmlData, mimeType: "text/html", characterEncodingName: "UTF-8", baseURL: baseURL)
-                }
-            case .failure(let error):
-                print("Error fetching HTML content: \(error)")
-                self.webView.isHidden = true
-                self.errorView.isHidden = false
-            }
-        }
-    }
-    
 }
 
 extension WebView: WKNavigationDelegate {
@@ -108,7 +92,7 @@ extension WebView: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         progressView.setProgress(1.0, animated: true)
         // 약간의 딜레이를 주어서 프로그레스 바가 완전히 차도록 함
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.progressView.isHidden = true
         }
     }
