@@ -59,7 +59,7 @@ extension MainViewController: TodayNewsViewDelegate {
     func updateDaysAllReadCount() {
         setNavigationBarSubTitle("👀 \(UserDefaultsManager.numOfDaysAllRead)일 째 모두 읽으셨어요!")
         guard let contentView = contentView as? MainView else { return }
-        contentView.monthlyRecordView.collectionView.reloadData()
+        contentView.monthlyRecordView.update()
     }
     
     func scrollToTop() {

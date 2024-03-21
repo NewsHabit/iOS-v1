@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 이번 달 기록 설정
         if UserDefaultsManager.lastMonth != Date().toMonthString() {
             UserDefaultsManager.lastMonth = Date().toMonthString()
-            UserDefaultsManager.daysAllRead = []
+            UserDefaultsManager.monthlyAllRead = []
         }
         // 알림 센터의 delegate 설정
         UNUserNotificationCenter.current().delegate = self
