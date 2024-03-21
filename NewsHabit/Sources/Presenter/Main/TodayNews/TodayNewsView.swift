@@ -134,6 +134,7 @@ class TodayNewsView: UIView {
                     self.refreshControl.endRefreshing()
                 case .updateDaysAllRead:
                     self.delegate?.updateDaysAllReadCount()
+                    showAllReadMessageIfNeeded()
                 case .dayChanged:
                     self.hideAllReadMessage()
                 case let .navigateTo(newsLink):
