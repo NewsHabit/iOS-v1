@@ -58,9 +58,6 @@ class TodayNewsView: UIView {
         tableView.dataSource = self
         tableView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
-        if UserDefaultsManager.daysAllRead.contains(Date().toDayString()) {
-            showAllReadMessage()
-        }
     }
     
     private func setupHierarchy() {
@@ -94,12 +91,14 @@ class TodayNewsView: UIView {
         self.viewModel?.input.send(.getTodayNews)
     }
     
-    private func showAllReadMessage() {
-        messageView.isHidden = false
-        
-        tableView.snp.remakeConstraints {
-            $0.top.equalTo(messageView.snp.bottom).offset(10)
-            $0.leading.bottom.trailing.equalToSuperview()
+    private func showAllReadMessageIfNeeded() {
+        if UserDefaultsManager.monthlyAllRead.contains(Date().toDayString()) {
+            messageView.isHidden = false
+            
+            tableView.snp.remakeConstraints {
+                $0.top.equalTo(messageView.snp.bottom).offset(10)
+                $0.leading.bottom.trailing.equalToSuperview()
+            }
         }
     }
     
@@ -123,15 +122,16 @@ class TodayNewsView: UIView {
                 case .updateTodayNews:
                     self.errorView.isHidden = true
                     self.tableView.isHidden = false
+                    showAllReadMessageIfNeeded()
                     self.tableView.reloadData()
                     self.refreshControl.endRefreshing()
                 case .fetchFailed:
                     self.errorView.isHidden = false
                     self.tableView.isHidden = true
+                    hideAllReadMessage()
                     self.refreshControl.endRefreshing()
                 case .updateDaysAllRead:
                     self.delegate?.updateDaysAllReadCount()
-                    self.showAllReadMessage()
                 case .dayChanged:
                     self.hideAllReadMessage()
                 case let .navigateTo(newsLink):

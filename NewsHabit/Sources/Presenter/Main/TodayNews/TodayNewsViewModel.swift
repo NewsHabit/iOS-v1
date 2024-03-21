@@ -103,7 +103,7 @@ class TodayNewsViewModel {
         let todayReadCount = cellViewModels.filter { $0.isRead }.count
         if todayReadCount == UserDefaultsManager.todayNews.count {
             UserDefaultsManager.numOfDaysAllRead += 1
-            UserDefaultsManager.daysAllRead.append(Date().toDayString())
+            UserDefaultsManager.monthlyAllRead.append(Date().toDayString())
             output.send(.updateDaysAllRead)
         }
     }

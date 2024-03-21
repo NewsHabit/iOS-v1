@@ -33,6 +33,12 @@ class MonthlyRecordView: UIView {
         $0.textColor = .label
     }
     
+    let numOfMonthlyAllReadLabel = UILabel().then {
+        $0.text = "📚 \(UserDefaultsManager.monthlyAllRead.count)"
+        $0.font = .cellTitleFont
+        $0.textColor = .label
+    }
+    
     let collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
@@ -67,13 +73,19 @@ class MonthlyRecordView: UIView {
     
     private func setupHierarchy() {
         addSubview(titleLabel)
+        addSubview(numOfMonthlyAllReadLabel)
         addSubview(collectionView)
     }
     
     private func setupLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(30)
-            $0.leading.trailing.equalToSuperview().inset(50)
+            $0.leading.equalToSuperview().inset(50)
+        }
+        
+        numOfMonthlyAllReadLabel.snp.makeConstraints {
+            $0.centerY.equalTo(titleLabel.snp.centerY)
+            $0.trailing.equalToSuperview().inset(50)
         }
         
         collectionView.snp.makeConstraints {
@@ -81,6 +93,11 @@ class MonthlyRecordView: UIView {
             $0.leading.trailing.equalToSuperview().inset(50)
             $0.bottom.equalToSuperview()
         }
+    }
+    
+    func update() {
+        numOfMonthlyAllReadLabel.text = "📚 \(UserDefaultsManager.monthlyAllRead.count)"
+        collectionView.reloadData()
     }
     
 }
@@ -118,7 +135,7 @@ extension MonthlyRecordView: UICollectionViewDataSource {
     }
     
     private func isDayRead(_ dayString: String) -> Bool {
-        return UserDefaultsManager.daysAllRead.contains(dayString)
+        return UserDefaultsManager.monthlyAllRead.contains(dayString)
     }
     
     private func isToday(_ dayString: String) -> Bool {

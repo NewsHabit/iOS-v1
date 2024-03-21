@@ -39,8 +39,8 @@ struct UserDefaultsManager {
     @UserDefaultsData(key: "lastMonth", defaultValue: "")
     static var lastMonth: String
     
-    @UserDefaultsData(key: "daysAllRead", defaultValue: [])
-    static var daysAllRead: [String]
+    @UserDefaultsData(key: "monthlyAllRead", defaultValue: [])
+    static var monthlyAllRead: [String]
 
 }
 
