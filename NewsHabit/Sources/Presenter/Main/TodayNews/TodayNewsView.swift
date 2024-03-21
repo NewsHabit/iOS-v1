@@ -98,7 +98,7 @@ class TodayNewsView: UIView {
         messageView.isHidden = false
         
         tableView.snp.remakeConstraints {
-            $0.top.equalTo(messageView.snp.bottom)
+            $0.top.equalTo(messageView.snp.bottom).offset(10)
             $0.leading.bottom.trailing.equalToSuperview()
         }
     }
