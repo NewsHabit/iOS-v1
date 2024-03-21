@@ -11,6 +11,7 @@ import UIKit
 class MainView: UIView {
     
     private var viewModel: MainViewModel?
+    private var todayNewsViewModel: TodayNewsViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
@@ -139,8 +140,9 @@ class MainView: UIView {
 
 extension MainView {
     
-    func bindViewModel(_ viewModel: MainViewModel) {
+    func bindViewModel(_ viewModel: MainViewModel, _ todayNewsViewModel: TodayNewsViewModel) {
         self.viewModel = viewModel
+        self.todayNewsViewModel = todayNewsViewModel
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
             .receive(on: RunLoop.main)
             .sink { [weak self] event in
@@ -155,7 +157,7 @@ extension MainView {
     }
     
     private func setupViewModel() {
-        let todayNewsViewModel = TodayNewsViewModel()
+        guard let todayNewsViewModel = todayNewsViewModel else { return }
         todayNewsView.bindViewModel(todayNewsViewModel)
         todayNewsViewModel.input.send(.getTodayNews)
     }

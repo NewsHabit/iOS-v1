@@ -15,7 +15,8 @@ protocol TodayNewsViewDelegate {
 
 class MainViewController: BaseViewController<MainView>, BaseViewControllerProtocol {
     
-    private let viewModel = MainViewModel()
+    private let mainViewModel = MainViewModel()
+    private let todayNewsViewModel = TodayNewsViewModel()
     
     // MARK: - Life Cycle
     
@@ -25,12 +26,13 @@ class MainViewController: BaseViewController<MainView>, BaseViewControllerProtoc
         
         guard let contentView = contentView as? MainView else { return }
         contentView.todayNewsView.delegate = self
-        contentView.bindViewModel(viewModel)
-        viewModel.input.send(.viewDidLoad)
+        contentView.bindViewModel(mainViewModel, todayNewsViewModel)
+        mainViewModel.input.send(.viewDidLoad)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        todayNewsViewModel.input.send(.getTodayNews)
         setNavigationBarLargeTitle("\(UserDefaultsManager.username)님의 뉴빗")
         setNavigationBarSubTitle("👀 지금까지 \(UserDefaultsManager.numOfDaysAllRead)일 완독했어요!")
     }
