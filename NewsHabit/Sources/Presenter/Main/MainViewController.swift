@@ -32,7 +32,7 @@ class MainViewController: BaseViewController<MainView>, BaseViewControllerProtoc
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavigationBarLargeTitle("\(UserDefaultsManager.username)님의 뉴빗")
-        setNavigationBarSubTitle("👀 \(UserDefaultsManager.numOfDaysAllRead)일 째 모두 읽었어요!")
+        setNavigationBarSubTitle("👀 총 \(UserDefaultsManager.numOfDaysAllRead)일 모두 읽었어요!")
     }
     
     // MARK: - BaseViewControllerProtocol
@@ -57,7 +57,7 @@ extension MainViewController: TodayNewsViewDelegate {
     }
     
     func updateDaysAllReadCount() {
-        setNavigationBarSubTitle("👀 \(UserDefaultsManager.numOfDaysAllRead)일 째 모두 읽으셨어요!")
+        setNavigationBarSubTitle("👀 총 \(UserDefaultsManager.numOfDaysAllRead)일 모두 읽었어요!")
         guard let contentView = contentView as? MainView else { return }
         contentView.monthlyRecordView.update()
     }
