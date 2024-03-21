@@ -14,7 +14,7 @@ protocol ProjectFactory {
 class NewsHabitFactory: ProjectFactory {
     
     let projectName: String = "NewsHabit"
-    let bundleId: String = "Green-Tea-organization-NewsHabit"
+    let bundleId: String = "com.NewsHabit"
     
     let dependencies: [TargetDependency] = [
         .external(name: "SnapKit"),
