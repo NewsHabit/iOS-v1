@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class CategoryCell: UICollectionViewCell, BaseViewProtocol {
+final class CategoryCell: UICollectionViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "CategoryCell"
     

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class MonthlyRecordCell: UICollectionViewCell, BaseViewProtocol {
+final class MonthlyRecordCell: UICollectionViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "MonthlyRecordCell"
     

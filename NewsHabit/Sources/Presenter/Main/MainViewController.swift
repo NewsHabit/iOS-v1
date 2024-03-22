@@ -13,7 +13,7 @@ protocol TodayNewsViewDelegate {
     func scrollToTop()
 }
 
-class MainViewController: BaseViewController<MainView>, BaseViewControllerProtocol {
+final class MainViewController: BaseViewController<MainView>, BaseViewControllerProtocol {
     
     private let mainViewModel = MainViewModel()
     private let todayNewsViewModel = TodayNewsViewModel()

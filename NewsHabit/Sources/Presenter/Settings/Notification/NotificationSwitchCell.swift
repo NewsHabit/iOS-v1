@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class NotificationSwitchCell: UITableViewCell, BaseViewProtocol {
+final class NotificationSwitchCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "NotificationSwitchCell"
     

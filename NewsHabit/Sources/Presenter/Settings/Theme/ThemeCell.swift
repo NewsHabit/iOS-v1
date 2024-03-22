@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ThemeCell: UITableViewCell, BaseViewProtocol {
+final class ThemeCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "ThemeCell"
     

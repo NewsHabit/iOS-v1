@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NotificationTimeCell: UITableViewCell, BaseViewProtocol {
+final class NotificationTimeCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "NotificationTimeCell"
     

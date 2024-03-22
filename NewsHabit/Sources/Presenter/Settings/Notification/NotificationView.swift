@@ -8,7 +8,7 @@
 import Combine
 import UIKit
 
-class NotificationView: UIView, BaseViewProtocol {
+final class NotificationView: UIView, BaseViewProtocol {
 
     var delegate: NotificationViewDelegate?
     private var viewModel: NotificationViewModel?

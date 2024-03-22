@@ -8,7 +8,7 @@
 import Combine
 import UIKit
 
-class TodayNewsView: UIView, BaseViewProtocol {
+final class TodayNewsView: UIView, BaseViewProtocol {
     
     var delegate: TodayNewsViewDelegate?
     private var viewModel: TodayNewsViewModel?

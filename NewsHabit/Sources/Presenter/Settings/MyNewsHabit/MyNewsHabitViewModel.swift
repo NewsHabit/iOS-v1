@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class MyNewsHabitViewModel {
+final class MyNewsHabitViewModel {
     
     enum Input {
         case tapMyNewsHabitCell(_ index: Int)

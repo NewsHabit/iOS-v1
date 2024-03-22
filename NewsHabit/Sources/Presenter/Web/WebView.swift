@@ -12,7 +12,7 @@ import Alamofire
 import SnapKit
 import Then
 
-class WebView: UIView, BaseViewProtocol {
+final class WebView: UIView, BaseViewProtocol {
     
     private var progressObserver: NSKeyValueObservation?
     

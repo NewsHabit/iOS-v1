@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 import Then
 
-class MyNewsHabitView: UIView, BaseViewProtocol {
+final class MyNewsHabitView: UIView, BaseViewProtocol {
     
     var delegate: MyNewsHabitViewDelegate?
     private var viewModel: MyNewsHabitViewModel?

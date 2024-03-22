@@ -12,7 +12,7 @@ protocol ProfileViewDelegate {
     func popViewController()
 }
 
-class ProfileViewController: BaseViewController<ProfileView>, BaseViewControllerProtocol {
+final class ProfileViewController: BaseViewController<ProfileView>, BaseViewControllerProtocol {
     
     // MARK: - Life Cycle
     

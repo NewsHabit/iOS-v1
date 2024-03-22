@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class MyNewsHabitCell: UITableViewCell, BaseViewProtocol {
+final class MyNewsHabitCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "MyNewsHabitCell"
     private var viewModel: MyNewsHabitItem?

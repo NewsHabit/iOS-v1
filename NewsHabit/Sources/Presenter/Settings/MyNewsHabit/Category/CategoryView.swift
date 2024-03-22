@@ -8,7 +8,7 @@
 import Combine
 import UIKit
 
-class CategoryView: UIView, BaseViewProtocol {
+final class CategoryView: UIView, BaseViewProtocol {
     
     var delegate: CategoryViewDelegate?
     private var viewModel: CategoryViewModel?

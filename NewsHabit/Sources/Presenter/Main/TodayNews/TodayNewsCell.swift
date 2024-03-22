@@ -12,7 +12,7 @@ import Alamofire
 import SnapKit
 import Then
 
-class TodayNewsCell: UITableViewCell, BaseViewProtocol {
+final class TodayNewsCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "TodayNewsCell"
     var viewModel: TodayNewsCellViewModel?

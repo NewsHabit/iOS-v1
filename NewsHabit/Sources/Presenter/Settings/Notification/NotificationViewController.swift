@@ -11,7 +11,7 @@ protocol NotificationViewDelegate {
     func showAlert()
 }
 
-class NotificationViewController: BaseViewController<NotificationView>, BaseViewControllerProtocol {
+final class NotificationViewController: BaseViewController<NotificationView>, BaseViewControllerProtocol {
     
     private let viewModel = NotificationViewModel()
     

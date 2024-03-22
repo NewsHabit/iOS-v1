@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 import Then
 
-class SettingsView: UIView, BaseViewProtocol {
+final class SettingsView: UIView, BaseViewProtocol {
     
     var delegate: SettingsViewDelegate?
     private var viewModel: SettingsViewModel?

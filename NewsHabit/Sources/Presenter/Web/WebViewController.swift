@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WebViewController: BaseViewController<WebView> {
+final class WebViewController: BaseViewController<WebView> {
     
     var urlString: String?
     

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class MonthlyRecordView: UIView, BaseViewProtocol {
+final class MonthlyRecordView: UIView, BaseViewProtocol {
     
     var daysInCurrentMonth: Int {
         let calendar = Calendar.current

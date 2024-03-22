@@ -12,7 +12,7 @@ protocol MyNewsHabitViewDelegate {
     func updateMyNewsHabitSettings()
 }
 
-class MyNewsHabitViewController: BaseViewController<MyNewsHabitView>, BaseViewControllerProtocol {
+final class MyNewsHabitViewController: BaseViewController<MyNewsHabitView>, BaseViewControllerProtocol {
     
     private let viewModel = MyNewsHabitViewModel()
     

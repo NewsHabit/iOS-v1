@@ -8,7 +8,7 @@
 import Combine
 import UIKit
 
-class SettingsViewModel {
+final class SettingsViewModel {
     
     enum Input {
         case viewDidLoad

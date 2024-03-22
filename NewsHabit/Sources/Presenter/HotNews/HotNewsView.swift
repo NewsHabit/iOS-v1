@@ -8,7 +8,7 @@
 import Combine
 import UIKit
 
-class HotNewsView: UIView, BaseViewProtocol {
+final class HotNewsView: UIView, BaseViewProtocol {
     
     var delegate: HotNewsViewDelegate?
     private var viewModel: HotNewsViewModel?

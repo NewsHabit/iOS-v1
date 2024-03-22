@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ThemeView: UIView, BaseViewProtocol {
+final class ThemeView: UIView, BaseViewProtocol {
     
     private var viewModel: ThemeViewModel?
     private var cancellables = Set<AnyCancellable>()

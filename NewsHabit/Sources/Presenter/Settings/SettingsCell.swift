@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class SettingsCell: UITableViewCell, BaseViewProtocol {
+final class SettingsCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "SettingsCell"
     private var viewModel: SettingsItem?

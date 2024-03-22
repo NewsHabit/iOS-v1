@@ -7,7 +7,7 @@
 
 import Foundation
 
-class TodayNewsCellViewModel {
+final class TodayNewsCellViewModel {
     
     var newsItemState: TodayNewsItemState
     

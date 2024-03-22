@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ThemeViewController: BaseViewController<ThemeView>, BaseViewControllerProtocol {
+final class ThemeViewController: BaseViewController<ThemeView>, BaseViewControllerProtocol {
     
     private let viewModel = ThemeViewModel()
     

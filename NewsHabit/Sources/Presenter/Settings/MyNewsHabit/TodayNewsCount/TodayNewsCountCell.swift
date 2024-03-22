@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class TodayNewsCountCell: UITableViewCell, BaseViewProtocol {
+final class TodayNewsCountCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "TodayNewsCountCell"
     

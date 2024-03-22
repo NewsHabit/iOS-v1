@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class CategoryViewModel {
+final class CategoryViewModel {
 
     // MARK: - Properties
     

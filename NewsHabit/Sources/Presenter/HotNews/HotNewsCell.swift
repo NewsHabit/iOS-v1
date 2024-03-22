@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 import Then
 
-class HotNewsCell: UITableViewCell, BaseViewProtocol {
+final class HotNewsCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "HotNewsCell"
     private var viewModel: HotNewsCellViewModel?

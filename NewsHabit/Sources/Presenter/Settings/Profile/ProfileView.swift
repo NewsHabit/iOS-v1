@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ProfileView: UIView, BaseViewProtocol {
+final class ProfileView: UIView, BaseViewProtocol {
     
     var delegate: ProfileViewDelegate?
     let maxNameLength = 8

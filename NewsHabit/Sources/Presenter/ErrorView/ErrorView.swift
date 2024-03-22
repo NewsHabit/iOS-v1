@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ErrorView: UIStackView, BaseViewProtocol {
+final class ErrorView: UIStackView, BaseViewProtocol {
     
     // MARK: - UI Components
     
