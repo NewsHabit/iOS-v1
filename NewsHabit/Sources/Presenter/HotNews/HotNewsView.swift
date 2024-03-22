@@ -8,7 +8,7 @@
 import Combine
 import UIKit
 
-class HotNewsView: UIView {
+final class HotNewsView: UIView, BaseViewProtocol {
     
     var delegate: HotNewsViewDelegate?
     private var viewModel: HotNewsViewModel?
@@ -40,7 +40,7 @@ class HotNewsView: UIView {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.refreshControl = refreshControl
@@ -49,12 +49,12 @@ class HotNewsView: UIView {
         errorView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(refreshNews)))
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         addSubview(tableView)
         addSubview(errorView)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }

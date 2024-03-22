@@ -13,7 +13,7 @@ protocol HotNewsViewDelegate {
     func scrollToTop()
 }
 
-class HotNewsViewController: BaseViewController<HotNewsView>, BaseViewControllerProtocol {
+final class HotNewsViewController: BaseViewController<HotNewsView>, BaseViewControllerProtocol {
     
     private let viewModel = HotNewsViewModel()
     

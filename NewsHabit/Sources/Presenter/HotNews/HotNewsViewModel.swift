@@ -10,7 +10,7 @@ import Foundation
 
 import Alamofire
 
-class HotNewsViewModel {
+final class HotNewsViewModel {
     
     enum Input {
         case getHotNews

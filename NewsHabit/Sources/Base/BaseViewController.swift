@@ -10,10 +10,6 @@ import UIKit
 import SnapKit
 import Then
 
-protocol BaseViewControllerProtocol {
-    func setupNavigationBar()
-}
-
 class BaseViewController<View: UIView>: UIViewController, UIGestureRecognizerDelegate {
     
     let statusBar = UIView()

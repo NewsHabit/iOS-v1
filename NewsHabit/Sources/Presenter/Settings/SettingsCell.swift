@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class SettingsCell: UITableViewCell {
+final class SettingsCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "SettingsCell"
     private var viewModel: SettingsItem?
@@ -41,17 +41,17 @@ class SettingsCell: UITableViewCell {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
-        backgroundColor = .clear
+    func setupProperty() {
+        backgroundColor = .background
         selectionStyle = .none
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         contentView.addSubview(iconImageView)
         contentView.addSubview(titleLabel)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         iconImageView.snp.makeConstraints {
             $0.width.height.equalTo(19)
             $0.centerY.equalToSuperview()

@@ -9,7 +9,7 @@ import Foundation
 
 /// 전체 날짜 및 시간 형식을 제공하는 DateFormatter
 /// 사용처: `HotNewsViewController`의 서브 타이틀에 날짜와 시간 표시
-class FullDateTimeFormatter: DateFormatter {
+final class FullDateTimeFormatter: DateFormatter {
     
     override init() {
         super.init()
@@ -23,7 +23,7 @@ class FullDateTimeFormatter: DateFormatter {
 
 /// 간략화된 날짜 형식을 제공하는 DateFormatter
 /// 사용처: 오늘의 뉴스 데이터를 요청할지 결정하기 위해 사용
-class CompactDateFormatter: DateFormatter {
+final class CompactDateFormatter: DateFormatter {
     
     override init() {
         super.init()
@@ -37,7 +37,7 @@ class CompactDateFormatter: DateFormatter {
 
 /// 시간 형식을 제공하는 DateFormatter
 /// 사용처: `NotificationViewController`에서 알림 시간 표시
-class SimpleTimeFormatter: DateFormatter {
+final class SimpleTimeFormatter: DateFormatter {
     
     override init() {
         super.init()
@@ -51,7 +51,7 @@ class SimpleTimeFormatter: DateFormatter {
     }
 }
 
-class MonthFormatter: DateFormatter {
+final class MonthFormatter: DateFormatter {
     
     override init() {
         super.init()
@@ -64,7 +64,7 @@ class MonthFormatter: DateFormatter {
     
 }
 
-class DayFormatter: DateFormatter {
+final class DayFormatter: DateFormatter {
     
     override init() {
         super.init()
@@ -77,7 +77,7 @@ class DayFormatter: DateFormatter {
     
 }
 
-class YearMonthFormatter: DateFormatter {
+final class YearMonthFormatter: DateFormatter {
     
     override init() {
         super.init()

@@ -11,7 +11,7 @@ protocol TodayNewsCountViewDelegate {
     func popViewController()
 }
 
-class TodayNewsCountViewController: BottomSheetController<TodayNewsCountView> {
+final class TodayNewsCountViewController: BottomSheetController<TodayNewsCountView> {
     
     var delegate: MyNewsHabitViewDelegate?
     private let viewModel = TodayNewsCountViewModel()

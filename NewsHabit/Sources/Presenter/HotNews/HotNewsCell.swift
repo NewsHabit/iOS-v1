@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 import Then
 
-class HotNewsCell: UITableViewCell {
+final class HotNewsCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "HotNewsCell"
     private var viewModel: HotNewsCellViewModel?
@@ -65,18 +65,18 @@ class HotNewsCell: UITableViewCell {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         backgroundColor = .background
         selectionStyle = .none
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(thumbnailView)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(thumbnailView.snp.top)
             $0.leading.equalToSuperview().inset(15)

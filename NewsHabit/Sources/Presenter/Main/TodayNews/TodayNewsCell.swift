@@ -12,7 +12,7 @@ import Alamofire
 import SnapKit
 import Then
 
-class TodayNewsCell: UITableViewCell {
+final class TodayNewsCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "TodayNewsCell"
     var viewModel: TodayNewsCellViewModel?
@@ -86,12 +86,12 @@ class TodayNewsCell: UITableViewCell {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
-        backgroundColor = .clear
+    func setupProperty() {
+        backgroundColor = .background
         selectionStyle = .none
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         contentView.addSubview(stackView)
         stackView.addArrangedSubview(isReadView)
         stackView.addArrangedSubview(titleLabel)
@@ -100,7 +100,7 @@ class TodayNewsCell: UITableViewCell {
         contentView.addSubview(thumbnailView)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         stackView.snp.makeConstraints {
             $0.top.equalTo(thumbnailView.snp.top)
             $0.leading.equalToSuperview().inset(15)

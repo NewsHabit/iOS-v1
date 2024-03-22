@@ -10,7 +10,7 @@ import Foundation
 import UserNotifications
 import UIKit
 
-class NotificationViewModel {
+final class NotificationViewModel {
     
     enum Input {
         case setNotification(_ isOn: Bool)

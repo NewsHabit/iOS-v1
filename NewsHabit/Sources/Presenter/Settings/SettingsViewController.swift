@@ -11,7 +11,7 @@ protocol SettingsViewDelegate {
     func pushViewController(settingsType: SettingsType)
 }
 
-class SettingsViewController: BaseViewController<SettingsView>, BaseViewControllerProtocol {
+final class SettingsViewController: BaseViewController<SettingsView>, BaseViewControllerProtocol {
     
     private let viewModel = SettingsViewModel()
     

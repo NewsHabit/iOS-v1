@@ -8,7 +8,7 @@
 import Combine
 import UIKit
 
-class MainView: UIView {
+final class MainView: UIView, BaseViewProtocol {
     
     private var viewModel: MainViewModel?
     private var todayNewsViewModel: TodayNewsViewModel?
@@ -64,14 +64,14 @@ class MainView: UIView {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         backgroundColor = .background
         clipsToBounds = true
         layer.cornerRadius = 30
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         addSubview(todayNewsLabel)
         addSubview(monthlyRecordLabel)
         addSubview(separator)
@@ -81,7 +81,7 @@ class MainView: UIView {
         scrollView.addSubview(monthlyRecordView)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         todayNewsLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(40)
             $0.leading.equalToSuperview().inset(20)

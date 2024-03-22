@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class MainViewModel {
+final class MainViewModel {
     
     enum Input {
         case viewDidLoad

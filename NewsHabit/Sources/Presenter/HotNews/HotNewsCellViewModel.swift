@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class HotNewsCellViewModel {
+final class HotNewsCellViewModel {
     
     let newsItem: HotNewsItem
     

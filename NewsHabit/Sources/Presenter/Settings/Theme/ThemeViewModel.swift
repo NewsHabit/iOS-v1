@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-class ThemeViewModel {
+final class ThemeViewModel {
     
     @Published var selectedTheme: ThemeType = UserDefaultsManager.theme
     

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class NotificationSwitchCell: UITableViewCell {
+final class NotificationSwitchCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "NotificationSwitchCell"
     
@@ -41,17 +41,17 @@ class NotificationSwitchCell: UITableViewCell {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         backgroundColor = .background
         selectionStyle = .none
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(switchControl)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(20)
             $0.centerY.equalToSuperview()

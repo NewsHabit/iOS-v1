@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class TodayNewsCountCell: UITableViewCell {
+final class TodayNewsCountCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "TodayNewsCountCell"
     
@@ -43,17 +43,17 @@ class TodayNewsCountCell: UITableViewCell {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
-        backgroundColor = .clear
+    func setupProperty() {
+        backgroundColor = .background
         selectionStyle = .none
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(selectedButton)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(30)
             $0.centerY.equalToSuperview()

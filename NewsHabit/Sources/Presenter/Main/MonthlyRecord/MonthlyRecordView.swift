@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class MonthlyRecordView: UIView {
+final class MonthlyRecordView: UIView, BaseViewProtocol {
     
     var daysInCurrentMonth: Int {
         let calendar = Calendar.current
@@ -43,7 +43,7 @@ class MonthlyRecordView: UIView {
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
     ).then {
-        $0.backgroundColor = .clear
+        $0.backgroundColor = .background
         $0.register(MonthlyRecordCell.self, forCellWithReuseIdentifier: MonthlyRecordCell.reuseIdentifier)
         if let layout = $0.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.minimumLineSpacing = 20
@@ -66,18 +66,18 @@ class MonthlyRecordView: UIView {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         collectionView.delegate = self
         collectionView.dataSource = self
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         addSubview(titleLabel)
         addSubview(numOfMonthlyAllReadLabel)
         addSubview(collectionView)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(30)
             $0.leading.equalToSuperview().inset(50)

@@ -10,7 +10,7 @@ import Foundation
 
 import Alamofire
 
-class TodayNewsViewModel {
+final class TodayNewsViewModel {
     
     enum Input {
         case getTodayNews

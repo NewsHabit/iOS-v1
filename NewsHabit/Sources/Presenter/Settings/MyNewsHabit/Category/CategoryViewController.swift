@@ -11,7 +11,7 @@ protocol CategoryViewDelegate {
     func popViewController()
 }
 
-class CategoryViewController: BottomSheetController<CategoryView> {
+final class CategoryViewController: BottomSheetController<CategoryView> {
     
     var delegate: MyNewsHabitViewDelegate?
     private let viewModel = CategoryViewModel()

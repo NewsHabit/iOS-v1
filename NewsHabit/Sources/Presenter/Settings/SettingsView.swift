@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 import Then
 
-class SettingsView: UIView {
+final class SettingsView: UIView, BaseViewProtocol {
     
     var delegate: SettingsViewDelegate?
     private var viewModel: SettingsViewModel?
@@ -21,7 +21,7 @@ class SettingsView: UIView {
     
     let tableView = UITableView().then {
         $0.register(SettingsCell.self, forCellReuseIdentifier: SettingsCell.reuseIdentifier)
-        $0.backgroundColor = .clear
+        $0.backgroundColor = .background
         $0.separatorStyle = .none
     }
     
@@ -40,16 +40,16 @@ class SettingsView: UIView {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         tableView.delegate = self
         tableView.dataSource = self
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         addSubview(tableView)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }

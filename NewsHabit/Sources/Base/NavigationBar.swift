@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class NavigationBar: UIView {
+final class NavigationBar: UIView {
     
     // MARK: - UI Components
     
