@@ -14,6 +14,7 @@ protocol ProjectFactory {
 class NewsHabitFactory: ProjectFactory {
     
     let projectName: String = "NewsHabit"
+    let displayName: String = "뉴빗"
     let bundleId: String = "com.NewsHabit"
     
     let dependencies: [TargetDependency] = [
@@ -39,7 +40,7 @@ class NewsHabitFactory: ProjectFactory {
                     ])
                 ])
             ])
-        ])
+        ]),
     ]
     
     func generateTarget() -> [ProjectDescription.Target] {[
