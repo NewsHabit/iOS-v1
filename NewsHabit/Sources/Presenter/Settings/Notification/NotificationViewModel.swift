@@ -52,18 +52,17 @@ class NotificationViewModel {
             return
         }
         
-        NotificationCenterManager.shared.requestAuthorization { [weak self] granted, error in
+        NotificationCenterManager.shared.checkNotificationAuthorization { [weak self] isAuthorized in
             guard let self = self else { return }
-            // 알림 권한 거부
-            guard granted else {
+            
+            if isAuthorized { // 알림 권한 허용
+                if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
+                    NotificationCenterManager.shared.addNotification(for: notificationTime)
+                    self.output.send(.updateNotification)
+                }
+            } else { // 알림 권한 거부
                 UserDefaultsManager.isNotificationOn = false
                 self.output.send(.permissionDenied)
-                return
-            }
-            // 알림 권한 허용
-            if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
-                NotificationCenterManager.shared.addNotification(for: notificationTime)
-                self.output.send(.updateNotification)
             }
         }
     }

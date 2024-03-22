@@ -45,6 +45,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to undo the changes made on entering the background.
         NotificationCenterManager.shared.checkNotificationAuthorization { isAuthorized in
             UserDefaultsManager.isNotificationOn = isAuthorized
+            if isAuthorized {
+                if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
+                    NotificationCenterManager.shared.addNotification(for: notificationTime)
+                }
+            }
         }
     }
 

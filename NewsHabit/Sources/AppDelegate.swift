@@ -19,6 +19,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         // 알림 센터의 delegate 설정
         UNUserNotificationCenter.current().delegate = self
+        NotificationCenterManager.shared.requestAuthorization { isAuthorized, error in
+            UserDefaultsManager.isNotificationOn = isAuthorized
+            if isAuthorized {
+                if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
+                    NotificationCenterManager.shared.addNotification(for: notificationTime)
+                }
+            }
+        }
         return true
     }
     
