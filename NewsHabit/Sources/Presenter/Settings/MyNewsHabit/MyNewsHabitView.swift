@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 import Then
 
-class MyNewsHabitView: UIView {
+class MyNewsHabitView: UIView, BaseViewProtocol {
     
     var delegate: MyNewsHabitViewDelegate?
     private var viewModel: MyNewsHabitViewModel?
@@ -20,7 +20,7 @@ class MyNewsHabitView: UIView {
     // MARK: - UI Components
     
     let tableView = UITableView().then {
-        $0.backgroundColor = .clear
+        $0.backgroundColor = .background
         $0.separatorStyle = .none
         $0.register(MyNewsHabitCell.self, forCellReuseIdentifier: MyNewsHabitCell.reuseIdentifier)
     }
@@ -40,16 +40,16 @@ class MyNewsHabitView: UIView {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         tableView.delegate = self
         tableView.dataSource = self
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         addSubview(tableView)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         tableView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(20)
             $0.leading.bottom.trailing.equalToSuperview()

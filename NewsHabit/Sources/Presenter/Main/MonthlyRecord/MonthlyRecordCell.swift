@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class MonthlyRecordCell: UICollectionViewCell {
+class MonthlyRecordCell: UICollectionViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "MonthlyRecordCell"
     
@@ -43,16 +43,17 @@ class MonthlyRecordCell: UICollectionViewCell {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
+        backgroundColor = .background
         clipsToBounds = true
         layer.cornerRadius = 10
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         addSubview(label)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         label.snp.makeConstraints {
             $0.center.equalToSuperview()
         }

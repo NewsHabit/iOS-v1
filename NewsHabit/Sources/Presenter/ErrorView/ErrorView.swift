@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ErrorView: UIStackView {
+class ErrorView: UIStackView, BaseViewProtocol {
     
     // MARK: - UI Components
     
@@ -41,16 +41,19 @@ class ErrorView: UIStackView {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         axis = .vertical
         spacing = 10
         alignment = .center
         isHidden = true
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         addArrangedSubview(faceLabel)
         addArrangedSubview(messageLabel)
     }
+    
+    
+    func setupLayout() {}
     
 }

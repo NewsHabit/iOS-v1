@@ -8,7 +8,7 @@
 import Combine
 import UIKit
 
-class CategoryView: UIView {
+class CategoryView: UIView, BaseViewProtocol {
     
     var delegate: CategoryViewDelegate?
     private var viewModel: CategoryViewModel?
@@ -33,7 +33,7 @@ class CategoryView: UIView {
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
     ).then {
-        $0.backgroundColor = .clear
+        $0.backgroundColor = .background
         $0.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.reuseIdentifier)
         if let layout = $0.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.minimumLineSpacing = 20
@@ -65,20 +65,20 @@ class CategoryView: UIView {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         collectionView.delegate = self
         collectionView.dataSource = self
         saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         addSubview(titleLabel)
         addSubview(subTitleLabel)
         addSubview(collectionView)
         addSubview(saveButton)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(50)
             $0.leading.equalToSuperview().inset(30)

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NotificationTimeCell: UITableViewCell {
+class NotificationTimeCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "NotificationTimeCell"
     
@@ -39,17 +39,17 @@ class NotificationTimeCell: UITableViewCell {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
-        backgroundColor = .clear
+    func setupProperty() {
+        backgroundColor = .background
         selectionStyle = .none
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(timeLabel)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(20)
             $0.centerY.equalToSuperview()

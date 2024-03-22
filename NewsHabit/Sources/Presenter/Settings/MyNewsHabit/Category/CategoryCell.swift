@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class CategoryCell: UICollectionViewCell {
+class CategoryCell: UICollectionViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "CategoryCell"
     
@@ -36,16 +36,16 @@ class CategoryCell: UICollectionViewCell {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         clipsToBounds = true
         layer.cornerRadius = 13
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         contentView.addSubview(label)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         label.snp.makeConstraints {
             $0.center.equalToSuperview()
         }

@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ThemeView: UIView {
+class ThemeView: UIView, BaseViewProtocol {
     
     private var viewModel: ThemeViewModel?
     private var cancellables = Set<AnyCancellable>()
@@ -19,7 +19,7 @@ class ThemeView: UIView {
     // MARK: - UI Components
     
     let tableView = UITableView().then {
-        $0.backgroundColor = .clear
+        $0.backgroundColor = .background
         $0.separatorStyle = .none
         $0.register(ThemeCell.self, forCellReuseIdentifier: ThemeCell.reuseIdentifier)
     }
@@ -39,16 +39,16 @@ class ThemeView: UIView {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         tableView.delegate = self
         tableView.dataSource = self
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         addSubview(tableView)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         tableView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(20)
             $0.leading.bottom.trailing.equalToSuperview()

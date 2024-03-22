@@ -8,7 +8,7 @@
 import Combine
 import UIKit
 
-class TodayNewsCountView: UIView {
+class TodayNewsCountView: UIView, BaseViewProtocol {
     
     var delegate: TodayNewsCountViewDelegate?
     private var viewModel: TodayNewsCountViewModel?
@@ -29,7 +29,7 @@ class TodayNewsCountView: UIView {
     }
     
     let tableView = UITableView().then {
-        $0.backgroundColor = .clear
+        $0.backgroundColor = .background
         $0.separatorStyle = .none
         $0.register(TodayNewsCountCell.self, forCellReuseIdentifier: TodayNewsCountCell.reuseIdentifier)
     }
@@ -58,20 +58,20 @@ class TodayNewsCountView: UIView {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         tableView.delegate = self
         tableView.dataSource = self
         saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         addSubview(titleLabel)
         addSubview(subTitleLabel)
         addSubview(tableView)
         addSubview(saveButton)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(50)
             $0.leading.equalToSuperview().inset(30)

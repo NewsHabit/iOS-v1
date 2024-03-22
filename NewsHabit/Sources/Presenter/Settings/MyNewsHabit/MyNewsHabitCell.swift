@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class MyNewsHabitCell: UITableViewCell {
+class MyNewsHabitCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "MyNewsHabitCell"
     private var viewModel: MyNewsHabitItem?
@@ -47,18 +47,18 @@ class MyNewsHabitCell: UITableViewCell {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
-        backgroundColor = .clear
+    func setupProperty() {
+        backgroundColor = .background
         selectionStyle = .none
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(chevronImage)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(20)
             $0.centerY.equalToSuperview()

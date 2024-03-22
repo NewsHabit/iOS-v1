@@ -8,7 +8,7 @@
 import Combine
 import UIKit
 
-class NotificationView: UIView {
+class NotificationView: UIView, BaseViewProtocol {
 
     var delegate: NotificationViewDelegate?
     private var viewModel: NotificationViewModel?
@@ -19,7 +19,7 @@ class NotificationView: UIView {
     // MARK: - UI Components
     
     let tableView = UITableView().then {
-        $0.backgroundColor = .clear
+        $0.backgroundColor = .background
         $0.separatorStyle = .none
         $0.register(NotificationSwitchCell.self, forCellReuseIdentifier: NotificationSwitchCell.reuseIdentifier)
         $0.register(NotificationTimeCell.self, forCellReuseIdentifier: NotificationTimeCell.reuseIdentifier)
@@ -62,7 +62,7 @@ class NotificationView: UIView {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         tableView.delegate = self
         
         feedbackGenerator.prepare()
@@ -71,14 +71,14 @@ class NotificationView: UIView {
         saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         addSubview(tableView)
         addSubview(stackView)
         stackView.addArrangedSubview(datePicker)
         stackView.addArrangedSubview(saveButton)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         tableView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(20)
             $0.leading.trailing.equalToSuperview()

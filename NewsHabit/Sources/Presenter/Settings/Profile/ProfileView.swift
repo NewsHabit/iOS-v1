@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ProfileView: UIView {
+class ProfileView: UIView, BaseViewProtocol {
     
     var delegate: ProfileViewDelegate?
     let maxNameLength = 8
@@ -64,7 +64,7 @@ class ProfileView: UIView {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         backgroundColor = .background
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -77,14 +77,14 @@ class ProfileView: UIView {
         textField.becomeFirstResponder()
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         addSubview(titleLabel)
         addSubview(subTitleLabel)
         addSubview(textField)
         addSubview(saveButton)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         titleLabel.snp.makeConstraints {
             $0.top.leading.equalToSuperview().inset(20)
         }

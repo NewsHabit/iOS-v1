@@ -8,7 +8,7 @@
 import Combine
 import UIKit
 
-class TodayNewsView: UIView {
+class TodayNewsView: UIView, BaseViewProtocol {
     
     var delegate: TodayNewsViewDelegate?
     private var viewModel: TodayNewsViewModel?
@@ -53,7 +53,7 @@ class TodayNewsView: UIView {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.refreshControl = refreshControl
@@ -62,14 +62,14 @@ class TodayNewsView: UIView {
         errorView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(refreshNews)))
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         addSubview(messageView)
         messageView.addSubview(messageLabel)
         addSubview(tableView)
         addSubview(errorView)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         messageView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview().inset(15)
             $0.height.equalTo(44)

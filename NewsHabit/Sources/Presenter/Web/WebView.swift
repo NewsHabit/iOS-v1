@@ -12,7 +12,7 @@ import Alamofire
 import SnapKit
 import Then
 
-class WebView: UIView {
+class WebView: UIView, BaseViewProtocol {
     
     private var progressObserver: NSKeyValueObservation?
     
@@ -50,7 +50,7 @@ class WebView: UIView {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
+    func setupProperty() {
         webView.navigationDelegate = self
         
         progressObserver = webView.observe(\.estimatedProgress, options: .new) { [weak self] webView, _ in
@@ -58,13 +58,13 @@ class WebView: UIView {
         }
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         addSubview(webView)
         addSubview(progressView)
         addSubview(errorView)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         webView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }

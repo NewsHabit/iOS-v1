@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class ThemeCell: UITableViewCell {
+class ThemeCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "ThemeCell"
     
@@ -50,18 +50,18 @@ class ThemeCell: UITableViewCell {
     
     // MARK: - Setup Methods
     
-    private func setupProperty() {
-        backgroundColor = .clear
+    func setupProperty() {
+        backgroundColor = .background
         selectionStyle = .none
     }
     
-    private func setupHierarchy() {
+    func setupHierarchy() {
         contentView.addSubview(imageButton)
         contentView.addSubview(titleLabel)
         contentView.addSubview(selectedButton)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         imageButton.snp.makeConstraints {
             $0.width.height.equalTo(17)
             $0.leading.equalToSuperview().inset(30)
