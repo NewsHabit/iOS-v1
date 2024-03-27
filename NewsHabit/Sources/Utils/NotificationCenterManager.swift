@@ -38,6 +38,8 @@ final class NotificationCenterManager {
     }
     
     func addNotification(for date: Date, with identifier: String = UUID().uuidString) {
+        removeAllPendingNotificationRequests() // 알람 추가 전 이전 알람 삭제
+        
         let content = UNMutableNotificationContent()
         content.title = "뉴스를 습관처럼"
         content.body = "\(UserDefaultsManager.username)님을 위한 뉴스가 도착했어요"
