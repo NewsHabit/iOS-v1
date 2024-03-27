@@ -20,19 +20,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let window = window else { return }
         // 앱의 테마 설정
         window.overrideUserInterfaceStyle = window.toUserInterfaceStyle(themeType: UserDefaultsManager.theme)
-        window.rootViewController = TabBarController()
+        // 루트 뷰 컨트롤러 설정
+        if UserDefaultsManager.isFirst {
+            window.rootViewController = UINavigationController(rootViewController: SetupProfileViewController()) 
+        } else {
+            window.rootViewController = TabBarController()
+        }
         window.makeKeyAndVisible()
         // 알림 센터의 delegate 설정
         UNUserNotificationCenter.current().delegate = self
-        // 알림 권한 설정
-        NotificationCenterManager.shared.requestAuthorization { isAuthorized, error in
-            UserDefaultsManager.isNotificationOn = isAuthorized
-            if isAuthorized {
-                if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
-                    NotificationCenterManager.shared.addNotification(for: notificationTime)
-                }
-            }
-        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -19,7 +19,7 @@ final class CategoryView: UIView, BaseViewProtocol {
     let titleLabel = UILabel().then {
         $0.text = "선택한 카테고리와 관련된 기사를 매일 추천해드릴게요"
         $0.textColor = .label
-        $0.font = .cellTitleFont
+        $0.font = .titleFont
         $0.numberOfLines = 0
     }
     
