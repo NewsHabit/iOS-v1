@@ -24,6 +24,16 @@ final class MainViewController: BaseViewController<MainView>, BaseViewController
         super.viewDidLoad()
         setupNavigationBar()
         
+        // 알림 권한 설정
+        NotificationCenterManager.shared.requestAuthorization { isAuthorized, error in
+            UserDefaultsManager.isNotificationOn = isAuthorized
+            if isAuthorized {
+                if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
+                    NotificationCenterManager.shared.addNotification(for: notificationTime)
+                }
+            }
+        }
+        
         guard let contentView = contentView as? MainView else { return }
         contentView.todayNewsView.delegate = self
         contentView.bindViewModel(mainViewModel, todayNewsViewModel)

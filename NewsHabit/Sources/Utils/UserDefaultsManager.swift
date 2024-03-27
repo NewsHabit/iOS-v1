@@ -9,6 +9,9 @@ import Foundation
 
 struct UserDefaultsManager {
     
+    @UserDefaultsData(key: "isFirst", defaultValue: true)
+    static var isFirst: Bool
+    
     @UserDefaultsData(key: "username", defaultValue: "사용자")
     static var username: String
     
