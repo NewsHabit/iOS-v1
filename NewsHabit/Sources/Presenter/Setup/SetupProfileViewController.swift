@@ -13,6 +13,12 @@ class SetupProfileViewController: UIViewController, BaseViewControllerProtocol {
     
     // MARK: - UI Components
     
+    let label = UILabel().then {
+        $0.text = "👋🏻 환영합니다!\n뉴빗과 함께 습관을 만들어보아요"
+        $0.font = .largeTitleFont
+        $0.numberOfLines = 0
+    }
+    
     let profileView = ProfileView()
     
     // MARK: - Life Cycle
@@ -20,9 +26,14 @@ class SetupProfileViewController: UIViewController, BaseViewControllerProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .background
+        view.addSubview(label)
         view.addSubview(profileView)
-        profileView.snp.makeConstraints {
+        label.snp.makeConstraints {
             $0.top.equalToSuperview().inset(100)
+            $0.leading.equalToSuperview().inset(20)
+        }
+        profileView.snp.makeConstraints {
+            $0.top.equalTo(label.snp.bottom).offset(20)
             $0.leading.trailing.bottom.equalToSuperview()
         }
         profileView.saveButton.isHidden = true

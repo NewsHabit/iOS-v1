@@ -20,7 +20,7 @@ final class ProfileView: UIView, BaseViewProtocol {
     let titleLabel = UILabel().then {
         $0.text = "이름을 입력하세요"
         $0.textColor = .label
-        $0.font = .titleFont
+        $0.font = .cellTitleFont
     }
     
     let subTitleLabel = UILabel().then {

@@ -19,7 +19,7 @@ final class TodayNewsCountView: UIView, BaseViewProtocol {
     let titleLabel = UILabel().then {
         $0.text = "매일 추천받고 싶은 기사의 개수를 선택해주세요"
         $0.textColor = .label
-        $0.font = .titleFont
+        $0.font = .cellTitleFont
     }
     
     let subTitleLabel = UILabel().then {
