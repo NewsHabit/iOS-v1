@@ -111,15 +111,22 @@ final class HotNewsCell: UITableViewCell, BaseViewProtocol {
     private func loadImage(from urlString: String?) {
         guard let urlString = urlString else { return }
         
-        APIManager.shared.fetchImageData(from: urlString) { [weak self] result in
-            switch result {
-            case .success(let data):
-                guard let image = UIImage(data: data) else { return }
-                DispatchQueue.main.async {
-                    self?.thumbnailView.image = image
+        if let image = ImageCacheManager.shared.imageForKey(urlString) {
+            DispatchQueue.main.async {
+                self.thumbnailView.image = image
+            }
+        } else {
+            APIManager.shared.fetchImageData(from: urlString) { [weak self] result in
+                switch result {
+                case .success(let data):
+                    guard let image = UIImage(data: data) else { return }
+                    ImageCacheManager.shared.cacheImage(forKey: urlString, image: image)
+                    DispatchQueue.main.async {
+                        self?.thumbnailView.image = image
+                    }
+                case .failure(let error):
+                    print("Error loading image: \(error)")
                 }
-            case .failure(let error):
-                print("Error loading image: \(error)")
             }
         }
     }
