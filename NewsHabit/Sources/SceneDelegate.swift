@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -21,6 +22,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.overrideUserInterfaceStyle = window.toUserInterfaceStyle(themeType: UserDefaultsManager.theme)
         window.rootViewController = TabBarController()
         window.makeKeyAndVisible()
+        // 알림 센터의 delegate 설정
+        UNUserNotificationCenter.current().delegate = self
+        // 알림 권한 설정
+        NotificationCenterManager.shared.requestAuthorization { isAuthorized, error in
+            UserDefaultsManager.isNotificationOn = isAuthorized
+            if isAuthorized {
+                if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
+                    NotificationCenterManager.shared.addNotification(for: notificationTime)
+                }
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -62,3 +74,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 }
 
+extension SceneDelegate: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        guard let tabBarController = window?.rootViewController as? UITabBarController else { return }
+        tabBarController.selectedIndex = 0
+        completionHandler()
+    }
+    
+    // 앱이 포그라운드 상태일 때 알림이 도착하면 호출
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // 알림 배너, 소리 등을 표시하도록 설정
+        completionHandler([.banner, .badge, .list, .sound])
+    }
+
+}
