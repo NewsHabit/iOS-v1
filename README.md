@@ -7,7 +7,7 @@
 - **기간** : 2024/02 → 2024/03 (현재 앱 스토어 배포 준비 중⚠️)
 - **팀 구성** : iOS 1명, Backend 1명
 - **앱 페이지** : [NewsHabit](https://newshabit.org)
-- **백엔드 레포지토리** : [NewaHabit_Backend](https://github.com/NewsHabit/Backend)
+- **백엔드 레포지토리** : [NewsHabit_Backend](https://github.com/NewsHabit/Backend)
 
 <br>
 
