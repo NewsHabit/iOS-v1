@@ -15,7 +15,7 @@ struct UserDefaultsManager {
     @UserDefaultsData(key: "username", defaultValue: "사용자")
     static var username: String
     
-    @UserDefaultsData(key: "cagetoryList", defaultValue: Category.allCases.map { $0.rawValue })
+    @UserDefaultsData(key: "cagetoryList", defaultValue: [Category.economy.rawValue])
     static var categoryList: [Int]
     
     @UserDefaultsData(key: "todayNewsCount", defaultValue: TodayNewsCountType.three)
