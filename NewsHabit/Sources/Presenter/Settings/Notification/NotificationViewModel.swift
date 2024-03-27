@@ -45,9 +45,9 @@ final class NotificationViewModel {
     
     private func handleNotification(_ isOn: Bool) {
         UserDefaultsManager.isNotificationOn = isOn
-        NotificationCenterManager.shared.removeAllPendingNotificationRequests()
         
         if !isOn {
+            NotificationCenterManager.shared.removeAllPendingNotificationRequests()
             self.output.send(.updateNotification)
             return
         }
@@ -62,6 +62,7 @@ final class NotificationViewModel {
                 }
             } else { // 알림 권한 거부
                 UserDefaultsManager.isNotificationOn = false
+                NotificationCenterManager.shared.removeAllPendingNotificationRequests()
                 self.output.send(.permissionDenied)
             }
         }
