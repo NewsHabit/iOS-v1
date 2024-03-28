@@ -109,7 +109,7 @@ final class ProfileView: UIView, BaseViewProtocol {
     // MARK: - Action Functions
     
     @objc private func handleSaveButtonTap() {
-        guard let username = textField.text, !username.isEmpty, username.count <= 6 else { return }
+        guard let username = textField.text, !username.isEmpty, username.count <= maxNameLength else { return }
         UserDefaultsManager.username = username
         endEditing(true)
         delegate?.popViewController()
