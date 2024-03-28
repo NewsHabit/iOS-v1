@@ -10,7 +10,6 @@ import UIKit
 protocol TodayNewsViewDelegate {
     func pushViewController(_ newsLink: String?)
     func updateDaysAllReadCount()
-    func scrollToTop()
 }
 
 final class MainViewController: BaseViewController<MainView>, BaseViewControllerProtocol {
@@ -74,9 +73,17 @@ extension MainViewController: TodayNewsViewDelegate {
         contentView.monthlyRecordView.update()
     }
     
-    func scrollToTop() {
+}
+
+extension MainViewController: Scrollable {
+    
+    func activateScroll() {
         guard let contentView = contentView as? MainView else { return }
-        contentView.todayNewsView.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        let indexPath = IndexPath(row: 0, section: 0)
+        // 테이블 뷰의 섹션 0에 적어도 하나 이상의 행이 있는지 확인
+        if contentView.todayNewsView.tableView.numberOfRows(inSection: indexPath.section) > 0 {
+            contentView.todayNewsView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        }
     }
     
 }
