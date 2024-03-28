@@ -13,7 +13,9 @@ class SetupTodayNewsCountViewController: UIViewController, BaseViewControllerPro
     
     // MARK: - UI Components
     
-    let todayNewsCountView = TodayNewsCountView()
+    let todayNewsCountView = TodayNewsCountView().then {
+        $0.subTitleLabel.text = ""
+    }
     
     // MARK: - Life Cycle
     

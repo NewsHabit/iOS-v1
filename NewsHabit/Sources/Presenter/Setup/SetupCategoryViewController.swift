@@ -13,7 +13,9 @@ class SetupCategoryViewController: UIViewController, BaseViewControllerProtocol 
     
     // MARK: - UI Components
     
-    let categoryView = CategoryView()
+    let categoryView = CategoryView().then {
+        $0.subTitleLabel.text = "여러 개 선택할 수 있어요"
+    }
     
     // MARK: - Life Cycle
     
