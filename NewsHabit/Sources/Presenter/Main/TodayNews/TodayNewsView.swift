@@ -34,8 +34,6 @@ final class TodayNewsView: UIView, BaseViewProtocol {
         $0.backgroundColor = .background
     }
     
-    let refreshControl = UIRefreshControl()
-    
     let errorView = ErrorView()
     
     // MARK: - Initializer
@@ -56,8 +54,6 @@ final class TodayNewsView: UIView, BaseViewProtocol {
     func setupProperty() {
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(refreshNews), for: .valueChanged)
         errorView.isUserInteractionEnabled = true
         errorView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(refreshNews)))
     }
@@ -126,12 +122,10 @@ final class TodayNewsView: UIView, BaseViewProtocol {
                     self.tableView.isHidden = false
                     showAllReadMessageIfNeeded()
                     self.tableView.reloadData()
-                    self.refreshControl.endRefreshing()
                 case .fetchFailed:
                     self.errorView.isHidden = false
                     self.tableView.isHidden = true
                     hideAllReadMessage()
-                    self.refreshControl.endRefreshing()
                 case .updateDaysAllRead:
                     self.delegate?.updateDaysAllReadCount()
                     showAllReadMessageIfNeeded()
