@@ -9,7 +9,13 @@ import UIKit
 
 final class WebViewController: BaseViewController<WebView> {
     
-    var urlString: String?
+    var urlString: String? {
+        didSet {
+            updateURLFromString()
+        }
+    }
+    
+    private var url: URL?
     
     // MARK: - Life Cycle
     
@@ -17,11 +23,9 @@ final class WebViewController: BaseViewController<WebView> {
         super.viewDidLoad()
         setupNavigationBar()
         
-        guard let contentView = contentView as? WebView else { return }
         if urlString == nil {
             urlString = "https://newshabit.org"
         }
-        contentView.loadLink(urlString)
     }
     
     // MARK: - BaseViewControllerProtocol
@@ -33,14 +37,24 @@ final class WebViewController: BaseViewController<WebView> {
     // MARK: - objc Function
     
     @objc private func handleShareButtonTap() {
-        guard let urlString = urlString, let url = URL(string: urlString) else { return }
+        guard let url = url else { return }
         
         let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         self.present(activityViewController, animated: true)
     }
     
-    func setShareButtonEnabled(_ isEnabled: Bool) {
-        setNavigationBarShareButtonHidden(!isEnabled)
+    // MARK: - Functions
+    
+    private func updateURLFromString() {
+        if let urlString = urlString {
+            url = URL(string: urlString)
+        }
+        guard let contentView = contentView as? WebView else { return }
+        contentView.loadLink(url)
+    }
+    
+    func disableShareButton() {
+        setNavigationBarShareButtonHidden(true)
     }
     
 }

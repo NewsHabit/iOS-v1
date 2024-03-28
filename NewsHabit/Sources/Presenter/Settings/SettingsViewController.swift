@@ -51,7 +51,7 @@ extension SettingsViewController: SettingsViewDelegate {
             navigationController?.pushViewController(ThemeViewController(), animated: true)
         case .developer:
             let developerInfoViewcontroller = WebViewController()
-            developerInfoViewcontroller.setShareButtonEnabled(false)
+            developerInfoViewcontroller.disableShareButton()
             navigationController?.pushViewController(developerInfoViewcontroller, animated: true)
         }
     }
