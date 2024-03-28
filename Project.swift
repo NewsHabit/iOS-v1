@@ -27,7 +27,7 @@ class NewsHabitFactory: ProjectFactory {
         "ITSAppUsesNonExemptEncryption": .boolean(false),
         "CFBundleDisplayName": .string("뉴빗"),
         "CFBundleName": .string("뉴빗"),
-        "CFBundleShortVersionString": .string("1.2.1"),
+        "CFBundleShortVersionString": .string("1.0.0"),
         "CFBundleVersion": .string("1"),
         "UILaunchStoryboardName": .string("LaunchScreen"),
         "UIApplicationSceneManifest": .dictionary([
