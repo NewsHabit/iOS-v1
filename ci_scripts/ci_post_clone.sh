@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Tuist 설치
 bash <(curl -Ls https://install.tuist.io)
