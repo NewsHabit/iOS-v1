@@ -14,7 +14,6 @@ protocol ProjectFactory {
 class NewsHabitFactory: ProjectFactory {
     
     let projectName: String = "NewsHabit"
-    let displayName: String = "뉴빗"
     let bundleId: String = "com.NewsHabit"
     
     let dependencies: [TargetDependency] = [
@@ -26,7 +25,7 @@ class NewsHabitFactory: ProjectFactory {
     let infoPlist: [String: Plist.Value] = [
         "ITSAppUsesNonExemptEncryption": .boolean(false),
         "CFBundleDisplayName": .string("뉴빗"),
-        "CFBundleName": .string("뉴빗"),
+        "CFBundleName": .string("NewsHabit"),
         "CFBundleShortVersionString": .string("1.0.0"),
         "CFBundleVersion": .string("1"),
         "UILaunchStoryboardName": .string("LaunchScreen"),
