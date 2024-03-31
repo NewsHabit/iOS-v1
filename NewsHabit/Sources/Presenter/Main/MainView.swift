@@ -207,6 +207,7 @@ extension MainView {
     
     @objc private func handleMonthlyRecordTap() {
         viewModel?.input.send(.setMainOption(.monthlyRecord))
+        monthlyRecordView.update()
     }
     
 }

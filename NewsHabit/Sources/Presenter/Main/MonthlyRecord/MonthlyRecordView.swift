@@ -96,6 +96,12 @@ final class MonthlyRecordView: UIView, BaseViewProtocol {
     }
     
     func update() {
+        // 이번 달 기록 업데이트
+        if UserDefaultsManager.lastMonth != Date().toMonthString() {
+            UserDefaultsManager.lastMonth = Date().toMonthString()
+            UserDefaultsManager.monthlyAllRead = []
+        }
+        titleLabel.text = Date().toYearMonthString()
         numOfMonthlyAllReadLabel.text = "📚 \(UserDefaultsManager.monthlyAllRead.count)"
         collectionView.reloadData()
     }

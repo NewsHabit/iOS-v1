@@ -51,6 +51,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
+        // 이번 달 기록 설정
+        if UserDefaultsManager.lastMonth != Date().toMonthString() {
+            UserDefaultsManager.lastMonth = Date().toMonthString()
+            UserDefaultsManager.monthlyAllRead = []
+        }
+        // 알림 권한 체크
         NotificationCenterManager.shared.checkNotificationAuthorization { isAuthorized in
             UserDefaultsManager.isNotificationOn = isAuthorized
             if isAuthorized {
