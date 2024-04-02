@@ -45,7 +45,7 @@ class NewsHabitFactory: ProjectFactory {
     func generateTarget() -> [ProjectDescription.Target] {[
         Target(
             name: projectName,
-            destinations: .iOS,
+            destinations: [.iPhone],
             product: .app,
             bundleId: bundleId,
             deploymentTargets: .iOS("15.0"),
