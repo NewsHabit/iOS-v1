@@ -37,6 +37,7 @@ class SetupProfileViewController: UIViewController, BaseViewControllerProtocol {
             $0.leading.trailing.bottom.equalToSuperview()
         }
         profileView.saveButton.isHidden = true
+        profileView.textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged);
         setupNavigationBar()
     }
     
@@ -53,6 +54,14 @@ class SetupProfileViewController: UIViewController, BaseViewControllerProtocol {
         UserDefaultsManager.username = username
         profileView.endEditing(true)
         navigationController?.pushViewController(SetupCategoryViewController(), animated: true)
+    }
+    
+    @objc private func textFieldDidChange(_ textField: UITextField) {
+        if let text = textField.text {
+            let isValid = !text.isEmpty && text.count <= profileView.maxNameLength
+            self.navigationItem.rightBarButtonItem?.isEnabled = isValid
+            self.navigationItem.rightBarButtonItem?.tintColor = isValid ? .label : .newsHabitGray
+        }
     }
     
 }
