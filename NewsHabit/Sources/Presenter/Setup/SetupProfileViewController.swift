@@ -49,7 +49,7 @@ class SetupProfileViewController: UIViewController, BaseViewControllerProtocol {
     }
     
     @objc private func handleNextButton() {
-        guard let username = profileView.textField.text, !username.isEmpty, username.count <= 6 else { return }
+        guard let username = profileView.textField.text, !username.isEmpty, username.count <= profileView.maxNameLength else { return }
         UserDefaultsManager.username = username
         profileView.endEditing(true)
         navigationController?.pushViewController(SetupCategoryViewController(), animated: true)
