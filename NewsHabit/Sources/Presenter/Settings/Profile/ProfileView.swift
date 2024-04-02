@@ -73,7 +73,7 @@ final class ProfileView: UIView, BaseViewProtocol {
         saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
         
         textField.placeholder = "최대 \(maxNameLength)글자"
-        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         textField.becomeFirstResponder()
     }
     
