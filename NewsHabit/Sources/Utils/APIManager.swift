@@ -35,10 +35,4 @@ final class APIManager {
             .store(in: &cancellables)
     }
     
-    func fetchImageData(from urlString: String, completion: @escaping (Result<Data, AFError>) -> Void) {
-        AF.request(urlString).responseData { response in
-            completion(response.result)
-        }
-    }
-    
 }

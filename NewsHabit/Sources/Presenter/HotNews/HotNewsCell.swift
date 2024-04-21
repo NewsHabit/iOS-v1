@@ -8,6 +8,7 @@
 import Combine
 import UIKit
 
+import Kingfisher
 import SnapKit
 import Then
 
@@ -109,26 +110,9 @@ final class HotNewsCell: UITableViewCell, BaseViewProtocol {
     // MARK: - Load Image
     
     private func loadImage(from urlString: String?) {
-        guard let urlString = urlString else { return }
-        
-        if let image = ImageCacheManager.shared.imageForKey(urlString) {
-            DispatchQueue.main.async {
-                self.thumbnailView.image = image
-            }
-        } else {
-            APIManager.shared.fetchImageData(from: urlString) { [weak self] result in
-                switch result {
-                case .success(let data):
-                    guard let image = UIImage(data: data) else { return }
-                    ImageCacheManager.shared.cacheImage(forKey: urlString, image: image)
-                    DispatchQueue.main.async {
-                        self?.thumbnailView.image = image
-                    }
-                case .failure(let error):
-                    print("Error loading image: \(error)")
-                }
-            }
-        }
+        guard let urlString = urlString,
+              let url = URL(string: urlString) else { return }
+        thumbnailView.kf.setImage(with: url)
     }
 
 }

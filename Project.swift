@@ -19,7 +19,8 @@ class NewsHabitFactory: ProjectFactory {
     let dependencies: [TargetDependency] = [
         .external(name: "SnapKit"),
         .external(name: "Then"),
-        .external(name: "Alamofire")
+        .external(name: "Alamofire"),
+        .external(name: "Kingfisher")
     ]
     
     let infoPlist: [String: Plist.Value] = [
