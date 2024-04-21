@@ -1,10 +1,7 @@
-name: "✨ Feature"
+name: "기능 요청"
+description: "새로운 기능이나 아이디어를 제안해 주세요."
 title: "✨ [Feature] "
 body:
-  - type: textarea
-    id: description
+  - type: markdown
     attributes:
-      label: "Description"
       value: "- "
-    validations:
-      required: true
