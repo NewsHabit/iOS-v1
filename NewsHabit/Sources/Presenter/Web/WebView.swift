@@ -18,7 +18,7 @@ final class WebView: UIView, BaseViewProtocol {
     
     // MARK: - UI Components
     
-    let webView = WKWebView()
+    let webView: WKWebView
     
     let progressView = UIProgressView().then {
         $0.progressViewStyle = .bar
@@ -33,7 +33,12 @@ final class WebView: UIView, BaseViewProtocol {
     // MARK: - Initializer
     
     override init(frame: CGRect) {
+        let config = WKWebViewConfiguration()
+        config.allowsInlineMediaPlayback = true
+        webView = WKWebView(frame: .zero, configuration: config)
+        
         super.init(frame: frame)
+        
         setupProperty()
         setupHierarchy()
         setupLayout()
