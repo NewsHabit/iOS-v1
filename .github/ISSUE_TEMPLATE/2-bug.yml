@@ -1,0 +1,9 @@
+name: "🚨 Bug "
+title: "🚨 [Bug] "
+body:
+  - type: textarea
+    attributes:
+      label: Description
+      value: "- [ ] "
+    validations:
+      required: true
