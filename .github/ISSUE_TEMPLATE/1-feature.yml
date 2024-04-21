@@ -4,4 +4,5 @@ title: "✨ [Feature] "
 body:
   - type: textarea
     attributes:
+      label: Feature Description
       value: " - " 
