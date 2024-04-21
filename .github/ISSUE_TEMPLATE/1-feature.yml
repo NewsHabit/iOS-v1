@@ -1,0 +1,10 @@
+name: "✨ Feature"
+title: "✨ [Feature] "
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      value: "- [ ] "
+    validations:
+      required: true
