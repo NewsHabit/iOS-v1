@@ -111,6 +111,15 @@ final class ProfileView: UIView, BaseViewProtocol {
     @objc private func handleSaveButtonTap() {
         guard let username = textField.text, !username.isEmpty, username.count <= maxNameLength else { return }
         UserDefaultsManager.username = username
+        // 알림 on 이었다면 닉네임 바꿔서 다시 알림 설정
+        NotificationCenterManager.shared.checkNotificationAuthorization { isAuthorized in
+            UserDefaultsManager.isNotificationOn = isAuthorized
+            if isAuthorized {
+                if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
+                    NotificationCenterManager.shared.addNotification(for: notificationTime)
+                }
+            }
+        }
         endEditing(true)
         delegate?.popViewController()
     }
