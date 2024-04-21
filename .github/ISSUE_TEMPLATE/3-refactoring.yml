@@ -1,4 +1,4 @@
-name: : "리팩토링 제안"
+name: "리팩토링 제안"
 description: "코드 베이스를 개선하기 위한 리팩터링 제안을 해주세요."
 title: "🛠️ [Refactor] "
 body:
