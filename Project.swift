@@ -19,14 +19,15 @@ class NewsHabitFactory: ProjectFactory {
     let dependencies: [TargetDependency] = [
         .external(name: "SnapKit"),
         .external(name: "Then"),
-        .external(name: "Alamofire")
+        .external(name: "Alamofire"),
+        .external(name: "Kingfisher")
     ]
     
     let infoPlist: [String: Plist.Value] = [
         "ITSAppUsesNonExemptEncryption": .boolean(false),
         "CFBundleDisplayName": .string("뉴빗"),
         "CFBundleName": .string("NewsHabit"),
-        "CFBundleShortVersionString": .string("1.0.1"),
+        "CFBundleShortVersionString": .string("1.0.2"),
         "CFBundleVersion": .string("1"),
         "UILaunchStoryboardName": .string("LaunchScreen"),
         "UIApplicationSceneManifest": .dictionary([
