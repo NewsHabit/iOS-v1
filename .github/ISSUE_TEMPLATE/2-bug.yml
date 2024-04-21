@@ -3,12 +3,7 @@ title: "🚨 [Bug] "
 body:
   - type: textarea
     attributes:
-<<<<<<< HEAD
-      label: Description
-      value: "- [ ] "
-=======
       label: "Description"
       value: "- "
->>>>>>> 5722b89 (📋 docs: 이슈 템플릿 파일 변경)
     validations:
       required: true
