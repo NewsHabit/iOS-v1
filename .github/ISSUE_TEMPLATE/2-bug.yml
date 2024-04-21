@@ -3,7 +3,7 @@ title: "🚨 [Bug] "
 body:
   - type: textarea
     attributes:
-      label: Description
-      value: "- [ ] "
+      label: "Description"
+      value: "- "
     validations:
       required: true

@@ -4,7 +4,7 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: Description
-      value: "- [ ] "
+      label: "Description"
+      value: "- "
     validations:
       required: true
