@@ -1,9 +1,9 @@
 # NewsHabit
-<img width=200 src="https://github.com/NewsHabit/iOS/assets/116897060/0eb8b06c-59f1-4be6-bd90-fbe7b898f955" align="left" hspace="10" vspace="10">
+<img width=190 src="https://github.com/NewsHabit/iOS/assets/116897060/0eb8b06c-59f1-4be6-bd90-fbe7b898f955" align="left" hspace="10" vspace="10">
 
 뉴빗은 매일 사용자의 관심사에 맞춤화된 뉴스를 제공하는 앱입니다. <br>
 지하철 출근길이나 회의 중 짧은 휴식 시간을 SNS나 숏폼 비디오로 보내는 대신, 좀 더 의미 있는 시간을 보내고 싶은 사람들을 위해 개발되었습니다. <br><br>
-뉴빗을 통해 매일 부담 없이 뉴스를 읽으면서 즐길 수 있는 습관을 만들어보세요! <br>
+뉴빗을 통해 매일 부담 없이 뉴스를 읽는 새로운 습관을 만들어보세요! <br>
 
 <p align="left">
   <a href="https://apps.apple.com/us/app/%EB%89%B4%EB%B9%97-%EB%89%B4%EC%8A%A4%EB%A5%BC-%EC%8A%B5%EA%B4%80%EC%B2%98%EB%9F%BC/id6479883475">
@@ -16,7 +16,7 @@
 ## 💁🏻‍♀️ About
 - **기간** : 2024/02 → 2024/03
 - **팀 구성** : iOS 1명, Backend 1명
-- **소개 페이지** : [NewsHabit](https://newshabit.org)
+- **앱 소개 페이지** : [NewsHabit](https://newshabit.org)
 - **백엔드 레포지토리** : [NewsHabit_Backend](https://github.com/NewsHabit/Backend)
 
 <br>
