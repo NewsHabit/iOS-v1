@@ -62,6 +62,9 @@ DerivedData/
 *.xcodeproj
 *.xcworkspace
 
+### Tuist
+.mise.toml
+
 ### Tuist derived files ###
 graph.dot
 Derived/
