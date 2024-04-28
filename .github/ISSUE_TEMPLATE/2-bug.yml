@@ -1,8 +1,0 @@
-name: "버그 리포트"
-description: "앱에서 발견한 버그를 보고하세요."
-title: "🚨 [Bug] "
-body:
-  - type: textarea
-    attributes:
-      label: Bug Description
-      value: " - "
