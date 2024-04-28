@@ -19,5 +19,6 @@
 |-|-|-|
 |Architecture|[Tuist](https://tuist.io/)|3.36.2|
 |Network|[Alamofire](https://github.com/Alamofire/Alamofire)|5.8.1|
+|Network|[Kingfisher](https://github.com/onevcat/Kingfisher)|7.0.0|
 |UI|[SnapKit](https://github.com/SnapKit/SnapKit)|5.0.1|
 |UI|[Then](https://github.com/devxoul/Then)|2.0.0|
