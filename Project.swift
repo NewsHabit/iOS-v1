@@ -36,7 +36,7 @@ let project: Project = .init(
     ],
     targets: [Target(
         name: projectName,
-        destinations: [.iPhone, .mac],
+        destinations: [.iPhone],
         product: .app,
         bundleId: bundleId,
         deploymentTargets: .iOS("15.0"),
