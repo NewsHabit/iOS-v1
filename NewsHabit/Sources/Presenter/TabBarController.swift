@@ -60,10 +60,14 @@ final class TabBarController: UITabBarController {
 extension TabBarController: UITabBarControllerDelegate {
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        guard let navVC = viewController as? UINavigationController, let topVC = navVC.viewControllers.first as? Scrollable else { return true }
+        guard let navVC = viewController as? UINavigationController, 
+                let topVC = navVC.viewControllers.first as? Scrollable
+        else { return true }
+        
         if navVC.viewControllers.count == 1 {
             topVC.activateScroll()
         }
+        
         return true
     }
     

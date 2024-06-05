@@ -1,33 +1,34 @@
 //
-//  NotificationTimeCell.swift
+//  NotificationTimeView.swift
 //  NewsHabit
 //
-//  Created by jiyeon on 2/24/24.
+//  Created by jiyeon on 6/6/24.
 //
 
 import UIKit
 
-final class NotificationTimeCell: UITableViewCell, BaseViewProtocol {
-    
-    static let reuseIdentifier = "NotificationTimeCell"
+import SnapKit
+import Then
+
+final class NotificationTimeView: UIView, BaseViewProtocol {
     
     // MARK: - UI Components
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.text = "시간"
-        $0.font = .largeLabelFont
+        $0.font = .title2
         $0.textColor = .label
     }
     
-    let timeLabel = UILabel().then {
-        $0.font = .largeLabelFont
+    private let timeLabel = UILabel().then {
+        $0.font = .title2
         $0.textColor = .newsHabitGray
     }
     
-    // MARK: - Initializer
+    // MARK: - Initialzier
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupProperty()
         setupHierarchy()
         setupLayout()
@@ -37,16 +38,15 @@ final class NotificationTimeCell: UITableViewCell, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         backgroundColor = .background
-        selectionStyle = .none
     }
     
     func setupHierarchy() {
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(timeLabel)
+        addSubview(titleLabel)
+        addSubview(timeLabel)
     }
     
     func setupLayout() {
@@ -60,8 +60,6 @@ final class NotificationTimeCell: UITableViewCell, BaseViewProtocol {
             $0.centerY.equalToSuperview()
         }
     }
-    
-    // MARK: - Configure
     
     func configure(with time: String) {
         timeLabel.text = time

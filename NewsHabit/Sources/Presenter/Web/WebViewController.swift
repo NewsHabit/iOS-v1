@@ -34,23 +34,18 @@ final class WebViewController: BaseViewController<WebView> {
         setNavigationBarShareButtonAction(#selector(handleShareButtonTap))
     }
     
-    // MARK: - objc Function
-    
     @objc private func handleShareButtonTap() {
         guard let url = url else { return }
         
         let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-        self.present(activityViewController, animated: true)
+        present(activityViewController, animated: true)
     }
-    
-    // MARK: - Functions
     
     private func updateURLFromString() {
         if let urlString = urlString {
             url = URL(string: urlString)
         }
-        guard let contentView = contentView as? WebView else { return }
-        contentView.loadLink(url)
+        contentView.load(url)
     }
     
     func disableShareButton() {

@@ -13,13 +13,13 @@ import Then
 
 final class MyNewsHabitView: UIView, BaseViewProtocol {
     
-    var delegate: MyNewsHabitViewDelegate?
+    weak var delegate: MyNewsHabitViewDelegate?
     private var viewModel: MyNewsHabitViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     
-    let tableView = UITableView().then {
+    private let tableView = UITableView().then {
         $0.backgroundColor = .background
         $0.separatorStyle = .none
         $0.register(MyNewsHabitCell.self, forCellReuseIdentifier: MyNewsHabitCell.reuseIdentifier)
@@ -56,19 +56,20 @@ final class MyNewsHabitView: UIView, BaseViewProtocol {
         }
     }
     
-    // MARK: - Bind ViewModel
+    // MARK: - Bind
     
-    func bindViewModel(_ viewModel: MyNewsHabitViewModel) {
+    func bind(with viewModel: MyNewsHabitViewModel) {
         self.viewModel = viewModel
+        
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
             .receive(on: RunLoop.main)
             .sink { [weak self] event in
                 guard let self = self else { return }
                 switch event {
                 case let .navigateTo(myNewsHabitType):
-                    self.delegate?.pushViewController(myNewsHabitType: myNewsHabitType)
+                    delegate?.navigateTo(myNewsHabitType: myNewsHabitType)
                 case .updateMyNewsHabitItems:
-                    self.tableView.reloadData()
+                    tableView.reloadData()
                 }
             }.store(in: &cancellables)
     }
@@ -94,9 +95,10 @@ extension MyNewsHabitView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cellViewModel = viewModel?.myNewsHabitItems[indexPath.row],
-              let cell = tableView.dequeueReusableCell(withIdentifier: MyNewsHabitCell.reuseIdentifier) as? MyNewsHabitCell else { return UITableViewCell() }
-        cell.bindViewModel(cellViewModel)
+        guard let item = viewModel?.myNewsHabitItems[indexPath.row],
+              let cell = tableView.dequeueReusableCell(withIdentifier: MyNewsHabitCell.reuseIdentifier) as? MyNewsHabitCell
+        else { return UITableViewCell() }
+        cell.configure(with: item)
         return cell
     }
     

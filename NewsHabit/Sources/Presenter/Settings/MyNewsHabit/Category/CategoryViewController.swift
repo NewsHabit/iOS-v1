@@ -7,13 +7,9 @@
 
 import UIKit
 
-protocol CategoryViewDelegate {
-    func popViewController()
-}
-
 final class CategoryViewController: BottomSheetController<CategoryView> {
     
-    var delegate: MyNewsHabitViewDelegate?
+    weak var delegate: MyNewsHabitViewDelegate?
     private let viewModel = CategoryViewModel()
     
     // MARK: - Life Cycle
@@ -21,7 +17,8 @@ final class CategoryViewController: BottomSheetController<CategoryView> {
     override func viewDidLoad() {
         super.viewDidLoad()
         sheetView.delegate = self
-        sheetView.bindViewModel(viewModel)
+        sheetView.bind(with: viewModel)
+        sheetView.setSubTitle(with: "변경 시 내일부터 적용돼요")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -34,7 +31,7 @@ final class CategoryViewController: BottomSheetController<CategoryView> {
 extension CategoryViewController: CategoryViewDelegate {
     
     func popViewController() {
-        super.hideBottomSheets()
+        hideBottomSheets()
     }
     
 }

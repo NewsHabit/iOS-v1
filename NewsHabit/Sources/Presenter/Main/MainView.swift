@@ -11,40 +11,42 @@ import UIKit
 final class MainView: UIView, BaseViewProtocol {
     
     private var viewModel: MainViewModel?
-    private var todayNewsViewModel: TodayNewsViewModel?
+    private let todayNewsViewModel = TodayNewsViewModel()
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     
-    let todayNewsLabel = UILabel().then {
+    private let todayNewsLabel = UILabel().then {
         $0.text = "오늘의 뉴스"
         $0.textColor = .label
-        $0.font = .titleFont
+        $0.font = .title2B
         $0.isUserInteractionEnabled = true
     }
     
-    let monthlyRecordLabel = UILabel().then {
+    private let monthlyRecordLabel = UILabel().then {
         $0.text = "이번 달 기록"
         $0.textColor = .label
-        $0.font = .titleFont
+        $0.font = .title2B
         $0.isUserInteractionEnabled = true
     }
     
-    let separator = UIView().then {
+    private let separator = UIView().then {
         $0.backgroundColor = .newsHabitLightGray
     }
     
-    let indicator = UIView().then {
+    private let indicator = UIView().then {
         $0.backgroundColor = .label
     }
     
-    let scrollView = UIScrollView().then {
+    private let scrollView = UIScrollView().then {
         $0.isPagingEnabled = true
         $0.isScrollEnabled = false
         $0.showsHorizontalScrollIndicator = false
     }
     
-    let todayNewsView = TodayNewsView()
+    lazy var todayNewsView = TodayNewsView().then {
+        $0.bindViewModel(todayNewsViewModel)
+    }
     
     let monthlyRecordView = MonthlyRecordView()
     
@@ -62,12 +64,13 @@ final class MainView: UIView, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         backgroundColor = .background
         clipsToBounds = true
         layer.cornerRadius = 30
+        // 좌측 상단, 우측 상단만 둥글게 설정
         layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }
     
@@ -134,32 +137,36 @@ final class MainView: UIView, BaseViewProtocol {
         addSwipeGestureRecognizer(to: self, action: #selector(handleMonthlyRecordTap), direction: .left)
     }
     
+    @objc private func handleTodayNewsTap() {
+        viewModel?.input.send(.setMainOption(.todayNews))
+    }
+    
+    @objc private func handleMonthlyRecordTap() {
+        viewModel?.input.send(.setMainOption(.monthlyRecord))
+        monthlyRecordView.update()
+    }
+    
 }
 
-// MARK: - Bind ViewModel
+// MARK: - Bind
 
 extension MainView {
     
-    func bindViewModel(_ viewModel: MainViewModel, _ todayNewsViewModel: TodayNewsViewModel) {
+    func bind(with viewModel: MainViewModel) {
         self.viewModel = viewModel
-        self.todayNewsViewModel = todayNewsViewModel
+        
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
             .receive(on: RunLoop.main)
             .sink { [weak self] event in
+                guard let self = self else { return }
                 switch event {
-                case .initViewModel:
-                    self?.setupViewModel()
+                case .fetchTodayNews:
+                    todayNewsViewModel.input.send(.getTodayNews)
                 case let .updateMainOption(option):
-                    self?.updateMainOption(for: option)
+                    updateMainOption(for: option)
                 }
             }
             .store(in: &cancellables)
-    }
-    
-    private func setupViewModel() {
-        guard let todayNewsViewModel = todayNewsViewModel else { return }
-        todayNewsView.bindViewModel(todayNewsViewModel)
-        todayNewsViewModel.input.send(.getTodayNews)
     }
     
     private func updateMainOption(for option: MainOption) {
@@ -193,21 +200,6 @@ extension MainView {
         let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: action)
         swipeGestureRecognizer.direction = direction
         view.addGestureRecognizer(swipeGestureRecognizer)
-    }
-    
-}
-
-// MARK: - Action Handlers
-
-extension MainView {
-    
-    @objc private func handleTodayNewsTap() {
-        viewModel?.input.send(.setMainOption(.todayNews))
-    }
-    
-    @objc private func handleMonthlyRecordTap() {
-        viewModel?.input.send(.setMainOption(.monthlyRecord))
-        monthlyRecordView.update()
     }
     
 }

@@ -20,7 +20,7 @@ final class HotNewsViewModel {
     enum Output {
         case updateHotNews
         case fetchFailed
-        case navigateTo(newsLink: String)
+        case navigateTo(url: String)
     }
     
     // MARK: - Properties
@@ -37,32 +37,31 @@ final class HotNewsViewModel {
             guard let self = self else { return }
             switch event {
             case .getHotNews:
-                self.fetchNewsData()
+                fetchNewsData()
             case let .tapNewsCell(index):
-                self.output.send(.navigateTo(newsLink: cellViewModels[index].newsLink))
+                output.send(.navigateTo(url: cellViewModels[index].newsUrl))
             }
         }.store(in: &cancellables)
+        
         return output.eraseToAnyPublisher()
     }
     
     // MARK: - Handle News Data
     
     private func fetchNewsData() {
-        APIManager.shared.fetchData(
-            "/api/issues",
-            completion: { [weak self] (result: Result<HotNewsResponse, AFError>) in
-                guard let self = self else { return }
-                switch result {
-                case .success(let response):
-                    self.cellViewModels = response.hotNewsResponseDtoList.map {
-                        HotNewsCellViewModel(newsItem: $0)
-                    }
-                    self.output.send(.updateHotNews)
-                case .failure(let error):
-                    print("HotNewsViewModel fetch data : \(error)")
-                    self.output.send(.fetchFailed)
+        APIManager.shared.fetchData(endpoint: "/api/issues") { [weak self] (result: Result<HotNewsResponse, AFError>) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                cellViewModels = response.hotNewsResponseDtoList.map {
+                    HotNewsCellViewModel(newsItem: $0)
                 }
-            })
+                output.send(.updateHotNews)
+            case .failure(let error):
+                print("HotNewsViewModel fetch data failed : \(error)")
+                output.send(.fetchFailed)
+            }
+        }
     }
     
 }

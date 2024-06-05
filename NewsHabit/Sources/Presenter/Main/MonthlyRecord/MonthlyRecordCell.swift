@@ -16,8 +16,8 @@ final class MonthlyRecordCell: UICollectionViewCell, BaseViewProtocol {
     
     // MARK: - UI Components
     
-    let label = UILabel().then {
-        $0.font = .smallFont
+    private let label = UILabel().then {
+        $0.font = .footnote
         $0.textColor = .newsHabitLightGray
     }
     
@@ -41,7 +41,7 @@ final class MonthlyRecordCell: UICollectionViewCell, BaseViewProtocol {
         layer.borderWidth = 0
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         backgroundColor = .background
@@ -59,16 +59,20 @@ final class MonthlyRecordCell: UICollectionViewCell, BaseViewProtocol {
         }
     }
     
-    func setEmpty() {
+    /// 날짜가 없는 빈 상태를 설정하는 함수
+    func setAsEmptyDate() {
         backgroundColor = .background
     }
     
-    func setRead(_ isRead: Bool, _ isToday: Bool, _ dayString: String) {
+    /// 날짜의 읽음 여부와 오늘 날짜 여부를 설정하는 함수
+    func configureDate(_ isRead: Bool, _ isToday: Bool, _ dayString: String) {
         label.text = dayString
         label.textColor = .newsHabitGray
+        
         if isRead {
             backgroundColor = .newsHabit.withAlphaComponent(0.7)
         }
+        
         if isToday {
             layer.borderWidth = 2
             layer.borderColor = UIColor.newsHabit.cgColor

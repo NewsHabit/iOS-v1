@@ -7,11 +7,6 @@
 
 import UIKit
 
-protocol ProfileViewDelegate {
-    func getTabBarHeight() -> CGFloat
-    func popViewController()
-}
-
 final class ProfileViewController: BaseViewController<ProfileView>, BaseViewControllerProtocol {
     
     // MARK: - Life Cycle
@@ -19,8 +14,6 @@ final class ProfileViewController: BaseViewController<ProfileView>, BaseViewCont
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
-        
-        guard let contentView = contentView as? ProfileView else { return }
         contentView.delegate = self
     }
     

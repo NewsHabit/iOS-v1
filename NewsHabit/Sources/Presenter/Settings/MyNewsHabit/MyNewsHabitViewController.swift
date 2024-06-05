@@ -7,8 +7,8 @@
 
 import UIKit
 
-protocol MyNewsHabitViewDelegate {
-    func pushViewController(myNewsHabitType: MyNewsHabitType)
+protocol MyNewsHabitViewDelegate: AnyObject {
+    func navigateTo(myNewsHabitType: MyNewsHabitType)
     func updateMyNewsHabitSettings()
 }
 
@@ -21,10 +21,8 @@ final class MyNewsHabitViewController: BaseViewController<MyNewsHabitView>, Base
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
-        
-        guard let contentView = contentView as? MyNewsHabitView else { return }
         contentView.delegate = self
-        contentView.bindViewModel(viewModel)
+        contentView.bind(with: viewModel)
         viewModel.input.send(.updateMyNewsHabitSettings)
     }
     
@@ -39,14 +37,14 @@ final class MyNewsHabitViewController: BaseViewController<MyNewsHabitView>, Base
 
 extension MyNewsHabitViewController: MyNewsHabitViewDelegate {
     
-    func pushViewController(myNewsHabitType: MyNewsHabitType) {
+    func navigateTo(myNewsHabitType: MyNewsHabitType) {
         switch myNewsHabitType {
-        case .keyword:
-            let keywordViewController = CategoryViewController(bottomSheetHeight: 400.0)
+        case .category:
+            let keywordViewController = CategoryViewController()
             keywordViewController.delegate = self
             present(keywordViewController, animated: false)
         case .todayNewsCount:
-            let todayNewsCountViewController = TodayNewsCountViewController(bottomSheetHeight: 400.0)
+            let todayNewsCountViewController = TodayNewsCountViewController()
             todayNewsCountViewController.delegate = self
             present(todayNewsCountViewController, animated: false)
         }

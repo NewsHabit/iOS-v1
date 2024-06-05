@@ -10,13 +10,13 @@ import UIKit
 import SnapKit
 import Then
 
-final class NavigationBar: UIView {
+final class NavigationBar: UIView, BaseViewProtocol {
     
     // MARK: - UI Components
     
     let title = UILabel().then {
         $0.textColor = .label
-        $0.font = .titleFont
+        $0.font = .title2B
     }
     
     let backButton = UIButton().then {
@@ -33,23 +33,23 @@ final class NavigationBar: UIView {
         $0.configuration = .plain()
         $0.configuration?.image = UIImage(
             systemName: "square.and.arrow.up",
-            withConfiguration: UIImage.SymbolConfiguration(pointSize: 15.0, weight: .medium) // 📌
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: 15.0, weight: .medium)
         )
     }
     
     let largeTitleView = UIStackView().then {
         $0.axis = .vertical
-        $0.spacing = 5.0 // 📌
+        $0.spacing = 5.0
     }
     
     let largeTitle = UILabel().then {
         $0.textColor = .label
-        $0.font = .largeTitleFont
+        $0.font = .title
     }
     
     let subTitle = UILabel().then {
         $0.textColor = .label
-        $0.font = .subTitleFont
+        $0.font = .title3
     }
     
     // MARK: - Initializer
@@ -64,9 +64,11 @@ final class NavigationBar: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
-    private func setupHierarchy() {
+    func setupProperty() {}
+    
+    func setupHierarchy() {
         addSubview(title)
         addSubview(backButton)
         addSubview(shareButton)
@@ -75,7 +77,7 @@ final class NavigationBar: UIView {
         largeTitleView.addArrangedSubview(subTitle)
     }
     
-    private func setupLayout() {
+    func setupLayout() {
         title.snp.makeConstraints {
             $0.top.equalToSuperview().inset(15)
             $0.centerX.equalToSuperview()

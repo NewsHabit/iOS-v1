@@ -10,35 +10,42 @@ import UIKit
 import SnapKit
 import Then
 
+protocol ProfileViewDelegate: AnyObject {
+    func getTabBarHeight() -> CGFloat
+    func popViewController()
+}
+
 final class ProfileView: UIView, BaseViewProtocol {
     
-    var delegate: ProfileViewDelegate?
+    weak var delegate: ProfileViewDelegate?
     let maxNameLength = 8
     
     // MARK: - UI Components
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.text = "이름을 입력하세요"
         $0.textColor = .label
-        $0.font = .cellTitleFont
+        $0.font = .bodySB
     }
     
-    let subTitleLabel = UILabel().then {
+    private let subTitleLabel = UILabel().then {
         $0.text = "언제든지 변경할 수 있어요"
         $0.textColor = .newsHabitGray
-        $0.font = .subTitleFont
+        $0.font = .title3
     }
     
     let textField = UITextField().then {
         $0.text = UserDefaultsManager.username
-        $0.font = .labelFont
+        $0.font = .body
         $0.borderStyle = .roundedRect
         $0.backgroundColor = .background
+        $0.autocapitalizationType = .none
+        $0.autocorrectionType = .no
     }
     
-    let saveButton = UIButton().then {
+    private let saveButton = UIButton().then {
         $0.configuration = .plain()
-        $0.configuration?.attributedTitle = .init("저장", attributes: .init([.font: UIFont.labelFont]))
+        $0.configuration?.attributedTitle = .init("저장", attributes: .init([.font: UIFont.body]))
         $0.tintColor = .white
         $0.backgroundColor = .black
         $0.clipsToBounds = true
@@ -62,7 +69,7 @@ final class ProfileView: UIView, BaseViewProtocol {
         NotificationCenter.default.removeObserver(self)
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         backgroundColor = .background
@@ -75,6 +82,52 @@ final class ProfileView: UIView, BaseViewProtocol {
         textField.placeholder = "최대 \(maxNameLength)글자"
         textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         textField.becomeFirstResponder()
+    }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        guard let delegate = delegate,
+              let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        else { return }
+        UIView.animate(withDuration: 0.35) {
+            self.saveButton.transform = CGAffineTransform(
+                translationX: 0,
+                y: delegate.getTabBarHeight() - keyboardSize.height // 탭바 크기
+            )
+        }
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        UIView.animate(withDuration: 0.35) {
+            self.saveButton.transform = .identity
+        }
+    }
+    
+    @objc private func handleSaveButtonTap() {
+        guard let username = textField.text, !username.isEmpty, username.count <= maxNameLength
+        else { return }
+        UserDefaultsManager.username = username
+        scheduleNotificationWithNewUsernameIfNeeded()
+        endEditing(true)
+        delegate?.popViewController()
+    }
+    
+    private func scheduleNotificationWithNewUsernameIfNeeded() {
+        UserNotificationManager.shared.checkNotificationAuthorization { isAuthorized in
+            UserDefaultsManager.isNotificationOn = isAuthorized
+            if isAuthorized {
+                if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
+                    UserNotificationManager.shared.scheduleNotification(for: notificationTime)
+                }
+            }
+        }
+    }
+    
+    @objc private func textFieldDidChange(_ textField: UITextField) {
+        if let text = textField.text {
+            let isValid = !text.isEmpty && text.count <= maxNameLength
+            saveButton.isEnabled = isValid
+            saveButton.backgroundColor = isValid ? .black : .newsHabitLightGray
+        }
     }
     
     func setupHierarchy() {
@@ -106,49 +159,8 @@ final class ProfileView: UIView, BaseViewProtocol {
         }
     }
     
-    // MARK: - Action Functions
-    
-    @objc private func handleSaveButtonTap() {
-        guard let username = textField.text, !username.isEmpty, username.count <= maxNameLength else { return }
-        UserDefaultsManager.username = username
-        // 알림 on 이었다면 닉네임 바꿔서 다시 알림 설정
-        NotificationCenterManager.shared.checkNotificationAuthorization { isAuthorized in
-            UserDefaultsManager.isNotificationOn = isAuthorized
-            if isAuthorized {
-                if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
-                    NotificationCenterManager.shared.addNotification(for: notificationTime)
-                }
-            }
-        }
-        endEditing(true)
-        delegate?.popViewController()
-    }
-    
-    @objc private func textFieldDidChange(_ textField: UITextField) {
-        if let text = textField.text {
-            let isValid = !text.isEmpty && text.count <= maxNameLength
-            saveButton.isEnabled = isValid
-            saveButton.backgroundColor = isValid ? .black : .newsHabitLightGray
-        }
-    }
-
-    
-    @objc private func keyboardWillShow(notification: NSNotification) {
-        guard let delegate = delegate,
-              let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-        else { return }
-        UIView.animate(withDuration: 0.35) {
-            self.saveButton.transform = CGAffineTransform(
-                translationX: 0,
-                y: delegate.getTabBarHeight() - keyboardSize.height // 탭바 크기
-            )
-        }
-    }
-    
-    @objc private func keyboardWillHide(notification: NSNotification) {
-        UIView.animate(withDuration: 0.35) {
-            self.saveButton.transform = .identity
-        }
+    func setSaveButtonHidden() {
+        saveButton.isHidden = true
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

@@ -12,13 +12,13 @@ import Then
 
 final class MonthlyRecordView: UIView, BaseViewProtocol {
     
-    var daysInCurrentMonth: Int {
+    private var daysInCurrentMonth: Int {
         let calendar = Calendar.current
         let range = calendar.range(of: .day, in: .month, for: Date())!
         return range.count
     }
     
-    var firstWeekdayInCurrentMonth: Int {
+    private var firstWeekdayInCurrentMonth: Int {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year, .month], from: Date())
         let startOfMonth = calendar.date(from: components)!
@@ -27,19 +27,19 @@ final class MonthlyRecordView: UIView, BaseViewProtocol {
     
     // MARK: - UI Components
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.text = Date().toYearMonthString()
-        $0.font = .titleFont
+        $0.font = .title2B
         $0.textColor = .label
     }
     
-    let numOfMonthlyAllReadLabel = UILabel().then {
+    private let numOfMonthlyAllReadLabel = UILabel().then {
         $0.text = "📚 \(UserDefaultsManager.monthlyAllRead.count)"
-        $0.font = .cellTitleFont
+        $0.font = .bodySB
         $0.textColor = .label
     }
     
-    let collectionView = UICollectionView(
+    private let collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
     ).then {
@@ -64,7 +64,7 @@ final class MonthlyRecordView: UIView, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         collectionView.delegate = self
@@ -96,14 +96,18 @@ final class MonthlyRecordView: UIView, BaseViewProtocol {
     }
     
     func update() {
-        // 이번 달 기록 업데이트
+        resetMonthlyDataIfNeeded()
+        titleLabel.text = Date().toYearMonthString()
+        numOfMonthlyAllReadLabel.text = "📚 \(UserDefaultsManager.monthlyAllRead.count)"
+        collectionView.reloadData()
+    }
+    
+    /// 매월 관련 데이터를 초기화하는 메서드
+    private func resetMonthlyDataIfNeeded() {
         if UserDefaultsManager.lastMonth != Date().toMonthString() {
             UserDefaultsManager.lastMonth = Date().toMonthString()
             UserDefaultsManager.monthlyAllRead = []
         }
-        titleLabel.text = Date().toYearMonthString()
-        numOfMonthlyAllReadLabel.text = "📚 \(UserDefaultsManager.monthlyAllRead.count)"
-        collectionView.reloadData()
     }
     
 }
@@ -129,22 +133,26 @@ extension MonthlyRecordView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MonthlyRecordCell.reuseIdentifier, for: indexPath)
-                as? MonthlyRecordCell else { return UICollectionViewCell() }
+                as? MonthlyRecordCell
+        else { return UICollectionViewCell() }
+        
         let dayIndex = indexPath.row - (firstWeekdayInCurrentMonth - 1)
         let dayString = String(format: "%02d", dayIndex + 1)
+        
         if dayIndex >= 0 {
-            cell.setRead(isDayRead(dayString), isToday(dayString), dayString)
+            cell.configureDate(isRead(for: dayString), isToday(for: dayString), dayString)
         } else {
-            cell.setEmpty()
+            cell.setAsEmptyDate()
         }
+        
         return cell
     }
     
-    private func isDayRead(_ dayString: String) -> Bool {
+    private func isRead(for dayString: String) -> Bool {
         return UserDefaultsManager.monthlyAllRead.contains(dayString)
     }
     
-    private func isToday(_ dayString: String) -> Bool {
+    private func isToday(for dayString: String) -> Bool {
         return Date().toDayString() == dayString
     }
     

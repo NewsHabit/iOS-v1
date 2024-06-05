@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserDefaultsManager {
+final class UserDefaultsManager {
     
     @UserDefaultsData(key: "isFirst", defaultValue: true)
     static var isFirst: Bool
@@ -33,6 +33,7 @@ struct UserDefaultsManager {
     @UserDefaultsData(key: "todayNews", defaultValue: [])
     static var todayNews: [TodayNewsItemState]
     
+    /// 오늘의 뉴스를 다 읽은 날의 누적 일수
     @UserDefaultsData(key: "numOfDaysAllRead", defaultValue: 0)
     static var numOfDaysAllRead: Int
     
@@ -47,8 +48,6 @@ struct UserDefaultsManager {
 
 }
 
-import Foundation
-
 @propertyWrapper
 struct UserDefaultsData<Value: Codable> {
     let key: String
@@ -57,9 +56,7 @@ struct UserDefaultsData<Value: Codable> {
 
     var wrappedValue: Value {
         get {
-            guard let data = container.object(forKey: key) as? Data else {
-                return defaultValue
-            }
+            guard let data = container.object(forKey: key) as? Data else { return defaultValue }
             do {
                 let value = try JSONDecoder().decode(Value.self, from: data)
                 return value

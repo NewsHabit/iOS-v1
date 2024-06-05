@@ -12,9 +12,8 @@ enum TodayNewsCountType: Int, CaseIterable, Codable {
     case three = 3, four, five
     
     static func index(from count: Int) -> Int {
-        guard let index = TodayNewsCountType.allCases.firstIndex(where: { $0.rawValue == count }) else {
-            fatalError("Unsupported news count")
-        }
+        guard let index = TodayNewsCountType.allCases.firstIndex(where: { $0.rawValue == count })
+        else { fatalError("Unsupported news count") }
         return index
     }
     

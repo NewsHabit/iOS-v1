@@ -8,28 +8,31 @@
 import Combine
 import UIKit
 
+protocol CategoryViewDelegate: AnyObject {
+    func popViewController()
+}
+
 final class CategoryView: UIView, BaseViewProtocol {
     
-    var delegate: CategoryViewDelegate?
+    weak var delegate: CategoryViewDelegate?
     private var viewModel: CategoryViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.text = "선택한 카테고리와 관련된 기사를 매일 추천해드릴게요"
         $0.textColor = .label
-        $0.font = .cellTitleFont
+        $0.font = .bodySB
         $0.numberOfLines = 0
     }
     
-    let subTitleLabel = UILabel().then {
-        $0.text = "변경 시 내일부터 적용돼요"
+    private let subTitleLabel = UILabel().then {
         $0.textColor = .newsHabitGray
-        $0.font = .subTitleFont
+        $0.font = .title3
     }
     
-    let collectionView = UICollectionView(
+    private let collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
     ).then {
@@ -41,9 +44,9 @@ final class CategoryView: UIView, BaseViewProtocol {
         }
     }
     
-    let saveButton = UIButton().then {
+    private let saveButton = UIButton().then {
         $0.configuration = .plain()
-        $0.configuration?.attributedTitle = .init("저장", attributes: .init([.font: UIFont.labelFont]))
+        $0.configuration?.attributedTitle = .init("저장", attributes: .init([.font: UIFont.body]))
         $0.tintColor = .white
         $0.backgroundColor = .black
         $0.clipsToBounds = true
@@ -63,12 +66,20 @@ final class CategoryView: UIView, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         collectionView.delegate = self
         collectionView.dataSource = self
         saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
+    }
+    
+    @objc private func handleSaveButtonTap() {
+        guard let viewModel = viewModel else { return }
+        var categoryIndexArray = Array(viewModel.selectedCategoryIndex)
+        categoryIndexArray.sort()
+        UserDefaultsManager.categoryList = categoryIndexArray
+        delegate?.popViewController()
     }
     
     func setupHierarchy() {
@@ -102,18 +113,19 @@ final class CategoryView: UIView, BaseViewProtocol {
         }
     }
     
-    @objc private func handleSaveButtonTap() {
-        guard let viewModel = viewModel else { return }
-        var categoryIndexArray = Array(viewModel.selectedCategoryIndex)
-        categoryIndexArray.sort()
-        UserDefaultsManager.categoryList = categoryIndexArray
-        delegate?.popViewController()
+    func setSubTitle(with text: String) {
+        subTitleLabel.text = text
     }
     
-    // MARK: - Bind ViewModel
+    func setSaveButtonHidden() {
+        saveButton.isHidden = true
+    }
     
-    func bindViewModel(_ viewModel: CategoryViewModel) {
+    // MARK: - Bind
+    
+    func bind(with viewModel: CategoryViewModel) {
         self.viewModel = viewModel
+        
         viewModel.$selectedCategoryIndex
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
@@ -138,7 +150,7 @@ extension CategoryView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let label = UILabel().then {
-            $0.font = .cellLabelFont
+            $0.font = .caption
             $0.text = Category.allCases[indexPath.row].toString()
             $0.sizeToFit()
         }
@@ -159,7 +171,7 @@ extension CategoryView: UICollectionViewDataSource {
         guard let viewModel = viewModel,
               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.reuseIdentifier, for: indexPath) as? CategoryCell
         else { return UICollectionViewCell() }
-        cell.label.text = Category.allCases[indexPath.row].toString()
+        cell.configure(with: Category.allCases[indexPath.row].toString())
         cell.setSelected(viewModel.selectedCategoryIndex.contains(indexPath.row))
         return cell
     }

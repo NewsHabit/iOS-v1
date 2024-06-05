@@ -9,13 +9,12 @@ import UIKit
 
 extension UIColor {
     
-    convenience init(hex: UInt, alpha: CGFloat = 1.0) {
-        self.init(
-            red: CGFloat((hex & 0xFF0000) >> 16) / 255.0,
-            green: CGFloat((hex & 0x00FF00) >> 8) / 255.0,
-            blue: CGFloat(hex & 0x0000FF) / 255.0,
-            alpha: CGFloat(alpha)
-        )
+    convenience init(hex: UInt) {
+        let red = Double((hex >> 16) & 0xFF) / 255.0
+        let green = Double((hex >> 8) & 0xFF) / 255.0
+        let blue = Double(hex & 0xFF) / 255.0
+        
+        self.init(red: red, green: green, blue: blue, alpha: 1.0)
     }
     
     private static func color(light: UIColor, dark: UIColor) -> UIColor {

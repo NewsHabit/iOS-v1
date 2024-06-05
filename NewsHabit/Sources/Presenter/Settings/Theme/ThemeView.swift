@@ -18,7 +18,7 @@ final class ThemeView: UIView, BaseViewProtocol {
     
     // MARK: - UI Components
     
-    let tableView = UITableView().then {
+    private let tableView = UITableView().then {
         $0.backgroundColor = .background
         $0.separatorStyle = .none
         $0.register(ThemeCell.self, forCellReuseIdentifier: ThemeCell.reuseIdentifier)
@@ -37,7 +37,7 @@ final class ThemeView: UIView, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         tableView.delegate = self
@@ -55,17 +55,18 @@ final class ThemeView: UIView, BaseViewProtocol {
         }
     }
     
-    // MARK: - Bind ViewModel
+    // MARK: - Bind
     
-    func bindViewModel(_ viewModel: ThemeViewModel) {
+    func bind(with viewModel: ThemeViewModel) {
         self.viewModel = viewModel
+        
         viewModel.$selectedTheme
             .receive(on: RunLoop.main)
             .sink{ [weak self] selectedTheme in
                 guard let self = self, let window = self.window else { return }
                 UserDefaultsManager.theme = selectedTheme
-                window.overrideUserInterfaceStyle = self.toUserInterfaceStyle(themeType: selectedTheme)
-                self.tableView.reloadData()
+                window.overrideUserInterfaceStyle = toUserInterfaceStyle(themeType: selectedTheme)
+                tableView.reloadData()
             }.store(in: &cancellables)
     }
     
@@ -78,8 +79,7 @@ extension ThemeView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let viewModel = viewModel else { return }
-        viewModel.selectedTheme = ThemeType.allCases[indexPath.row]
+        viewModel?.selectedTheme = ThemeType.allCases[indexPath.row]
     }
     
 }
@@ -94,7 +94,7 @@ extension ThemeView: UITableViewDataSource {
         guard let viewModel = viewModel,
               let cell = tableView.dequeueReusableCell(withIdentifier: ThemeCell.reuseIdentifier) as? ThemeCell
         else { return UITableViewCell() }
-        cell.bindThemeItem(ThemeType.allCases[indexPath.row])
+        cell.configure(with: ThemeType.allCases[indexPath.row])
         cell.setSelected(viewModel.selectedTheme == ThemeType.allCases[indexPath.row])
         return cell
     }

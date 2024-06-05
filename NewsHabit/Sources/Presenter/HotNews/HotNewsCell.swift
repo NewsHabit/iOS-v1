@@ -20,21 +20,21 @@ final class HotNewsCell: UITableViewCell, BaseViewProtocol {
     
     // MARK: - UI Components
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.textColor = .label
-        $0.font = .cellTitleFont
+        $0.font = .bodySB
         $0.numberOfLines = 1
         $0.lineBreakMode = .byTruncatingTail
     }
     
-    let descriptionLabel = UILabel().then {
+    private let descriptionLabel = UILabel().then {
         $0.textColor = .newsHabitGray
-        $0.font = .cellLabelFont
+        $0.font = .caption
         $0.numberOfLines = 3
         $0.lineBreakMode = .byTruncatingTail
     }
     
-    let thumbnailView = UIImageView().then {
+    private let thumbnailView = UIImageView().then {
         $0.backgroundColor = .gray
         $0.clipsToBounds = true
         $0.contentMode = .scaleAspectFill
@@ -64,7 +64,7 @@ final class HotNewsCell: UITableViewCell, BaseViewProtocol {
         cancellables.removeAll()
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         backgroundColor = .background
@@ -98,20 +98,20 @@ final class HotNewsCell: UITableViewCell, BaseViewProtocol {
         }
     }
     
-    // MARK: - Bind ViewModel
+    // MARK: - Bind
     
-    func bindViewModel(_ viewModel: HotNewsCellViewModel) {
+    func bind(with viewModel: HotNewsCellViewModel) {
         self.viewModel = viewModel
+        
         titleLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description
         loadImage(from: viewModel.imageLink)
     }
     
-    // MARK: - Load Image
-    
     private func loadImage(from urlString: String?) {
         guard let urlString = urlString,
-              let url = URL(string: urlString) else { return }
+              let url = URL(string: urlString)
+        else { return }
         thumbnailView.kf.setImage(with: url)
     }
 
