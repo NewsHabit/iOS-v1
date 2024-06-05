@@ -57,7 +57,7 @@ final class WebView: UIView, BaseViewProtocol {
     
     func setupProperty() {
         webView.navigationDelegate = self
-        
+        webView.allowsBackForwardNavigationGestures = true
         progressObserver = webView.observe(\.estimatedProgress, options: .new) { [weak self] webView, _ in
             self?.progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         }
