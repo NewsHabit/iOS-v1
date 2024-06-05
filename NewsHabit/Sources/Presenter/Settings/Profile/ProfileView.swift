@@ -39,6 +39,8 @@ final class ProfileView: UIView, BaseViewProtocol {
         $0.font = .body
         $0.borderStyle = .roundedRect
         $0.backgroundColor = .background
+        $0.autocapitalizationType = .none
+        $0.autocorrectionType = .no
     }
     
     private let saveButton = UIButton().then {
