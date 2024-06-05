@@ -16,9 +16,7 @@ final class ThemeViewController: BaseViewController<ThemeView>, BaseViewControll
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
-        
-        guard let contentView = contentView as? ThemeView else { return }
-        contentView.bindViewModel(viewModel)
+        contentView.bind(with: viewModel)
     }
     
     // MARK: - BaseViewControllerProtocol

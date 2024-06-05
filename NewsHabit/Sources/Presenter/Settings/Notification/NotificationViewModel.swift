@@ -13,13 +13,14 @@ import UIKit
 final class NotificationViewModel {
     
     enum Input {
-        case setNotification(_ isOn: Bool)
+        case setNotificationStatus(_ isOn: Bool)
         case setNotificationTime(_ date: Date)
+        case updateNotificationStatus
     }
     
     enum Output {
         case permissionDenied
-        case updateNotification
+        case updateNotificationStatus(_ isOn: Bool)
     }
     
     // MARK: - Properties
@@ -34,44 +35,62 @@ final class NotificationViewModel {
         input.sink { [weak self] event in
             guard let self = self else { return }
             switch event {
-            case let .setNotification(isOn):
-                self.handleNotification(isOn)
+            case let .setNotificationStatus(isOn):
+                handleNotificationStatus(isOn)
             case let .setNotificationTime(date):
-                self.handleNotificationTime(date)
+                handleNotificationTime(date)
+            case .updateNotificationStatus:
+                output.send(.updateNotificationStatus(UserDefaultsManager.isNotificationOn))
             }
         }.store(in: &cancellables)
+        
         return output.eraseToAnyPublisher()
     }
     
-    private func handleNotification(_ isOn: Bool) {
+    private func handleNotificationStatus(_ isOn: Bool) {
+        // UserDefaults 값 업데이트
         UserDefaultsManager.isNotificationOn = isOn
         
-        if !isOn {
-            NotificationCenterManager.shared.removeAllPendingNotificationRequests()
-            self.output.send(.updateNotification)
-            return
+        if isOn {
+            enableNotification()
+        } else {
+            disableNotification()
         }
-        
-        NotificationCenterManager.shared.checkNotificationAuthorization { [weak self] isAuthorized in
+    }
+
+    private func enableNotification() {
+        UserNotificationManager.shared.checkNotificationAuthorization { [weak self] isAuthorized in
             guard let self = self else { return }
-            
-            if isAuthorized { // 알림 권한 허용
-                if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
-                    NotificationCenterManager.shared.addNotification(for: notificationTime)
-                    self.output.send(.updateNotification)
-                }
-            } else { // 알림 권한 거부
-                UserDefaultsManager.isNotificationOn = false
-                NotificationCenterManager.shared.removeAllPendingNotificationRequests()
-                self.output.send(.permissionDenied)
+            if isAuthorized {
+                scheduleNotification()
+            } else {
+                handleAuthorizationDenied()
             }
         }
+    }
+    
+    private func scheduleNotification() {
+        if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
+            UserNotificationManager.shared.scheduleNotification(for: notificationTime)
+            output.send(.updateNotificationStatus(true))
+        }
+    }
+
+    private func handleAuthorizationDenied() {
+        UserDefaultsManager.isNotificationOn = false
+        UserNotificationManager.shared.disableNotification()
+        output.send(.permissionDenied)
+    }
+
+    private func disableNotification() {
+        UserNotificationManager.shared.disableNotification()
+        output.send(.updateNotificationStatus(false))
     }
     
     private func handleNotificationTime(_ date: Date) {
         UserDefaultsManager.notificationTime = date.toSimpleTimeString()
-        NotificationCenterManager.shared.addNotification(for: date)
-        output.send(.updateNotification)
+        UserNotificationManager.shared.scheduleNotification(for: date)
+        output.send(.updateNotificationStatus(true))
     }
     
 }

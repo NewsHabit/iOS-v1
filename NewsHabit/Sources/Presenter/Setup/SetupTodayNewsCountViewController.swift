@@ -13,23 +13,14 @@ class SetupTodayNewsCountViewController: UIViewController, BaseViewControllerPro
     
     // MARK: - UI Components
     
-    let todayNewsCountView = TodayNewsCountView().then {
-        $0.subTitleLabel.text = ""
-    }
+    let todayNewsCountView = TodayNewsCountView()
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .background
-        view.addSubview(todayNewsCountView)
-        todayNewsCountView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(70)
-            $0.leading.trailing.bottom.equalToSuperview()
-        }
-        todayNewsCountView.saveButton.isHidden = true
-        todayNewsCountView.bindViewModel(viewModel)
         setupNavigationBar()
+        setupView()
     }
     
     // MARK: - BaseViewControllerProtocol
@@ -43,8 +34,21 @@ class SetupTodayNewsCountViewController: UIViewController, BaseViewControllerPro
     @objc private func handleDoneButton() {
         UserDefaultsManager.todayNewsCount = TodayNewsCountType.count(from: viewModel.selectedIndex)
         UserDefaultsManager.isFirst = false
-        guard let window = view.window else { return }
-        window.rootViewController = TabBarController()
+        view.window?.rootViewController = TabBarController()
+    }
+    
+    private func setupView() {
+        view.backgroundColor = .background
+        
+        view.addSubview(todayNewsCountView)
+        
+        todayNewsCountView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(70)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        todayNewsCountView.setSaveButtonHidden()
+        todayNewsCountView.bind(with: viewModel)
     }
     
 }

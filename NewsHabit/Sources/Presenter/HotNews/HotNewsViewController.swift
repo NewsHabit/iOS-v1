@@ -7,11 +7,6 @@
 
 import UIKit
 
-protocol HotNewsViewDelegate {
-    func updateDate()
-    func pushViewController(_ newsLink: String?)
-}
-
 final class HotNewsViewController: BaseViewController<HotNewsView>, BaseViewControllerProtocol {
     
     private let viewModel = HotNewsViewModel()
@@ -21,10 +16,8 @@ final class HotNewsViewController: BaseViewController<HotNewsView>, BaseViewCont
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
-        
-        guard let contentView = contentView as? HotNewsView else { return }
         contentView.delegate = self
-        contentView.bindViewModel(viewModel)
+        contentView.bind(with: viewModel)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,10 +42,9 @@ extension HotNewsViewController: HotNewsViewDelegate {
         setNavigationBarSubTitle("\(Date().toFullDateTimeString()) 기준")
     }
     
-    func pushViewController(_ newsLink: String?) {
-        guard let newsLink = newsLink else { return }
+    func openNewsLink(with url: String?) {
         let newsViewController = WebViewController()
-        newsViewController.urlString = newsLink
+        newsViewController.urlString = url
         navigationController?.pushViewController(newsViewController, animated: true)
     }
     
@@ -61,12 +53,7 @@ extension HotNewsViewController: HotNewsViewDelegate {
 extension HotNewsViewController: Scrollable {
     
     func activateScroll() {
-        guard let contentView = contentView as? HotNewsView else { return }
-        let indexPath = IndexPath(row: 0, section: 0)
-        // 테이블 뷰의 섹션 0에 적어도 하나 이상의 행이 있는지 확인
-        if contentView.tableView.numberOfRows(inSection: indexPath.section) > 0 {
-            contentView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-        }
+        contentView.scrollToTop()
     }
     
 }

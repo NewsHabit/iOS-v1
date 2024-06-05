@@ -5,7 +5,6 @@
 //  Created by jiyeon on 2/19/24.
 //
 
-import Combine
 import Foundation
 
 final class HotNewsCellViewModel {
@@ -28,7 +27,7 @@ final class HotNewsCellViewModel {
         newsItem.imgLink
     }
     
-    var newsLink: String {
+    var newsUrl: String {
         newsItem.naverUrl
     }
     

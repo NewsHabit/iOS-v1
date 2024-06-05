@@ -13,16 +13,16 @@ import Then
 final class SettingsCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "SettingsCell"
-    private var viewModel: SettingsItem?
+    private var item: SettingsItem?
     
     // MARK: - UI Components
     
-    let iconImageView = UIImageView().then {
+    private let iconImageView = UIImageView().then {
         $0.tintColor = .label
     }
     
-    let titleLabel = UILabel().then {
-        $0.font = .largeLabelFont
+    private let titleLabel = UILabel().then {
+        $0.font = .title2
         $0.textColor = .label
     }
     
@@ -39,7 +39,7 @@ final class SettingsCell: UITableViewCell, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         backgroundColor = .background
@@ -64,12 +64,11 @@ final class SettingsCell: UITableViewCell, BaseViewProtocol {
         }
     }
     
-    // MARK: - Binding ViewModel
-    
-    func bindViewModel(_ viewModel: SettingsItem) {
-        self.viewModel = viewModel
-        iconImageView.image = UIImage(systemName: viewModel.imageString)
-        titleLabel.text = viewModel.type.rawValue
+    func configure(with item: SettingsItem) {
+        self.item = item
+        
+        iconImageView.image = UIImage(systemName: item.imageString)
+        titleLabel.text = item.type.rawValue
     }
     
 }

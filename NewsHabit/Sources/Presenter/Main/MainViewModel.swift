@@ -11,12 +11,12 @@ import Foundation
 final class MainViewModel {
     
     enum Input {
-        case viewDidLoad
+        case viewWillAppear
         case setMainOption(_ option: MainOption)
     }
     
     enum Output {
-        case initViewModel
+        case fetchTodayNews
         case updateMainOption(_ option: MainOption)
     }
     
@@ -32,12 +32,13 @@ final class MainViewModel {
         input.sink { [weak self] event in
             guard let self = self else { return }
             switch event {
-            case .viewDidLoad:
-                self.output.send(.initViewModel)
+            case .viewWillAppear:
+                output.send(.fetchTodayNews)
             case let .setMainOption(option):
-                self.output.send(.updateMainOption(option))
+                output.send(.updateMainOption(option))
             }
         }.store(in: &cancellables)
+        
         return output.eraseToAnyPublisher()
     }
     

@@ -1,8 +1,8 @@
 //
-//  NotificationSwitchCell.swift
+//  NotificationSwitchView.swift
 //  NewsHabit
 //
-//  Created by jiyeon on 2/24/24.
+//  Created by jiyeon on 6/6/24.
 //
 
 import UIKit
@@ -10,26 +10,26 @@ import UIKit
 import SnapKit
 import Then
 
-final class NotificationSwitchCell: UITableViewCell, BaseViewProtocol {
+final class NotificationSwitchView: UIView, BaseViewProtocol {
     
-    static let reuseIdentifier = "NotificationSwitchCell"
+    weak var delegate: NotificationView?
     
     // MARK: - UI Components
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.text = "오늘의 뉴스 알림"
-        $0.font = .largeLabelFont
+        $0.font = .title2
         $0.textColor = .label
     }
     
-    let switchControl = UISwitch().then {
+    private let switchControl = UISwitch().then {
         $0.onTintColor = .newsHabit
     }
     
-    // MARK: - Initializer
+    // MARK: - Initialzier
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupProperty()
         setupHierarchy()
         setupLayout()
@@ -39,16 +39,15 @@ final class NotificationSwitchCell: UITableViewCell, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         backgroundColor = .background
-        selectionStyle = .none
     }
     
     func setupHierarchy() {
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(switchControl)
+        addSubview(titleLabel)
+        addSubview(switchControl)
     }
     
     func setupLayout() {
@@ -63,7 +62,9 @@ final class NotificationSwitchCell: UITableViewCell, BaseViewProtocol {
         }
     }
     
-    // MARK: - Configure
+    func setSwifthControlAction(_ selector: Selector) {
+        switchControl.addTarget(delegate, action: selector, for: .valueChanged)
+    }
     
     func configure(with isOn: Bool) {
         switchControl.isOn = isOn

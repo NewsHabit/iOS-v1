@@ -38,7 +38,7 @@ final class TodayNewsCellViewModel {
         newsItemState.newsItem.imgLink
     }
     
-    var newsLink: String {
+    var newsUrl: String {
         newsItemState.newsItem.naverUrl
     }
     

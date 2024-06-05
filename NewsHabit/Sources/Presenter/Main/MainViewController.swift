@@ -7,15 +7,9 @@
 
 import UIKit
 
-protocol TodayNewsViewDelegate {
-    func pushViewController(_ newsLink: String?)
-    func updateDaysAllReadCount()
-}
-
 final class MainViewController: BaseViewController<MainView>, BaseViewControllerProtocol {
     
     private let mainViewModel = MainViewModel()
-    private let todayNewsViewModel = TodayNewsViewModel()
     
     // MARK: - Life Cycle
     
@@ -24,26 +18,24 @@ final class MainViewController: BaseViewController<MainView>, BaseViewController
         setupNavigationBar()
         
         // 알림 권한 설정
-        NotificationCenterManager.shared.requestAuthorization { isAuthorized, error in
+        UserNotificationManager.shared.requestAuthorization { isAuthorized, error in
             UserDefaultsManager.isNotificationOn = isAuthorized
             if isAuthorized {
                 if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
-                    NotificationCenterManager.shared.addNotification(for: notificationTime)
+                    UserNotificationManager.shared.scheduleNotification(for: notificationTime)
                 }
             }
         }
         
-        guard let contentView = contentView as? MainView else { return }
         contentView.todayNewsView.delegate = self
-        contentView.bindViewModel(mainViewModel, todayNewsViewModel)
-        mainViewModel.input.send(.viewDidLoad)
+        contentView.bind(with: mainViewModel)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        todayNewsViewModel.input.send(.getTodayNews)
+        mainViewModel.input.send(.viewWillAppear)
         setNavigationBarLargeTitle("\(UserDefaultsManager.username)님의 뉴빗")
-        setNavigationBarSubTitle("👀 지금까지 \(UserDefaultsManager.numOfDaysAllRead)일 완독했어요!")
+        updateSubTitle()
     }
     
     // MARK: - BaseViewControllerProtocol
@@ -56,20 +48,22 @@ final class MainViewController: BaseViewController<MainView>, BaseViewController
         setNavigationBarSubTitleTextColor(.white)
     }
     
+    private func updateSubTitle() {
+        setNavigationBarSubTitle("👀 지금까지 \(UserDefaultsManager.numOfDaysAllRead)일 완독했어요!")
+    }
+    
 }
 
 extension MainViewController: TodayNewsViewDelegate {
     
-    func pushViewController(_ newsLink: String?) {
-        guard let newsLink = newsLink else { return }
+    func openNewsLink(with url: String?) {
         let newsViewController = WebViewController()
-        newsViewController.urlString = newsLink
+        newsViewController.urlString = url
         navigationController?.pushViewController(newsViewController, animated: true)
     }
     
-    func updateDaysAllReadCount() {
-        setNavigationBarSubTitle("👀 지금까지 \(UserDefaultsManager.numOfDaysAllRead)일 완독했어요!")
-        guard let contentView = contentView as? MainView else { return }
+    func updateNumOfDaysAllRead() {
+        updateSubTitle()
         contentView.monthlyRecordView.update()
     }
     
@@ -78,12 +72,7 @@ extension MainViewController: TodayNewsViewDelegate {
 extension MainViewController: Scrollable {
     
     func activateScroll() {
-        guard let contentView = contentView as? MainView else { return }
-        let indexPath = IndexPath(row: 0, section: 0)
-        // 테이블 뷰의 섹션 0에 적어도 하나 이상의 행이 있는지 확인
-        if contentView.todayNewsView.tableView.numberOfRows(inSection: indexPath.section) > 0 {
-            contentView.todayNewsView.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-        }
+        contentView.todayNewsView.scrollToTop()
     }
     
 }

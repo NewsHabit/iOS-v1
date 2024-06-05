@@ -16,19 +16,19 @@ final class ThemeCell: UITableViewCell, BaseViewProtocol {
     
     // MARK: - UI Components
     
-    let imageButton = UIButton().then {
+    private let imageButton = UIButton().then {
         $0.configuration = .plain()
         $0.configuration?.preferredSymbolConfigurationForImage = .init(pointSize: 15)
         $0.tintColor = .label
         $0.isUserInteractionEnabled = false
     }
     
-    let titleLabel = UILabel().then {
-        $0.font = .largeLabelFont
+    private let titleLabel = UILabel().then {
+        $0.font = .title2
         $0.textColor = .label
     }
     
-    let selectedButton = UIButton().then {
+    private let selectedButton = UIButton().then {
         $0.configuration = .plain()
         $0.configuration?.preferredSymbolConfigurationForImage = .init(pointSize: 15)
         $0.tintColor = .label
@@ -48,7 +48,7 @@ final class ThemeCell: UITableViewCell, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         backgroundColor = .background
@@ -80,9 +80,7 @@ final class ThemeCell: UITableViewCell, BaseViewProtocol {
         }
     }
     
-    // MARK: - Bind ViewModel
-    
-    func bindThemeItem(_ item: ThemeType) {
+    func configure(with item: ThemeType) {
         imageButton.configuration?.image = UIImage(systemName: item.toImageString())
         titleLabel.text = item.rawValue
     }

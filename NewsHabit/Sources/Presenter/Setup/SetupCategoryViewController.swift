@@ -13,23 +13,16 @@ class SetupCategoryViewController: UIViewController, BaseViewControllerProtocol 
     
     // MARK: - UI Components
     
-    let categoryView = CategoryView().then {
-        $0.subTitleLabel.text = "여러 개 선택할 수 있어요"
+    private let categoryView = CategoryView().then {
+        $0.setSubTitle(with: "여러 개 선택할 수 있어요")
     }
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .background
-        view.addSubview(categoryView)
-        categoryView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(70)
-            $0.leading.trailing.bottom.equalToSuperview()
-        }
-        categoryView.saveButton.isHidden = true
-        categoryView.bindViewModel(viewModel)
         setupNavigationBar()
+        setupView()
     }
     
     // MARK: - BaseViewControllerProtocol
@@ -45,6 +38,20 @@ class SetupCategoryViewController: UIViewController, BaseViewControllerProtocol 
         categoryIndexArray.sort()
         UserDefaultsManager.categoryList = categoryIndexArray
         navigationController?.pushViewController(SetupTodayNewsCountViewController(), animated: true)
+    }
+    
+    private func setupView() {
+        view.backgroundColor = .background
+        
+        view.addSubview(categoryView)
+        
+        categoryView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(70)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        categoryView.setSaveButtonHidden()
+        categoryView.bind(with: viewModel)
     }
     
 }

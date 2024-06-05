@@ -34,36 +34,41 @@ final class MyNewsHabitViewModel {
             guard let self = self else { return }
             switch event {
             case let.tapMyNewsHabitCell(index):
-                self.output.send(.navigateTo(type: myNewsHabitItems[index].type))
+                output.send(.navigateTo(type: myNewsHabitItems[index].type))
             case .updateMyNewsHabitSettings:
-                self.myNewsHabitItems.removeAll()
-                self.updateMyNewsHabitItems()
-                self.output.send(.updateMyNewsHabitItems)
+                updateMyNewsHabitItems()
             }
         }.store(in: &cancellables)
+        
         return output.eraseToAnyPublisher()
     }
     
     // MARK: - Functions
     
     private func updateMyNewsHabitItems() {
+        myNewsHabitItems.removeAll()
+        
         myNewsHabitItems.append(MyNewsHabitItem(
-            type: .keyword,
+            type: .category,
             description: getCategoryString()
         ))
         myNewsHabitItems.append(MyNewsHabitItem(
             type: .todayNewsCount,
             description: String(UserDefaultsManager.todayNewsCount.rawValue)
         ))
+        
+        output.send(.updateMyNewsHabitItems)
     }
     
     private func getCategoryString() -> String {
         let categoryIndexArray = UserDefaultsManager.categoryList
+        var categoryString = Category.allCases[categoryIndexArray[0]].toString()
+        
         if categoryIndexArray.count > 1 {
-            return "\(Category.allCases[categoryIndexArray[0]].toString()) 외 \(categoryIndexArray.count - 1)개"
-        } else {
-            return Category.allCases[categoryIndexArray[0]].toString()
+            categoryString += " 외 \(categoryIndexArray.count - 1)개"
         }
+        
+        return categoryString
     }
     
 }

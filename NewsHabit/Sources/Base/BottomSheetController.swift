@@ -12,9 +12,7 @@ import Then
 
 class BottomSheetController<View: UIView>: UIViewController {
     
-    // MARK: - Properties
-    
-    var bottomSheetHeight: CGFloat
+    private let bottomSheetHeight = 400
     
     // MARK: - UI Components
     
@@ -39,8 +37,7 @@ class BottomSheetController<View: UIView>: UIViewController {
     
     // MARK: - Initializer
     
-    init(bottomSheetHeight: CGFloat) {
-        self.bottomSheetHeight = bottomSheetHeight
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .overFullScreen
     }
@@ -100,8 +97,6 @@ class BottomSheetController<View: UIView>: UIViewController {
         swipeGesture.direction = .down
         view.addGestureRecognizer(swipeGesture)
     }
-    
-    // MARK: - Action Functions
     
     @objc private func handleDimmedViewTap(_ tapRecognizer: UITapGestureRecognizer) {
         hideBottomSheets()

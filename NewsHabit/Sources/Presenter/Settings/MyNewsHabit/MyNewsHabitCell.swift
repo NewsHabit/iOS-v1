@@ -13,21 +13,21 @@ import Then
 final class MyNewsHabitCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "MyNewsHabitCell"
-    private var viewModel: MyNewsHabitItem?
+    private var item: MyNewsHabitItem?
     
     // MARK: - UI Components
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.textColor = .label
-        $0.font = .largeLabelFont
+        $0.font = .title2
     }
     
-    let descriptionLabel = UILabel().then {
+    private let descriptionLabel = UILabel().then {
         $0.textColor = .newsHabitGray
-        $0.font = .labelFont
+        $0.font = .body
     }
     
-    let chevronImage = UIImageView().then {
+    private let chevronImage = UIImageView().then {
         $0.image = UIImage(systemName: "chevron.right")
         $0.tintColor = .newsHabitGray
     }
@@ -45,7 +45,7 @@ final class MyNewsHabitCell: UITableViewCell, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         backgroundColor = .background
@@ -77,12 +77,11 @@ final class MyNewsHabitCell: UITableViewCell, BaseViewProtocol {
         }
     }
     
-    // MARK: - Bind ViewModel
-    
-    func bindViewModel(_ viewModel: MyNewsHabitItem) {
-        self.viewModel = viewModel
-        titleLabel.text = viewModel.type.rawValue
-        descriptionLabel.text = viewModel.description
+    func configure(with item: MyNewsHabitItem) {
+        self.item = item
+        
+        titleLabel.text = item.type.rawValue
+        descriptionLabel.text = item.description
     }
     
 }

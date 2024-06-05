@@ -1,14 +1,10 @@
 import ProjectDescription
 
-let projectName: String = "NewsHabit"
-
-let bundleId: String = "com.NewsHabit"
-
 let infoPlist: [String: Plist.Value] = [
     "ITSAppUsesNonExemptEncryption": .boolean(false),
     "CFBundleDisplayName": .string("뉴빗"),
     "CFBundleName": .string("NewsHabit"),
-    "CFBundleShortVersionString": .string("1.0.2"),
+    "CFBundleShortVersionString": .string("1.0.3"),
     "CFBundleVersion": .string("1"),
     "UILaunchStoryboardName": .string("LaunchScreen"),
     "UIApplicationSceneManifest": .dictionary([
@@ -27,7 +23,7 @@ let infoPlist: [String: Plist.Value] = [
 // MARK: - Project
 
 let project: Project = .init(
-    name: projectName,
+    name: "NewsHabit",
     packages: [
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.8.1")),
         .package(url: "https://github.com/onevcat/Kingfisher.git", .upToNextMajor(from: "7.0.0")),
@@ -35,14 +31,14 @@ let project: Project = .init(
         .package(url: "https://github.com/devxoul/Then", .upToNextMajor(from: "2.0.0")),
     ],
     targets: [Target(
-        name: projectName,
+        name: "NewsHabit",
         destinations: [.iPhone],
         product: .app,
-        bundleId: bundleId,
+        bundleId: "com.NewsHabit",
         deploymentTargets: .iOS("15.0"),
         infoPlist: .extendingDefault(with: infoPlist),
-        sources: ["\(projectName)/Sources/**"],
-        resources: "\(projectName)/Resources/**",
+        sources: ["NewsHabit/Sources/**"],
+        resources: "NewsHabit/Resources/**",
         dependencies: [
             .package(product: "Alamofire"),
             .package(product: "Kingfisher"),
