@@ -1,15 +1,16 @@
 //
-//  NotificationTimeCell.swift
+//  NotificationTimeView.swift
 //  NewsHabit
 //
-//  Created by jiyeon on 2/24/24.
+//  Created by jiyeon on 6/6/24.
 //
 
 import UIKit
 
-final class NotificationTimeCell: UITableViewCell, BaseViewProtocol {
-    
-    static let reuseIdentifier = "NotificationTimeCell"
+import SnapKit
+import Then
+
+final class NotificationTimeView: UIView, BaseViewProtocol {
     
     // MARK: - UI Components
     
@@ -24,10 +25,10 @@ final class NotificationTimeCell: UITableViewCell, BaseViewProtocol {
         $0.textColor = .newsHabitGray
     }
     
-    // MARK: - Initializer
+    // MARK: - Initialzier
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupProperty()
         setupHierarchy()
         setupLayout()
@@ -41,12 +42,11 @@ final class NotificationTimeCell: UITableViewCell, BaseViewProtocol {
     
     func setupProperty() {
         backgroundColor = .background
-        selectionStyle = .none
     }
     
     func setupHierarchy() {
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(timeLabel)
+        addSubview(titleLabel)
+        addSubview(timeLabel)
     }
     
     func setupLayout() {

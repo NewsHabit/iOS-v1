@@ -16,6 +16,7 @@ final class NotificationViewController: BaseViewController<NotificationView>, Ba
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        setupNotificationCenterObserver()
         contentView.delegate = self
         contentView.bindViewModel(viewModel)
     }
@@ -24,11 +25,28 @@ final class NotificationViewController: BaseViewController<NotificationView>, Ba
         super.viewWillAppear(animated)
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     // MARK: - BaseViewControllerProtocol
     
     func setupNavigationBar() {
         setNavigationBarShareButtonHidden(true)
         setNavigationBarTitle("알림")
+    }
+    
+    private func setupNotificationCenterObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleNotificationAuthorizationDidUpate),
+            name: .NotificationAuthorizationDidUpdate,
+            object: nil
+        )
+    }
+    
+    @objc private func handleNotificationAuthorizationDidUpate() {
+        contentView.updateNotificationStatus()
     }
     
 }
@@ -57,7 +75,6 @@ extension NotificationViewController: NotificationViewDelegate {
     
     private func openAppSettings(_ sender: UIAlertAction) {
         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-        navigationController?.popViewController(animated: false)
     }
     
 }

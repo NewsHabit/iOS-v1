@@ -18,18 +18,23 @@ final class NotificationView: UIView, BaseViewProtocol {
     private var viewModel: NotificationViewModel?
     private var cancellables = Set<AnyCancellable>()
     private let feedbackGenerator = UISelectionFeedbackGenerator()
-    private var dataSource: UITableViewDiffableDataSource<NotificationSection, NotificationCell>!
+    private let heightForRow = 44.0
     
     // MARK: - UI Components
     
-    private let tableView = UITableView().then {
-        $0.backgroundColor = .background
-        $0.separatorStyle = .none
-        $0.register(NotificationSwitchCell.self, forCellReuseIdentifier: NotificationSwitchCell.reuseIdentifier)
-        $0.register(NotificationTimeCell.self, forCellReuseIdentifier: NotificationTimeCell.reuseIdentifier)
+    private lazy var switchView = NotificationSwitchView().then {
+        $0.delegate = self
+        $0.setSwifthControlAction(#selector(handleSwitchControlTap))
+        $0.configure(with: UserDefaultsManager.isNotificationOn)
     }
     
-    private let stackView = UIStackView().then {
+    private let timeView = NotificationTimeView().then {
+        $0.isHidden = !UserDefaultsManager.isNotificationOn
+        $0.configure(with: UserDefaultsManager.notificationTime)
+        $0.isUserInteractionEnabled = true
+    }
+    
+    private let datePickerView = UIStackView().then {
         $0.axis = .vertical
         $0.isHidden = true
     }
@@ -57,7 +62,6 @@ final class NotificationView: UIView, BaseViewProtocol {
         setupProperty()
         setupHierarchy()
         setupLayout()
-        setupDiffableDataSource()
     }
     
     required init?(coder: NSCoder) {
@@ -67,40 +71,49 @@ final class NotificationView: UIView, BaseViewProtocol {
     // MARK: - BaseViewProtocol
     
     func setupProperty() {
-        tableView.delegate = self
-        
         feedbackGenerator.prepare()
-        
+        timeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTimeViewTap)))
         datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
         saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
     }
     
-    @objc func datePickerValueChanged() {
+    @objc private func handleTimeViewTap() {
+        datePickerView.isHidden = false
+    }
+    
+    @objc private func datePickerValueChanged() {
         feedbackGenerator.selectionChanged()
         feedbackGenerator.prepare() // 다음 진동을 위해 다시 준비
     }
     
-    @objc func handleSaveButtonTap() {
-        stackView.isHidden = true
-        datePicker.date = datePicker.date
+    @objc private func handleSaveButtonTap() {
+        datePickerView.isHidden = true
+        timeView.configure(with: datePicker.date.toSimpleTimeString())
         viewModel?.input.send(.setNotificationTime(datePicker.date))
     }
     
     func setupHierarchy() {
-        addSubview(tableView)
-        addSubview(stackView)
-        stackView.addArrangedSubview(datePicker)
-        stackView.addArrangedSubview(saveButton)
+        addSubview(switchView)
+        addSubview(timeView)
+        addSubview(datePickerView)
+        datePickerView.addArrangedSubview(datePicker)
+        datePickerView.addArrangedSubview(saveButton)
     }
     
     func setupLayout() {
-        tableView.snp.makeConstraints {
+        switchView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(20)
             $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(stackView.snp.top)
+            $0.height.equalTo(heightForRow)
         }
         
-        stackView.snp.makeConstraints {
+        timeView.snp.makeConstraints {
+            $0.top.equalTo(switchView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(heightForRow)
+        }
+        
+        datePickerView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview().inset(30)
             $0.height.equalTo(250)
@@ -111,39 +124,8 @@ final class NotificationView: UIView, BaseViewProtocol {
         }
     }
     
-    private func setupDiffableDataSource() {
-        dataSource = UITableViewDiffableDataSource<NotificationSection, NotificationCell>(tableView: tableView) { [weak self] (tableView, indexPath, item) -> UITableViewCell? in
-            switch item {
-            case let .switchCell(isOn):
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationSwitchCell.reuseIdentifier) as? NotificationSwitchCell else { return UITableViewCell() }
-                cell.configure(with: isOn)
-                cell.switchControl.removeTarget(nil, action: nil, for: .touchUpInside)
-                cell.switchControl.addTarget(self, action: #selector(self?.handleSwitchControlTap), for: .touchUpInside)
-                return cell
-            case let .timeCell(time):
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationTimeCell.reuseIdentifier) as? NotificationTimeCell else { return UITableViewCell() }
-                cell.configure(with: time)
-                return cell
-            }
-        }
-        updateDataSource()
-    }
-    
-    @objc private func handleSwitchControlTap(_ switchControl: UISwitch) {
-        viewModel?.input.send(.setNotification(switchControl.isOn))
-    }
-    
-    // MARK: - Update Data Source
-    
-    private func updateDataSource() {
-        var snapshot = NSDiffableDataSourceSnapshot<NotificationSection, NotificationCell>()
-        snapshot.appendSections([.main])
-        if UserDefaultsManager.isNotificationOn {
-            snapshot.appendItems([.switchCell(UserDefaultsManager.isNotificationOn), .timeCell(UserDefaultsManager.notificationTime)], toSection: .main)
-        } else {
-            snapshot.appendItems([.switchCell(UserDefaultsManager.isNotificationOn)], toSection: .main)
-        }
-        dataSource.apply(snapshot, animatingDifferences: false)
+    @objc func handleSwitchControlTap(_ switchControl: UISwitch) {
+        viewModel?.input.send(.setNotificationStatus(switchControl.isOn))
     }
     
     // MARK: - Bind
@@ -157,30 +139,19 @@ final class NotificationView: UIView, BaseViewProtocol {
                 guard let self = self else { return }
                 switch event {
                 case .permissionDenied:
-                    guard let cell = self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? NotificationSwitchCell else { return }
-                    cell.switchControl.isOn = false
+                    switchView.configure(with: false)
                     delegate?.showAlert()
-                case .updateNotification:
-                    updateDataSource()
-                    if !stackView.isHidden {
-                        stackView.isHidden = true
-                    }
+                case let .updateNotificationStatus(isOn):
+                    switchView.configure(with: isOn)
+                    timeView.isHidden = !isOn
+                    datePickerView.isHidden = true
                 }
             }.store(in: &cancellables)
     }
     
-}
-
-extension NotificationView: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 1 && stackView.isHidden {
-            stackView.isHidden = false
-        }
+    /// 외부(설정 앱)에서 알림 상태가 바뀌었을 때 호출되는 함수
+    func updateNotificationStatus() {
+        viewModel?.input.send(.updateNotificationStatus)
     }
     
 }

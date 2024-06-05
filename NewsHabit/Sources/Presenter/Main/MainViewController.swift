@@ -22,7 +22,7 @@ final class MainViewController: BaseViewController<MainView>, BaseViewController
             UserDefaultsManager.isNotificationOn = isAuthorized
             if isAuthorized {
                 if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
-                    UserNotificationManager.shared.addNotification(for: notificationTime)
+                    UserNotificationManager.shared.scheduleNotification(for: notificationTime)
                 }
             }
         }

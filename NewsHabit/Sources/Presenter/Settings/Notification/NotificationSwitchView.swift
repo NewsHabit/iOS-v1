@@ -1,8 +1,8 @@
 //
-//  NotificationSwitchCell.swift
+//  NotificationSwitchView.swift
 //  NewsHabit
 //
-//  Created by jiyeon on 2/24/24.
+//  Created by jiyeon on 6/6/24.
 //
 
 import UIKit
@@ -10,9 +10,9 @@ import UIKit
 import SnapKit
 import Then
 
-final class NotificationSwitchCell: UITableViewCell, BaseViewProtocol {
+final class NotificationSwitchView: UIView, BaseViewProtocol {
     
-    static let reuseIdentifier = "NotificationSwitchCell"
+    weak var delegate: NotificationView?
     
     // MARK: - UI Components
     
@@ -22,14 +22,14 @@ final class NotificationSwitchCell: UITableViewCell, BaseViewProtocol {
         $0.textColor = .label
     }
     
-    let switchControl = UISwitch().then {
+    private let switchControl = UISwitch().then {
         $0.onTintColor = .newsHabit
     }
     
-    // MARK: - Initializer
+    // MARK: - Initialzier
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupProperty()
         setupHierarchy()
         setupLayout()
@@ -43,12 +43,11 @@ final class NotificationSwitchCell: UITableViewCell, BaseViewProtocol {
     
     func setupProperty() {
         backgroundColor = .background
-        selectionStyle = .none
     }
     
     func setupHierarchy() {
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(switchControl)
+        addSubview(titleLabel)
+        addSubview(switchControl)
     }
     
     func setupLayout() {
@@ -61,6 +60,10 @@ final class NotificationSwitchCell: UITableViewCell, BaseViewProtocol {
             $0.trailing.equalToSuperview().inset(20)
             $0.centerY.equalToSuperview()
         }
+    }
+    
+    func setSwifthControlAction(_ selector: Selector) {
+        switchControl.addTarget(delegate, action: selector, for: .valueChanged)
     }
     
     func configure(with isOn: Bool) {

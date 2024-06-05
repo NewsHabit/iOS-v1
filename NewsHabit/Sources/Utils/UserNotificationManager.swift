@@ -36,8 +36,8 @@ final class UserNotificationManager {
         }
     }
     
-    func addNotification(for date: Date, with identifier: String = UUID().uuidString) {
-        removeAllPendingNotificationRequests() // 알람 추가 전 이전 알람 삭제
+    func scheduleNotification(for date: Date) {
+        disableNotification() // 이전에 설정한 알람 삭제
         
         let content = UNMutableNotificationContent()
         content.title = "뉴스를 습관처럼"
@@ -47,7 +47,11 @@ final class UserNotificationManager {
         let triggerDate = Calendar.current.dateComponents([.hour, .minute], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: true)
         
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        let request = UNNotificationRequest(
+            identifier: UUID().uuidString,
+            content: content,
+            trigger: trigger
+        )
         
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
@@ -56,7 +60,7 @@ final class UserNotificationManager {
         }
     }
     
-    func removeAllPendingNotificationRequests() {
+    func disableNotification() {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     

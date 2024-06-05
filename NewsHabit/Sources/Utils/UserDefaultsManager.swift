@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserDefaultsManager {
+final class UserDefaultsManager {
     
     @UserDefaultsData(key: "isFirst", defaultValue: true)
     static var isFirst: Bool
