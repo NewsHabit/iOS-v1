@@ -1,5 +1,5 @@
 //
-//  NotificationCenterManager.swift
+//  UserNotificationManager.swift
 //  NewsHabit
 //
 //  Created by jiyeon on 3/3/24.
@@ -8,10 +8,9 @@
 import Foundation
 import UserNotifications
 
-final class NotificationCenterManager {
+final class UserNotificationManager {
     
-    static let shared = NotificationCenterManager()
-    
+    static let shared = UserNotificationManager()
     private init() {}
     
     func checkNotificationAuthorization(completion: @escaping (Bool) -> Void) {
@@ -60,4 +59,5 @@ final class NotificationCenterManager {
     func removeAllPendingNotificationRequests() {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
+    
 }

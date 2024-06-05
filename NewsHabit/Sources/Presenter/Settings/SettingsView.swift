@@ -11,15 +11,19 @@ import UIKit
 import SnapKit
 import Then
 
+protocol SettingsViewDelegate: AnyObject {
+    func pushViewController(settingsType: SettingsType)
+}
+
 final class SettingsView: UIView, BaseViewProtocol {
     
-    var delegate: SettingsViewDelegate?
+    weak var delegate: SettingsViewDelegate?
     private var viewModel: SettingsViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     
-    let tableView = UITableView().then {
+    private let tableView = UITableView().then {
         $0.register(SettingsCell.self, forCellReuseIdentifier: SettingsCell.reuseIdentifier)
         $0.backgroundColor = .background
         $0.separatorStyle = .none
@@ -38,7 +42,7 @@ final class SettingsView: UIView, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         tableView.delegate = self
@@ -55,10 +59,11 @@ final class SettingsView: UIView, BaseViewProtocol {
         }
     }
     
-    // MARK: - Bind ViewModel
+    // MARK: - Bind
     
     func bindViewModel(_ viewModel: SettingsViewModel) {
         self.viewModel = viewModel
+        
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
             .receive(on: RunLoop.main)
             .sink { [weak self] event in

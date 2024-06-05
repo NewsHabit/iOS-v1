@@ -14,15 +14,15 @@ final class ErrorView: UIStackView, BaseViewProtocol {
     
     // MARK: - UI Components
     
-    let faceLabel = UILabel().then {
+    private let faceLabel = UILabel().then {
         $0.text = "😵‍💫😵‍💫😵‍💫"
-        $0.font = .largeFont
+        $0.font = .largeTitle
     }
     
-    let messageLabel = UILabel().then {
+    private let messageLabel = UILabel().then {
         $0.text = "아이쿠! 문제가 발생했어요\n눌러서 다시 시도해주세요"
         $0.numberOfLines = 0
-        $0.font = .subTitleFont
+        $0.font = .title3
         $0.textColor = .newsHabitGray
         $0.textAlignment = .center
     }
@@ -39,7 +39,7 @@ final class ErrorView: UIStackView, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         axis = .vertical

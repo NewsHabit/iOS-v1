@@ -56,11 +56,12 @@ final class SettingsViewModel {
             guard let self = self else { return }
             switch event {
             case .viewDidLoad:
-                self.output.send(.initSettingItems)
+                output.send(.initSettingItems)
             case let .tapSettingsCell(index):
-                self.output.send(.navigateTo(type: settingsItems[index].type))
+                output.send(.navigateTo(type: settingsItems[index].type))
             }
         }.store(in: &cancellables)
+        
         return output.eraseToAnyPublisher()
     }
     

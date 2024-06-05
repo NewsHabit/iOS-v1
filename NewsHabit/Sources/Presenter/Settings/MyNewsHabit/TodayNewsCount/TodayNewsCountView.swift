@@ -8,35 +8,38 @@
 import Combine
 import UIKit
 
+protocol TodayNewsCountViewDelegate: AnyObject {
+    func popViewController()
+}
+
 final class TodayNewsCountView: UIView, BaseViewProtocol {
     
-    var delegate: TodayNewsCountViewDelegate?
+    weak var delegate: TodayNewsCountViewDelegate?
     private var viewModel: TodayNewsCountViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.text = "매일 추천받고 싶은 기사의 개수를 선택해주세요"
         $0.textColor = .label
-        $0.font = .cellTitleFont
+        $0.font = .bodySB
     }
     
-    let subTitleLabel = UILabel().then {
-        $0.text = "변경 시 내일부터 적용돼요"
+    private let subTitleLabel = UILabel().then {
         $0.textColor = .newsHabitGray
-        $0.font = .subTitleFont
+        $0.font = .title3
     }
     
-    let tableView = UITableView().then {
+    private let tableView = UITableView().then {
         $0.backgroundColor = .background
         $0.separatorStyle = .none
         $0.register(TodayNewsCountCell.self, forCellReuseIdentifier: TodayNewsCountCell.reuseIdentifier)
     }
     
-    let saveButton = UIButton().then {
+    private let saveButton = UIButton().then {
         $0.configuration = .plain()
-        $0.configuration?.attributedTitle = .init("저장", attributes: .init([.font: UIFont.labelFont]))
+        $0.configuration?.attributedTitle = .init("저장", attributes: .init([.font: UIFont.body]))
         $0.tintColor = .white
         $0.backgroundColor = .black
         $0.clipsToBounds = true
@@ -56,12 +59,18 @@ final class TodayNewsCountView: UIView, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         tableView.delegate = self
         tableView.dataSource = self
         saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
+    }
+    
+    @objc private func handleSaveButtonTap() {
+        guard let viewModel = viewModel else { return }
+        UserDefaultsManager.todayNewsCount = TodayNewsCountType.count(from: viewModel.selectedIndex)
+        delegate?.popViewController()
     }
     
     func setupHierarchy() {
@@ -95,16 +104,19 @@ final class TodayNewsCountView: UIView, BaseViewProtocol {
         }
     }
     
-    @objc private func handleSaveButtonTap() {
-        guard let viewModel = viewModel else { return }
-        UserDefaultsManager.todayNewsCount = TodayNewsCountType.count(from: viewModel.selectedIndex)
-        delegate?.popViewController()
+    func setSubTitle(with text: String) {
+        subTitleLabel.text = text
     }
     
-    // MARK: - Bind ViewModel
+    func setSaveButtonHidden() {
+        saveButton.isHidden = true
+    }
+    
+    // MARK: - Bind
     
     func bindViewModel(_ viewModel: TodayNewsCountViewModel) {
         self.viewModel = viewModel
+        
         viewModel.$selectedIndex
             .receive(on: RunLoop.main)
             .sink { [weak self] selectedIndex in
@@ -122,8 +134,7 @@ extension TodayNewsCountView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let viewModel = viewModel else { return }
-        viewModel.selectedIndex = indexPath.row
+        viewModel?.selectedIndex = indexPath.row
     }
     
 }
@@ -139,7 +150,7 @@ extension TodayNewsCountView: UITableViewDataSource {
               let cell = tableView.dequeueReusableCell(withIdentifier: TodayNewsCountCell.reuseIdentifier) as? TodayNewsCountCell
         else { return UITableViewCell() }
         let todayNewsCount = TodayNewsCountType.allCases[indexPath.row]
-        cell.titleLabel.text = "\(todayNewsCount.rawValue)개"
+        cell.configure(with: todayNewsCount.rawValue)
         cell.setSelected(viewModel.selectedIndex == indexPath.row)
         return cell
     }

@@ -15,47 +15,47 @@ import Then
 final class TodayNewsCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "TodayNewsCell"
-    var viewModel: TodayNewsCellViewModel?
+    private var viewModel: TodayNewsCellViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     
-    let stackView = UIStackView().then {
+    private let stackView = UIStackView().then {
         $0.axis = .horizontal
         $0.spacing = 10
         $0.alignment = .center
     }
     
-    let isReadView = UIView().then {
+    private let readStateView = UIView().then {
         $0.backgroundColor = .newsHabitAccent
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 3
     }
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.textColor = .label
-        $0.font = .cellTitleFont
+        $0.font = .bodySB
         $0.numberOfLines = 1
         $0.lineBreakMode = .byTruncatingTail
     }
     
-    let descriptionLabel = UILabel().then {
+    private let descriptionLabel = UILabel().then {
         $0.textColor = .newsHabitGray
-        $0.font = .cellLabelFont
+        $0.font = .caption
         $0.numberOfLines = 3
         $0.lineBreakMode = .byTruncatingTail
     }
     
-    let categoryLabel = UILabel().then {
+    private let categoryLabel = UILabel().then {
         $0.textColor = .background
         $0.textAlignment = .center
-        $0.font = .smallFont
+        $0.font = .footnote
         $0.backgroundColor = .newsHabit
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 9
     }
     
-    let thumbnailView = UIImageView().then {
+    private let thumbnailView = UIImageView().then {
         $0.backgroundColor = .gray
         $0.clipsToBounds = true
         $0.contentMode = .scaleAspectFill
@@ -76,6 +76,7 @@ final class TodayNewsCell: UITableViewCell, BaseViewProtocol {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        
         titleLabel.text = nil
         descriptionLabel.text = nil
         categoryLabel.text = nil
@@ -84,7 +85,7 @@ final class TodayNewsCell: UITableViewCell, BaseViewProtocol {
         cancellables.removeAll()
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         backgroundColor = .background
@@ -93,7 +94,7 @@ final class TodayNewsCell: UITableViewCell, BaseViewProtocol {
     
     func setupHierarchy() {
         contentView.addSubview(stackView)
-        stackView.addArrangedSubview(isReadView)
+        stackView.addArrangedSubview(readStateView)
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(categoryLabel)
         contentView.addSubview(descriptionLabel)
@@ -107,7 +108,7 @@ final class TodayNewsCell: UITableViewCell, BaseViewProtocol {
             $0.trailing.equalTo(thumbnailView.snp.leading).offset(-15)
         }
         
-        isReadView.snp.makeConstraints {
+        readStateView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.width.height.equalTo(6)
         }
@@ -131,21 +132,21 @@ final class TodayNewsCell: UITableViewCell, BaseViewProtocol {
         }
     }
     
-    // MARK: - Bind ViewModel
+    // MARK: - Bind
     
     func bindViewModel(_ viewModel: TodayNewsCellViewModel) {
         self.viewModel = viewModel
-        // 초기 데이터 설정
+        
+        readStateView.isHidden = viewModel.isRead
         titleLabel.text = viewModel.title
+        categoryLabel.text = Category.fromAPIString(viewModel.category)
         descriptionLabel.text = viewModel.description
         loadImage(from: viewModel.imageLink)
-        isReadView.isHidden = viewModel.isRead
-        categoryLabel.text = Category.fromAPIString(viewModel.category)
         
         viewModel.$isRead
             .receive(on: RunLoop.main)
             .sink { [weak self] isRead in
-                self?.isReadView.isHidden = isRead
+                self?.readStateView.isHidden = isRead
             }.store(in: &cancellables)
     }
     

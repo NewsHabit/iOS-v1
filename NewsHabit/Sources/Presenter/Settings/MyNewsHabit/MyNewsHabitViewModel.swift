@@ -34,13 +34,14 @@ final class MyNewsHabitViewModel {
             guard let self = self else { return }
             switch event {
             case let.tapMyNewsHabitCell(index):
-                self.output.send(.navigateTo(type: myNewsHabitItems[index].type))
+                output.send(.navigateTo(type: myNewsHabitItems[index].type))
             case .updateMyNewsHabitSettings:
-                self.myNewsHabitItems.removeAll()
-                self.updateMyNewsHabitItems()
-                self.output.send(.updateMyNewsHabitItems)
+                myNewsHabitItems.removeAll()
+                updateMyNewsHabitItems()
+                output.send(.updateMyNewsHabitItems)
             }
         }.store(in: &cancellables)
+        
         return output.eraseToAnyPublisher()
     }
     

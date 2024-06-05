@@ -7,13 +7,9 @@
 
 import UIKit
 
-protocol TodayNewsCountViewDelegate {
-    func popViewController()
-}
-
 final class TodayNewsCountViewController: BottomSheetController<TodayNewsCountView> {
     
-    var delegate: MyNewsHabitViewDelegate?
+    weak var delegate: MyNewsHabitViewDelegate?
     private let viewModel = TodayNewsCountViewModel()
     
     // MARK: - Life Cycle
@@ -22,6 +18,7 @@ final class TodayNewsCountViewController: BottomSheetController<TodayNewsCountVi
         super.viewDidLoad()
         sheetView.delegate = self
         sheetView.bindViewModel(viewModel)
+        sheetView.setSubTitle(with: "변경 시 내일부터 적용돼요")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -34,7 +31,7 @@ final class TodayNewsCountViewController: BottomSheetController<TodayNewsCountVi
 extension TodayNewsCountViewController: TodayNewsCountViewDelegate {
     
     func popViewController() {
-        super.hideBottomSheets()
+        hideBottomSheets()
     }
     
 }

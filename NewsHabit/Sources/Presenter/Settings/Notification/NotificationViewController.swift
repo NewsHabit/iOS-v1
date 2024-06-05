@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol NotificationViewDelegate {
-    func showAlert()
-}
-
 final class NotificationViewController: BaseViewController<NotificationView>, BaseViewControllerProtocol {
     
     private let viewModel = NotificationViewModel()
@@ -20,8 +16,6 @@ final class NotificationViewController: BaseViewController<NotificationView>, Ba
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
-        
-        guard let contentView = contentView as? NotificationView else { return }
         contentView.delegate = self
         contentView.bindViewModel(viewModel)
     }
@@ -65,4 +59,5 @@ extension NotificationViewController: NotificationViewDelegate {
         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         navigationController?.popViewController(animated: false)
     }
+    
 }

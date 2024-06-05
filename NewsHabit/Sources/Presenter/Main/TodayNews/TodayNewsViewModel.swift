@@ -40,18 +40,19 @@ final class TodayNewsViewModel {
             switch event {
             case .getTodayNews:
                 if UserDefaultsManager.lastDate != Date().toCompactDateString() {
-                    self.fetchNewsData()
+                    fetchNewsData()
                 } else {
-                    self.cellViewModels = UserDefaultsManager.todayNews.map {
+                    cellViewModels = UserDefaultsManager.todayNews.map {
                         TodayNewsCellViewModel($0)
                     }
-                    self.output.send(.updateTodayNews)
+                    output.send(.updateTodayNews)
                 }
             case let .tapNewsCell(index):
-                self.setReadNewsItem(index)
-                self.output.send(.navigateTo(newsLink: self.cellViewModels[index].newsLink))
+                setReadNewsItem(index)
+                output.send(.navigateTo(newsLink: self.cellViewModels[index].newsLink))
             }
         }.store(in: &cancellables)
+        
         return output.eraseToAnyPublisher()
     }
     
@@ -66,27 +67,26 @@ final class TodayNewsViewModel {
             "cnt": UserDefaultsManager.todayNewsCount.rawValue
         ]
         APIManager.shared.fetchData(
-            "/api/recommendations",
+            endpoint: "/api/recommendations",
             parameters: parameters,
             encoding: URLEncoding(
                 destination: .queryString,
                 arrayEncoding: .noBrackets,
                 boolEncoding: .literal
-            ),
-            completion: { [weak self] (result: Result<TodayNewsResponse, AFError>) in
+            )) { [weak self] (result: Result<TodayNewsResponse, AFError>) in
                 guard let self = self else { return }
                 switch result {
                 case let .success(response):
-                    self.cellViewModels = response.recommendedNewsResponseDtoList.map { TodayNewsCellViewModel(TodayNewsItemState(newsItem: $0))
+                    cellViewModels = response.recommendedNewsResponseDtoList.map { TodayNewsCellViewModel(TodayNewsItemState(newsItem: $0))
                     }
-                    self.initTodayNewsData()
-                    self.output.send(.updateTodayNews)
-                    self.output.send(.dayChanged)
+                    initTodayNewsData()
+                    output.send(.updateTodayNews)
+                    output.send(.dayChanged)
                 case let .failure(error):
-                    print("TodayNewsViewModel fetch data : \(error)")
-                    self.output.send(.fetchFailed)
+                    print("TodayNewsViewModel fetch data failed : \(error)")
+                    output.send(.fetchFailed)
                 }
-            })
+            }
     }
     
     private func initTodayNewsData() {
@@ -101,6 +101,7 @@ final class TodayNewsViewModel {
         UserDefaultsManager.todayNews = cellViewModels.map { $0.newsItemState }
         
         let todayReadCount = cellViewModels.filter { $0.isRead }.count
+        // 오늘의 뉴스를 다 읽었을 경우
         if todayReadCount == UserDefaultsManager.todayNews.count {
             UserDefaultsManager.numOfDaysAllRead += 1
             UserDefaultsManager.monthlyAllRead.append(Date().toDayString())

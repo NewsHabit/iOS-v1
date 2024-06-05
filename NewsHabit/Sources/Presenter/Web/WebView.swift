@@ -18,15 +18,15 @@ final class WebView: UIView, BaseViewProtocol {
     
     // MARK: - UI Components
     
-    let webView: WKWebView
+    private let webView: WKWebView
     
-    let progressView = UIProgressView().then {
+    private let progressView = UIProgressView().then {
         $0.progressViewStyle = .bar
         $0.tintColor = .label
         $0.sizeToFit()
     }
     
-    let errorView = ErrorView().then {
+    private let errorView = ErrorView().then {
         $0.isHidden = true
     }
     
@@ -53,7 +53,7 @@ final class WebView: UIView, BaseViewProtocol {
         webView.stopLoading()
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         webView.navigationDelegate = self
@@ -82,8 +82,6 @@ final class WebView: UIView, BaseViewProtocol {
             $0.center.equalToSuperview()
         }
     }
-    
-    // MARK: - Load
     
     func loadLink(_ url: URL?) {
         guard let url = url else { return }

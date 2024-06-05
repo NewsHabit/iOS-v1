@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol SettingsViewDelegate {
-    func pushViewController(settingsType: SettingsType)
-}
-
 final class SettingsViewController: BaseViewController<SettingsView>, BaseViewControllerProtocol {
     
     private let viewModel = SettingsViewModel()
@@ -20,8 +16,6 @@ final class SettingsViewController: BaseViewController<SettingsView>, BaseViewCo
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
-        
-        guard let contentView = contentView as? SettingsView else { return }
         contentView.delegate = self
         contentView.bindViewModel(viewModel)
         viewModel.input.send(.viewDidLoad)

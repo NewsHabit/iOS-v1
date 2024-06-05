@@ -34,8 +34,6 @@ final class WebViewController: BaseViewController<WebView> {
         setNavigationBarShareButtonAction(#selector(handleShareButtonTap))
     }
     
-    // MARK: - objc Function
-    
     @objc private func handleShareButtonTap() {
         guard let url = url else { return }
         
@@ -49,7 +47,6 @@ final class WebViewController: BaseViewController<WebView> {
         if let urlString = urlString {
             url = URL(string: urlString)
         }
-        guard let contentView = contentView as? WebView else { return }
         contentView.loadLink(url)
     }
     

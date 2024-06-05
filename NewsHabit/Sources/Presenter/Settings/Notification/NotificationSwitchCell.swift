@@ -16,9 +16,9 @@ final class NotificationSwitchCell: UITableViewCell, BaseViewProtocol {
     
     // MARK: - UI Components
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.text = "오늘의 뉴스 알림"
-        $0.font = .largeLabelFont
+        $0.font = .title2
         $0.textColor = .label
     }
     
@@ -39,7 +39,7 @@ final class NotificationSwitchCell: UITableViewCell, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         backgroundColor = .background
@@ -62,8 +62,6 @@ final class NotificationSwitchCell: UITableViewCell, BaseViewProtocol {
             $0.centerY.equalToSuperview()
         }
     }
-    
-    // MARK: - Configure
     
     func configure(with isOn: Bool) {
         switchControl.isOn = isOn

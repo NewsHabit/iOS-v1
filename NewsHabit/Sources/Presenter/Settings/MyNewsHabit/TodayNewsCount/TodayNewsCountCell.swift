@@ -16,12 +16,12 @@ final class TodayNewsCountCell: UITableViewCell, BaseViewProtocol {
     
     // MARK: - UI Components
     
-    let titleLabel = UILabel().then {
-        $0.font = .labelFont
+    private let titleLabel = UILabel().then {
+        $0.font = .body
         $0.textColor = .label
     }
     
-    let selectedButton = UIButton().then {
+    private let selectedButton = UIButton().then {
         $0.configuration = .plain()
         $0.configuration?.preferredSymbolConfigurationForImage = .init(pointSize: 15)
         $0.tintColor = .label
@@ -41,7 +41,7 @@ final class TodayNewsCountCell: UITableViewCell, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         backgroundColor = .background
@@ -64,6 +64,10 @@ final class TodayNewsCountCell: UITableViewCell, BaseViewProtocol {
             $0.trailing.equalToSuperview().inset(30)
             $0.centerY.equalToSuperview()
         }
+    }
+    
+    func configure(with count: Int) {
+        titleLabel.text = "\(count)개"
     }
     
     func setSelected(_ isSelected: Bool) {

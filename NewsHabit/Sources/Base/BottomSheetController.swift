@@ -12,8 +12,6 @@ import Then
 
 class BottomSheetController<View: UIView>: UIViewController {
     
-    // MARK: - Properties
-    
     var bottomSheetHeight: CGFloat
     
     // MARK: - UI Components
@@ -100,8 +98,6 @@ class BottomSheetController<View: UIView>: UIViewController {
         swipeGesture.direction = .down
         view.addGestureRecognizer(swipeGesture)
     }
-    
-    // MARK: - Action Functions
     
     @objc private func handleDimmedViewTap(_ tapRecognizer: UITapGestureRecognizer) {
         hideBottomSheets()

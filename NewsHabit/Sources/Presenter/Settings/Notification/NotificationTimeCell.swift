@@ -13,14 +13,14 @@ final class NotificationTimeCell: UITableViewCell, BaseViewProtocol {
     
     // MARK: - UI Components
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.text = "시간"
-        $0.font = .largeLabelFont
+        $0.font = .title2
         $0.textColor = .label
     }
     
-    let timeLabel = UILabel().then {
-        $0.font = .largeLabelFont
+    private let timeLabel = UILabel().then {
+        $0.font = .title2
         $0.textColor = .newsHabitGray
     }
     
@@ -37,7 +37,7 @@ final class NotificationTimeCell: UITableViewCell, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         backgroundColor = .background
@@ -60,8 +60,6 @@ final class NotificationTimeCell: UITableViewCell, BaseViewProtocol {
             $0.centerY.equalToSuperview()
         }
     }
-    
-    // MARK: - Configure
     
     func configure(with time: String) {
         timeLabel.text = time

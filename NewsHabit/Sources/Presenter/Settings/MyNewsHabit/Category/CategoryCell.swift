@@ -16,8 +16,8 @@ final class CategoryCell: UICollectionViewCell, BaseViewProtocol {
     
     // MARK: - UI Components
     
-    let label = UILabel().then {
-        $0.font = .cellLabelFont
+    private let label = UILabel().then {
+        $0.font = .caption
         $0.textColor = .systemBackground
     }
     
@@ -34,7 +34,7 @@ final class CategoryCell: UICollectionViewCell, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         clipsToBounds = true
@@ -49,6 +49,10 @@ final class CategoryCell: UICollectionViewCell, BaseViewProtocol {
         label.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
+    }
+    
+    func configure(with category: String) {
+        label.text = category
     }
     
     func setSelected(_ isSelected: Bool) {

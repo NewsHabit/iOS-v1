@@ -33,6 +33,7 @@ struct UserDefaultsManager {
     @UserDefaultsData(key: "todayNews", defaultValue: [])
     static var todayNews: [TodayNewsItemState]
     
+    /// 오늘의 뉴스를 다 읽은 날의 누적 일수
     @UserDefaultsData(key: "numOfDaysAllRead", defaultValue: 0)
     static var numOfDaysAllRead: Int
     
@@ -46,8 +47,6 @@ struct UserDefaultsManager {
     static var monthlyAllRead: [String]
 
 }
-
-import Foundation
 
 @propertyWrapper
 struct UserDefaultsData<Value: Codable> {

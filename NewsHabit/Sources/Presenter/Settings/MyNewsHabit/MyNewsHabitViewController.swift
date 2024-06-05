@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol MyNewsHabitViewDelegate {
+protocol MyNewsHabitViewDelegate: AnyObject {
     func pushViewController(myNewsHabitType: MyNewsHabitType)
     func updateMyNewsHabitSettings()
 }
@@ -21,8 +21,6 @@ final class MyNewsHabitViewController: BaseViewController<MyNewsHabitView>, Base
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
-        
-        guard let contentView = contentView as? MyNewsHabitView else { return }
         contentView.delegate = self
         contentView.bindViewModel(viewModel)
         viewModel.input.send(.updateMyNewsHabitSettings)

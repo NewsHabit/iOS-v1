@@ -27,19 +27,19 @@ final class MonthlyRecordView: UIView, BaseViewProtocol {
     
     // MARK: - UI Components
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.text = Date().toYearMonthString()
-        $0.font = .titleFont
+        $0.font = .title2B
         $0.textColor = .label
     }
     
-    let numOfMonthlyAllReadLabel = UILabel().then {
+    private let numOfMonthlyAllReadLabel = UILabel().then {
         $0.text = "📚 \(UserDefaultsManager.monthlyAllRead.count)"
-        $0.font = .cellTitleFont
+        $0.font = .bodySB
         $0.textColor = .label
     }
     
-    let collectionView = UICollectionView(
+    private let collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
     ).then {
@@ -64,7 +64,7 @@ final class MonthlyRecordView: UIView, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         collectionView.delegate = self
@@ -96,7 +96,7 @@ final class MonthlyRecordView: UIView, BaseViewProtocol {
     }
     
     func update() {
-        // 이번 달 기록 업데이트
+        // 달이 바뀌었을 경우 데이터 초기화
         if UserDefaultsManager.lastMonth != Date().toMonthString() {
             UserDefaultsManager.lastMonth = Date().toMonthString()
             UserDefaultsManager.monthlyAllRead = []
@@ -130,21 +130,24 @@ extension MonthlyRecordView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MonthlyRecordCell.reuseIdentifier, for: indexPath)
                 as? MonthlyRecordCell else { return UICollectionViewCell() }
+        
         let dayIndex = indexPath.row - (firstWeekdayInCurrentMonth - 1)
         let dayString = String(format: "%02d", dayIndex + 1)
+        
         if dayIndex >= 0 {
-            cell.setRead(isDayRead(dayString), isToday(dayString), dayString)
+            cell.configureDate(isRead(for: dayString), isToday(for: dayString), dayString)
         } else {
-            cell.setEmpty()
+            cell.setAsEmptyDate()
         }
+        
         return cell
     }
     
-    private func isDayRead(_ dayString: String) -> Bool {
+    private func isRead(for dayString: String) -> Bool {
         return UserDefaultsManager.monthlyAllRead.contains(dayString)
     }
     
-    private func isToday(_ dayString: String) -> Bool {
+    private func isToday(for dayString: String) -> Bool {
         return Date().toDayString() == dayString
     }
     

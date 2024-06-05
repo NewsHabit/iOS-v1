@@ -47,22 +47,22 @@ final class NotificationViewModel {
         UserDefaultsManager.isNotificationOn = isOn
         
         if !isOn {
-            NotificationCenterManager.shared.removeAllPendingNotificationRequests()
+            UserNotificationManager.shared.removeAllPendingNotificationRequests()
             self.output.send(.updateNotification)
             return
         }
         
-        NotificationCenterManager.shared.checkNotificationAuthorization { [weak self] isAuthorized in
+        UserNotificationManager.shared.checkNotificationAuthorization { [weak self] isAuthorized in
             guard let self = self else { return }
             
             if isAuthorized { // 알림 권한 허용
                 if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
-                    NotificationCenterManager.shared.addNotification(for: notificationTime)
+                    UserNotificationManager.shared.addNotification(for: notificationTime)
                     self.output.send(.updateNotification)
                 }
             } else { // 알림 권한 거부
                 UserDefaultsManager.isNotificationOn = false
-                NotificationCenterManager.shared.removeAllPendingNotificationRequests()
+                UserNotificationManager.shared.removeAllPendingNotificationRequests()
                 self.output.send(.permissionDenied)
             }
         }
@@ -70,7 +70,7 @@ final class NotificationViewModel {
     
     private func handleNotificationTime(_ date: Date) {
         UserDefaultsManager.notificationTime = date.toSimpleTimeString()
-        NotificationCenterManager.shared.addNotification(for: date)
+        UserNotificationManager.shared.addNotification(for: date)
         output.send(.updateNotification)
     }
     

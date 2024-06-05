@@ -14,7 +14,7 @@ class BaseViewController<View: UIView>: UIViewController, UIGestureRecognizerDel
     
     let statusBar = UIView()
     let navigationBar = NavigationBar()
-    let contentView: UIView = View()
+    let contentView = View()
     
     // MARK: - Life Lycle
         
@@ -23,15 +23,15 @@ class BaseViewController<View: UIView>: UIViewController, UIGestureRecognizerDel
         setupProperty()
         setupHierarchy()
         setupLayout()
-        setupGestureRecognizer()
+        setupBackButtonAction()
     }
     
     // MARK: - Setup Methods
     
     private func setupProperty() {
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
-        navigationController?.setNavigationBarHidden(true, animated: false)
         view.backgroundColor = .background
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     private func setupHierarchy() {
@@ -58,11 +58,9 @@ class BaseViewController<View: UIView>: UIViewController, UIGestureRecognizerDel
         }
     }
     
-    private func setupGestureRecognizer() {
+    private func setupBackButtonAction() {
         navigationBar.backButton.addTarget(self, action: #selector(handleBackButtonTap), for: .touchUpInside)
     }
-    
-    // MARK: - Action Function
     
     @objc private func handleBackButtonTap() {
         contentView.endEditing(true)

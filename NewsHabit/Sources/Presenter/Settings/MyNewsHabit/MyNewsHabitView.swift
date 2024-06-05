@@ -13,13 +13,13 @@ import Then
 
 final class MyNewsHabitView: UIView, BaseViewProtocol {
     
-    var delegate: MyNewsHabitViewDelegate?
+    weak var delegate: MyNewsHabitViewDelegate?
     private var viewModel: MyNewsHabitViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     
-    let tableView = UITableView().then {
+    private let tableView = UITableView().then {
         $0.backgroundColor = .background
         $0.separatorStyle = .none
         $0.register(MyNewsHabitCell.self, forCellReuseIdentifier: MyNewsHabitCell.reuseIdentifier)
@@ -56,19 +56,20 @@ final class MyNewsHabitView: UIView, BaseViewProtocol {
         }
     }
     
-    // MARK: - Bind ViewModel
+    // MARK: - Bind
     
     func bindViewModel(_ viewModel: MyNewsHabitViewModel) {
         self.viewModel = viewModel
+        
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
             .receive(on: RunLoop.main)
             .sink { [weak self] event in
                 guard let self = self else { return }
                 switch event {
                 case let .navigateTo(myNewsHabitType):
-                    self.delegate?.pushViewController(myNewsHabitType: myNewsHabitType)
+                    delegate?.pushViewController(myNewsHabitType: myNewsHabitType)
                 case .updateMyNewsHabitItems:
-                    self.tableView.reloadData()
+                    tableView.reloadData()
                 }
             }.store(in: &cancellables)
     }

@@ -57,11 +57,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             UserDefaultsManager.monthlyAllRead = []
         }
         // 알림 권한 체크
-        NotificationCenterManager.shared.checkNotificationAuthorization { isAuthorized in
+        UserNotificationManager.shared.checkNotificationAuthorization { isAuthorized in
             UserDefaultsManager.isNotificationOn = isAuthorized
             if isAuthorized {
                 if let notificationTime = UserDefaultsManager.notificationTime.toTimeAsDate() {
-                    NotificationCenterManager.shared.addNotification(for: notificationTime)
+                    UserNotificationManager.shared.addNotification(for: notificationTime)
                 }
             }
         }

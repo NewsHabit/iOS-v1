@@ -8,9 +8,13 @@
 import Combine
 import UIKit
 
+protocol NotificationViewDelegate: AnyObject {
+    func showAlert()
+}
+
 final class NotificationView: UIView, BaseViewProtocol {
 
-    var delegate: NotificationViewDelegate?
+    weak var delegate: NotificationViewDelegate?
     private var viewModel: NotificationViewModel?
     private var cancellables = Set<AnyCancellable>()
     private let feedbackGenerator = UISelectionFeedbackGenerator()
@@ -18,28 +22,28 @@ final class NotificationView: UIView, BaseViewProtocol {
     
     // MARK: - UI Components
     
-    let tableView = UITableView().then {
+    private let tableView = UITableView().then {
         $0.backgroundColor = .background
         $0.separatorStyle = .none
         $0.register(NotificationSwitchCell.self, forCellReuseIdentifier: NotificationSwitchCell.reuseIdentifier)
         $0.register(NotificationTimeCell.self, forCellReuseIdentifier: NotificationTimeCell.reuseIdentifier)
     }
     
-    let stackView = UIStackView().then {
+    private let stackView = UIStackView().then {
         $0.axis = .vertical
         $0.isHidden = true
     }
     
-    let datePicker = UIDatePicker().then {
+    private let datePicker = UIDatePicker().then {
         $0.datePickerMode = .time
         $0.locale = Locale(identifier: "en_US_POSIX") // 12시간제 AM/PM 표기 로케일
         $0.timeZone = TimeZone(identifier: "Asia/Seoul")
         $0.preferredDatePickerStyle = .wheels
     }
     
-    let saveButton = UIButton().then {
+    private let saveButton = UIButton().then {
         $0.configuration = .plain()
-        $0.configuration?.attributedTitle = .init("저장", attributes: .init([.font: UIFont.labelFont]))
+        $0.configuration?.attributedTitle = .init("저장", attributes: .init([.font: UIFont.body]))
         $0.tintColor = .white
         $0.backgroundColor = .black
         $0.clipsToBounds = true
@@ -60,7 +64,7 @@ final class NotificationView: UIView, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         tableView.delegate = self
@@ -69,6 +73,17 @@ final class NotificationView: UIView, BaseViewProtocol {
         
         datePicker.addTarget(self, action: #selector(datePickerValueChanged), for: .valueChanged)
         saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
+    }
+    
+    @objc func datePickerValueChanged() {
+        feedbackGenerator.selectionChanged()
+        feedbackGenerator.prepare() // 다음 진동을 위해 다시 준비
+    }
+    
+    @objc func handleSaveButtonTap() {
+        stackView.isHidden = true
+        datePicker.date = datePicker.date
+        viewModel?.input.send(.setNotificationTime(datePicker.date))
     }
     
     func setupHierarchy() {
@@ -114,6 +129,10 @@ final class NotificationView: UIView, BaseViewProtocol {
         updateDataSource()
     }
     
+    @objc private func handleSwitchControlTap(_ switchControl: UISwitch) {
+        viewModel?.input.send(.setNotification(switchControl.isOn))
+    }
+    
     // MARK: - Update Data Source
     
     private func updateDataSource() {
@@ -127,10 +146,11 @@ final class NotificationView: UIView, BaseViewProtocol {
         dataSource.apply(snapshot, animatingDifferences: false)
     }
     
-    // MARK: - Bind ViewModel
+    // MARK: - Bind
     
     func bindViewModel(_ viewModel: NotificationViewModel) {
         self.viewModel = viewModel
+        
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
             .receive(on: RunLoop.main)
             .sink { [weak self] event in
@@ -141,29 +161,12 @@ final class NotificationView: UIView, BaseViewProtocol {
                     cell.switchControl.isOn = false
                     delegate?.showAlert()
                 case .updateNotification:
-                    self.updateDataSource()
-                    if !self.stackView.isHidden {
-                        self.stackView.isHidden = true
+                    updateDataSource()
+                    if !stackView.isHidden {
+                        stackView.isHidden = true
                     }
                 }
             }.store(in: &cancellables)
-    }
-    
-    // MARK: - Action Functions
-    
-    @objc func datePickerValueChanged() {
-        feedbackGenerator.selectionChanged()
-        feedbackGenerator.prepare() // 다음 진동을 위해 다시 준비
-    }
-    
-    @objc func handleSaveButtonTap() {
-        stackView.isHidden = true
-        datePicker.date = datePicker.date
-        viewModel?.input.send(.setNotificationTime(datePicker.date))
-    }
-    
-    @objc private func handleSwitchControlTap(_ switchControl: UISwitch) {
-        viewModel?.input.send(.setNotification(switchControl.isOn))
     }
     
 }

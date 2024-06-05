@@ -8,22 +8,27 @@
 import Combine
 import UIKit
 
+protocol HotNewsViewDelegate: AnyObject {
+    func updateDate()
+    func pushViewController(_ newsLink: String?)
+}
+
 final class HotNewsView: UIView, BaseViewProtocol {
     
-    var delegate: HotNewsViewDelegate?
+    weak var delegate: HotNewsViewDelegate?
     private var viewModel: HotNewsViewModel?
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     
-    let tableView = UITableView().then {
+    private let tableView = UITableView().then {
         $0.backgroundColor = .background
         $0.register(HotNewsCell.self, forCellReuseIdentifier: HotNewsCell.reuseIdentifier)
     }
     
-    let refreshControl = UIRefreshControl()
+    private let refreshControl = UIRefreshControl()
     
-    let errorView = ErrorView()
+    private let errorView = ErrorView()
     
     // MARK: - Initializer
     
@@ -38,7 +43,7 @@ final class HotNewsView: UIView, BaseViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Methods
+    // MARK: - BaseViewProtocol
     
     func setupProperty() {
         tableView.delegate = self
@@ -47,6 +52,10 @@ final class HotNewsView: UIView, BaseViewProtocol {
         refreshControl.addTarget(self, action: #selector(refreshNews), for: .valueChanged)
         errorView.isUserInteractionEnabled = true
         errorView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(refreshNews)))
+    }
+    
+    @objc private func refreshNews() {
+        self.viewModel?.input.send(.getHotNews)
     }
     
     func setupHierarchy() {
@@ -64,33 +73,38 @@ final class HotNewsView: UIView, BaseViewProtocol {
         }
     }
     
-    @objc private func refreshNews() {
-        self.viewModel?.input.send(.getHotNews)
-    }
-    
     // MARK: - Bind ViewModel
     
     func bindViewModel(_ viewModel: HotNewsViewModel) {
         self.viewModel = viewModel
+        
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
             .receive(on: RunLoop.main)
             .sink { [weak self] event in
                 guard let self = self else { return }
                 switch event {
                 case .updateHotNews:
-                    self.errorView.isHidden = true
-                    self.tableView.isHidden = false
-                    self.tableView.reloadData()
-                    self.refreshControl.endRefreshing()
-                    self.delegate?.updateDate()
+                    errorView.isHidden = true
+                    tableView.isHidden = false
+                    tableView.reloadData()
+                    refreshControl.endRefreshing()
+                    delegate?.updateDate()
                 case .fetchFailed:
-                    self.errorView.isHidden = false
-                    self.tableView.isHidden = true
-                    self.refreshControl.endRefreshing()
+                    errorView.isHidden = false
+                    tableView.isHidden = true
+                    refreshControl.endRefreshing()
                 case let .navigateTo(newsLink):
-                    self.delegate?.pushViewController(newsLink)
+                    delegate?.pushViewController(newsLink)
                 }
             }.store(in: &cancellables)
+    }
+    
+    func scrollToTop() {
+        let indexPath = IndexPath(row: 0, section: 0)
+        // 테이블 뷰의 섹션 0에 적어도 하나 이상의 행이 있는지 확인
+        if tableView.numberOfRows(inSection: indexPath.section) > 0 {
+            tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        }
     }
     
 }
