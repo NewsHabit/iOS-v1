@@ -100,8 +100,9 @@ final class HotNewsCell: UITableViewCell, BaseViewProtocol {
     
     // MARK: - Bind
     
-    func bindViewModel(_ viewModel: HotNewsCellViewModel) {
+    func bind(with viewModel: HotNewsCellViewModel) {
         self.viewModel = viewModel
+        
         titleLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description
         loadImage(from: viewModel.imageLink)
@@ -109,7 +110,8 @@ final class HotNewsCell: UITableViewCell, BaseViewProtocol {
     
     private func loadImage(from urlString: String?) {
         guard let urlString = urlString,
-              let url = URL(string: urlString) else { return }
+              let url = URL(string: urlString)
+        else { return }
         thumbnailView.kf.setImage(with: url)
     }
 

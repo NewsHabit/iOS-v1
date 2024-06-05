@@ -10,7 +10,7 @@ import UIKit
 
 protocol HotNewsViewDelegate: AnyObject {
     func updateDate()
-    func pushViewController(_ newsLink: String?)
+    func openNewsLink(with url: String?)
 }
 
 final class HotNewsView: UIView, BaseViewProtocol {
@@ -73,9 +73,9 @@ final class HotNewsView: UIView, BaseViewProtocol {
         }
     }
     
-    // MARK: - Bind ViewModel
+    // MARK: - Bind
     
-    func bindViewModel(_ viewModel: HotNewsViewModel) {
+    func bind(with viewModel: HotNewsViewModel) {
         self.viewModel = viewModel
         
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
@@ -84,19 +84,27 @@ final class HotNewsView: UIView, BaseViewProtocol {
                 guard let self = self else { return }
                 switch event {
                 case .updateHotNews:
-                    errorView.isHidden = true
-                    tableView.isHidden = false
-                    tableView.reloadData()
-                    refreshControl.endRefreshing()
-                    delegate?.updateDate()
+                    handleUpdateHotNews()
                 case .fetchFailed:
-                    errorView.isHidden = false
-                    tableView.isHidden = true
-                    refreshControl.endRefreshing()
-                case let .navigateTo(newsLink):
-                    delegate?.pushViewController(newsLink)
+                    handleFetchFailed()
+                case let .navigateTo(url):
+                    delegate?.openNewsLink(with: url)
                 }
             }.store(in: &cancellables)
+    }
+    
+    private func handleUpdateHotNews() {
+        errorView.isHidden = true
+        tableView.isHidden = false
+        tableView.reloadData()
+        refreshControl.endRefreshing()
+        delegate?.updateDate()
+    }
+    
+    private func handleFetchFailed() {
+        errorView.isHidden = false
+        tableView.isHidden = true
+        refreshControl.endRefreshing()
     }
     
     func scrollToTop() {
@@ -129,8 +137,9 @@ extension HotNewsView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HotNewsCell.reuseIdentifier) as? HotNewsCell,
-              let cellViewModel = viewModel?.cellViewModels[indexPath.row] else { return UITableViewCell() }
-        cell.bindViewModel(cellViewModel)
+              let cellViewModel = viewModel?.cellViewModels[indexPath.row]
+        else { return UITableViewCell() }
+        cell.bind(with: cellViewModel)
         return cell
     }
     

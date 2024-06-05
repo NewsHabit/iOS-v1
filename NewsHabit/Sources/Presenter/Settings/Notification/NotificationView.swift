@@ -9,7 +9,7 @@ import Combine
 import UIKit
 
 protocol NotificationViewDelegate: AnyObject {
-    func showAlert()
+    func showNotificationPermissionAlert()
 }
 
 final class NotificationView: UIView, BaseViewProtocol {
@@ -130,7 +130,7 @@ final class NotificationView: UIView, BaseViewProtocol {
     
     // MARK: - Bind
     
-    func bindViewModel(_ viewModel: NotificationViewModel) {
+    func bind(with viewModel: NotificationViewModel) {
         self.viewModel = viewModel
         
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
@@ -139,14 +139,22 @@ final class NotificationView: UIView, BaseViewProtocol {
                 guard let self = self else { return }
                 switch event {
                 case .permissionDenied:
-                    switchView.configure(with: false)
-                    delegate?.showAlert()
+                    handlePermissionDenied()
                 case let .updateNotificationStatus(isOn):
-                    switchView.configure(with: isOn)
-                    timeView.isHidden = !isOn
-                    datePickerView.isHidden = true
+                    handleUpdateNotificationStatus(isOn)
                 }
             }.store(in: &cancellables)
+    }
+    
+    private func handlePermissionDenied() {
+        switchView.configure(with: false)
+        delegate?.showNotificationPermissionAlert()
+    }
+    
+    private func handleUpdateNotificationStatus(_ isOn: Bool) {
+        switchView.configure(with: isOn)
+        timeView.isHidden = !isOn
+        datePickerView.isHidden = true
     }
     
     /// 외부(설정 앱)에서 알림 상태가 바뀌었을 때 호출되는 함수

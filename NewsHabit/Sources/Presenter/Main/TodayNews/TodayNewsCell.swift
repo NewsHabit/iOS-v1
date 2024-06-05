@@ -81,6 +81,7 @@ final class TodayNewsCell: UITableViewCell, BaseViewProtocol {
         descriptionLabel.text = nil
         categoryLabel.text = nil
         thumbnailView.image = nil
+        
         // Combine 구독 취소
         cancellables.removeAll()
     }
@@ -134,7 +135,7 @@ final class TodayNewsCell: UITableViewCell, BaseViewProtocol {
     
     // MARK: - Bind
     
-    func bindViewModel(_ viewModel: TodayNewsCellViewModel) {
+    func bind(with viewModel: TodayNewsCellViewModel) {
         self.viewModel = viewModel
         
         readStateView.isHidden = viewModel.isRead
@@ -150,11 +151,10 @@ final class TodayNewsCell: UITableViewCell, BaseViewProtocol {
             }.store(in: &cancellables)
     }
     
-    // MARK: - Load Image
-    
     private func loadImage(from urlString: String?) {
         guard let urlString = urlString,
-                let url = URL(string: urlString) else { return }
+                let url = URL(string: urlString)
+        else { return }
         thumbnailView.kf.setImage(with: url)
     }
 

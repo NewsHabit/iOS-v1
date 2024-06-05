@@ -57,7 +57,7 @@ final class ThemeView: UIView, BaseViewProtocol {
     
     // MARK: - Bind
     
-    func bindViewModel(_ viewModel: ThemeViewModel) {
+    func bind(with viewModel: ThemeViewModel) {
         self.viewModel = viewModel
         
         viewModel.$selectedTheme
@@ -65,8 +65,8 @@ final class ThemeView: UIView, BaseViewProtocol {
             .sink{ [weak self] selectedTheme in
                 guard let self = self, let window = self.window else { return }
                 UserDefaultsManager.theme = selectedTheme
-                window.overrideUserInterfaceStyle = self.toUserInterfaceStyle(themeType: selectedTheme)
-                self.tableView.reloadData()
+                window.overrideUserInterfaceStyle = toUserInterfaceStyle(themeType: selectedTheme)
+                tableView.reloadData()
             }.store(in: &cancellables)
     }
     
@@ -79,8 +79,7 @@ extension ThemeView: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let viewModel = viewModel else { return }
-        viewModel.selectedTheme = ThemeType.allCases[indexPath.row]
+        viewModel?.selectedTheme = ThemeType.allCases[indexPath.row]
     }
     
 }

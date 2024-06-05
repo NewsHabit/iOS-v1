@@ -48,7 +48,7 @@ class SetupTodayNewsCountViewController: UIViewController, BaseViewControllerPro
         }
         
         todayNewsCountView.setSaveButtonHidden()
-        todayNewsCountView.bindViewModel(viewModel)
+        todayNewsCountView.bind(with: viewModel)
     }
     
 }

@@ -17,7 +17,7 @@ final class HotNewsViewController: BaseViewController<HotNewsView>, BaseViewCont
         super.viewDidLoad()
         setupNavigationBar()
         contentView.delegate = self
-        contentView.bindViewModel(viewModel)
+        contentView.bind(with: viewModel)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,10 +42,9 @@ extension HotNewsViewController: HotNewsViewDelegate {
         setNavigationBarSubTitle("\(Date().toFullDateTimeString()) 기준")
     }
     
-    func pushViewController(_ newsLink: String?) {
-        guard let newsLink = newsLink else { return }
+    func openNewsLink(with url: String?) {
         let newsViewController = WebViewController()
-        newsViewController.urlString = newsLink
+        newsViewController.urlString = url
         navigationController?.pushViewController(newsViewController, animated: true)
     }
     

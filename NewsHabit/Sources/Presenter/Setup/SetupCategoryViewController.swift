@@ -51,7 +51,7 @@ class SetupCategoryViewController: UIViewController, BaseViewControllerProtocol 
         }
         
         categoryView.setSaveButtonHidden()
-        categoryView.bindViewModel(viewModel)
+        categoryView.bind(with: viewModel)
     }
     
 }

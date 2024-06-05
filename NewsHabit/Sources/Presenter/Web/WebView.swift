@@ -83,7 +83,7 @@ final class WebView: UIView, BaseViewProtocol {
         }
     }
     
-    func loadLink(_ url: URL?) {
+    func load(_ url: URL?) {
         guard let url = url else { return }
         webView.load(URLRequest(url: url))
     }

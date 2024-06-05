@@ -22,7 +22,7 @@ final class TodayNewsViewModel {
         case fetchFailed
         case updateDaysAllRead
         case dayChanged
-        case navigateTo(newsLink: String)
+        case navigateTo(url: String)
     }
     
     // MARK: - Properties
@@ -48,8 +48,8 @@ final class TodayNewsViewModel {
                     output.send(.updateTodayNews)
                 }
             case let .tapNewsCell(index):
-                setReadNewsItem(index)
-                output.send(.navigateTo(newsLink: self.cellViewModels[index].newsLink))
+                setRead(at: index)
+                output.send(.navigateTo(url: cellViewModels[index].newsUrl))
             }
         }.store(in: &cancellables)
         
@@ -94,14 +94,18 @@ final class TodayNewsViewModel {
         UserDefaultsManager.todayNews = cellViewModels.map { $0.newsItemState }
     }
     
-    private func setReadNewsItem(_ index: Int) {
+    private func setRead(at index: Int) {
         guard !cellViewModels[index].isRead else { return }
         
         cellViewModels[index].isRead = true
         UserDefaultsManager.todayNews = cellViewModels.map { $0.newsItemState }
         
+        updateDaysAllReadIfNeeded()
+    }
+    
+    private func updateDaysAllReadIfNeeded() {
         let todayReadCount = cellViewModels.filter { $0.isRead }.count
-        // 오늘의 뉴스를 다 읽었을 경우
+        // 오늘의 뉴스를 모두 다 읽었을 경우
         if todayReadCount == UserDefaultsManager.todayNews.count {
             UserDefaultsManager.numOfDaysAllRead += 1
             UserDefaultsManager.monthlyAllRead.append(Date().toDayString())

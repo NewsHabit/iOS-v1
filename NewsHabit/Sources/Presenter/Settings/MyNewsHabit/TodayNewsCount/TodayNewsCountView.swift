@@ -114,7 +114,7 @@ final class TodayNewsCountView: UIView, BaseViewProtocol {
     
     // MARK: - Bind
     
-    func bindViewModel(_ viewModel: TodayNewsCountViewModel) {
+    func bind(with viewModel: TodayNewsCountViewModel) {
         self.viewModel = viewModel
         
         viewModel.$selectedIndex

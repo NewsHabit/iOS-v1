@@ -61,7 +61,7 @@ final class SettingsView: UIView, BaseViewProtocol {
     
     // MARK: - Bind
     
-    func bindViewModel(_ viewModel: SettingsViewModel) {
+    func bind(with viewModel: SettingsViewModel) {
         self.viewModel = viewModel
         
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
@@ -70,9 +70,9 @@ final class SettingsView: UIView, BaseViewProtocol {
                 guard let self = self else { return }
                 switch event {
                 case .initSettingItems:
-                    self.tableView.reloadData()
+                    tableView.reloadData()
                 case let .navigateTo(settingsType):
-                    self.delegate?.pushViewController(settingsType: settingsType)
+                    delegate?.pushViewController(settingsType: settingsType)
                 }
             }.store(in: &cancellables)
     }
@@ -101,7 +101,7 @@ extension SettingsView: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseIdentifier) as? SettingsCell,
               let settingsItem = viewModel?.settingsItems[indexPath.row]
         else { return UITableViewCell() }
-        cell.bindViewModel(settingsItem)
+        cell.configure(with: settingsItem)
         return cell
     }
     

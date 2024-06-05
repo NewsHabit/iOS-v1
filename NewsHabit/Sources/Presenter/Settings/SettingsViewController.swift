@@ -17,7 +17,7 @@ final class SettingsViewController: BaseViewController<SettingsView>, BaseViewCo
         super.viewDidLoad()
         setupNavigationBar()
         contentView.delegate = self
-        contentView.bindViewModel(viewModel)
+        contentView.bind(with: viewModel)
         viewModel.input.send(.viewDidLoad)
     }
     

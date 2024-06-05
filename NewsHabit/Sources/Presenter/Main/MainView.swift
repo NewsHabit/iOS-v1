@@ -148,11 +148,11 @@ final class MainView: UIView, BaseViewProtocol {
     
 }
 
-// MARK: - Bind ViewModel
+// MARK: - Bind
 
 extension MainView {
     
-    func bindViewModel(_ viewModel: MainViewModel) {
+    func bind(with viewModel: MainViewModel) {
         self.viewModel = viewModel
         
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())

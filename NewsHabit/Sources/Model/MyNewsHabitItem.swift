@@ -8,7 +8,7 @@
 import Foundation
 
 enum MyNewsHabitType: String {
-    case keyword = "카테고리"
+    case category = "카테고리"
     case todayNewsCount = "오늘의 뉴스 개수"
 }
 

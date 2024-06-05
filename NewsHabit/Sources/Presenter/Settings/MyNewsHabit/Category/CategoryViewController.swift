@@ -17,7 +17,7 @@ final class CategoryViewController: BottomSheetController<CategoryView> {
     override func viewDidLoad() {
         super.viewDidLoad()
         sheetView.delegate = self
-        sheetView.bindViewModel(viewModel)
+        sheetView.bind(with: viewModel)
         sheetView.setSubTitle(with: "변경 시 내일부터 적용돼요")
     }
     

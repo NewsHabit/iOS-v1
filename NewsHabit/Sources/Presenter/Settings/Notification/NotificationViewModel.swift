@@ -36,7 +36,7 @@ final class NotificationViewModel {
             guard let self = self else { return }
             switch event {
             case let .setNotificationStatus(isOn):
-                handleNotification(isOn)
+                handleNotificationStatus(isOn)
             case let .setNotificationTime(date):
                 handleNotificationTime(date)
             case .updateNotificationStatus:
@@ -47,7 +47,7 @@ final class NotificationViewModel {
         return output.eraseToAnyPublisher()
     }
     
-    private func handleNotification(_ isOn: Bool) {
+    private func handleNotificationStatus(_ isOn: Bool) {
         // UserDefaults 값 업데이트
         UserDefaultsManager.isNotificationOn = isOn
         

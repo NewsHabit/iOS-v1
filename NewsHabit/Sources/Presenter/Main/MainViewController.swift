@@ -28,7 +28,7 @@ final class MainViewController: BaseViewController<MainView>, BaseViewController
         }
         
         contentView.todayNewsView.delegate = self
-        contentView.bindViewModel(mainViewModel)
+        contentView.bind(with: mainViewModel)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,10 +56,9 @@ final class MainViewController: BaseViewController<MainView>, BaseViewController
 
 extension MainViewController: TodayNewsViewDelegate {
     
-    func pushViewController(_ newsLink: String?) {
-        guard let newsLink = newsLink else { return }
+    func openNewsLink(with url: String?) {
         let newsViewController = WebViewController()
-        newsViewController.urlString = newsLink
+        newsViewController.urlString = url
         navigationController?.pushViewController(newsViewController, animated: true)
     }
     

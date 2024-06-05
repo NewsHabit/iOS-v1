@@ -13,7 +13,7 @@ import Then
 final class SettingsCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "SettingsCell"
-    private var viewModel: SettingsItem?
+    private var item: SettingsItem?
     
     // MARK: - UI Components
     
@@ -64,13 +64,11 @@ final class SettingsCell: UITableViewCell, BaseViewProtocol {
         }
     }
     
-    // MARK: - Bind
-    
-    func bindViewModel(_ viewModel: SettingsItem) {
-        self.viewModel = viewModel
+    func configure(with item: SettingsItem) {
+        self.item = item
         
-        iconImageView.image = UIImage(systemName: viewModel.imageString)
-        titleLabel.text = viewModel.type.rawValue
+        iconImageView.image = UIImage(systemName: item.imageString)
+        titleLabel.text = item.type.rawValue
     }
     
 }

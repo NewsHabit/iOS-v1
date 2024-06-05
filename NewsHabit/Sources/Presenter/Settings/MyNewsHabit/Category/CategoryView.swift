@@ -123,7 +123,7 @@ final class CategoryView: UIView, BaseViewProtocol {
     
     // MARK: - Bind
     
-    func bindViewModel(_ viewModel: CategoryViewModel) {
+    func bind(with viewModel: CategoryViewModel) {
         self.viewModel = viewModel
         
         viewModel.$selectedCategoryIndex

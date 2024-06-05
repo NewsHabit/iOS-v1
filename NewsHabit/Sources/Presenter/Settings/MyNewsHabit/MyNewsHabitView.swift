@@ -58,7 +58,7 @@ final class MyNewsHabitView: UIView, BaseViewProtocol {
     
     // MARK: - Bind
     
-    func bindViewModel(_ viewModel: MyNewsHabitViewModel) {
+    func bind(with viewModel: MyNewsHabitViewModel) {
         self.viewModel = viewModel
         
         viewModel.transform(input: viewModel.input.eraseToAnyPublisher())
@@ -67,7 +67,7 @@ final class MyNewsHabitView: UIView, BaseViewProtocol {
                 guard let self = self else { return }
                 switch event {
                 case let .navigateTo(myNewsHabitType):
-                    delegate?.pushViewController(myNewsHabitType: myNewsHabitType)
+                    delegate?.navigateTo(myNewsHabitType: myNewsHabitType)
                 case .updateMyNewsHabitItems:
                     tableView.reloadData()
                 }
@@ -95,9 +95,10 @@ extension MyNewsHabitView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cellViewModel = viewModel?.myNewsHabitItems[indexPath.row],
-              let cell = tableView.dequeueReusableCell(withIdentifier: MyNewsHabitCell.reuseIdentifier) as? MyNewsHabitCell else { return UITableViewCell() }
-        cell.bindViewModel(cellViewModel)
+        guard let item = viewModel?.myNewsHabitItems[indexPath.row],
+              let cell = tableView.dequeueReusableCell(withIdentifier: MyNewsHabitCell.reuseIdentifier) as? MyNewsHabitCell
+        else { return UITableViewCell() }
+        cell.configure(with: item)
         return cell
     }
     

@@ -12,13 +12,13 @@ import Then
 
 final class MonthlyRecordView: UIView, BaseViewProtocol {
     
-    var daysInCurrentMonth: Int {
+    private var daysInCurrentMonth: Int {
         let calendar = Calendar.current
         let range = calendar.range(of: .day, in: .month, for: Date())!
         return range.count
     }
     
-    var firstWeekdayInCurrentMonth: Int {
+    private var firstWeekdayInCurrentMonth: Int {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year, .month], from: Date())
         let startOfMonth = calendar.date(from: components)!
@@ -103,7 +103,7 @@ final class MonthlyRecordView: UIView, BaseViewProtocol {
     }
     
     /// 매월 관련 데이터를 초기화하는 메서드
-    func resetMonthlyDataIfNeeded() {
+    private func resetMonthlyDataIfNeeded() {
         if UserDefaultsManager.lastMonth != Date().toMonthString() {
             UserDefaultsManager.lastMonth = Date().toMonthString()
             UserDefaultsManager.monthlyAllRead = []
@@ -133,7 +133,8 @@ extension MonthlyRecordView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MonthlyRecordCell.reuseIdentifier, for: indexPath)
-                as? MonthlyRecordCell else { return UICollectionViewCell() }
+                as? MonthlyRecordCell
+        else { return UICollectionViewCell() }
         
         let dayIndex = indexPath.row - (firstWeekdayInCurrentMonth - 1)
         let dayString = String(format: "%02d", dayIndex + 1)

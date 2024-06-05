@@ -12,7 +12,7 @@ import Then
 
 class BottomSheetController<View: UIView>: UIViewController {
     
-    var bottomSheetHeight: CGFloat
+    private let bottomSheetHeight = 400
     
     // MARK: - UI Components
     
@@ -37,8 +37,7 @@ class BottomSheetController<View: UIView>: UIViewController {
     
     // MARK: - Initializer
     
-    init(bottomSheetHeight: CGFloat) {
-        self.bottomSheetHeight = bottomSheetHeight
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .overFullScreen
     }

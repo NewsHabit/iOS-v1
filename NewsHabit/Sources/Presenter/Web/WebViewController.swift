@@ -38,16 +38,14 @@ final class WebViewController: BaseViewController<WebView> {
         guard let url = url else { return }
         
         let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-        self.present(activityViewController, animated: true)
+        present(activityViewController, animated: true)
     }
-    
-    // MARK: - Functions
     
     private func updateURLFromString() {
         if let urlString = urlString {
             url = URL(string: urlString)
         }
-        contentView.loadLink(url)
+        contentView.load(url)
     }
     
     func disableShareButton() {

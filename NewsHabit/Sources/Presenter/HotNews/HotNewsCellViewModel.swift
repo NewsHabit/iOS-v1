@@ -27,7 +27,7 @@ final class HotNewsCellViewModel {
         newsItem.imgLink
     }
     
-    var newsLink: String {
+    var newsUrl: String {
         newsItem.naverUrl
     }
     

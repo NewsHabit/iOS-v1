@@ -9,7 +9,7 @@ import Combine
 import UIKit
 
 protocol TodayNewsViewDelegate: AnyObject {
-    func pushViewController(_ newsLink: String?)
+    func openNewsLink(with url: String?)
     func updateNumOfDaysAllRead()
 }
 
@@ -64,7 +64,7 @@ final class TodayNewsView: UIView, BaseViewProtocol {
     }
     
     @objc private func refreshNews() {
-        self.viewModel?.input.send(.getTodayNews)
+        viewModel?.input.send(.getTodayNews)
     }
     
     func setupHierarchy() {
@@ -105,23 +105,35 @@ final class TodayNewsView: UIView, BaseViewProtocol {
                 guard let self = self else { return }
                 switch event {
                 case .updateTodayNews:
-                    errorView.isHidden = true
-                    tableView.isHidden = false
-                    showAllReadMessageIfNeeded()
-                    tableView.reloadData()
+                    handleUpdateTodayNewes()
                 case .fetchFailed:
-                    errorView.isHidden = false
-                    tableView.isHidden = true
-                    hideAllReadMessage()
+                    handleFetchFailed()
                 case .updateDaysAllRead:
-                    delegate?.updateNumOfDaysAllRead()
-                    showAllReadMessageIfNeeded()
+                    handleUpdateDaysAllRead()
                 case .dayChanged:
                     hideAllReadMessage()
-                case let .navigateTo(newsLink):
-                    delegate?.pushViewController(newsLink)
+                case let .navigateTo(url):
+                    delegate?.openNewsLink(with: url)
                 }
             }.store(in: &cancellables)
+    }
+    
+    private func handleUpdateTodayNewes() {
+        errorView.isHidden = true
+        tableView.isHidden = false
+        showAllReadMessageIfNeeded()
+        tableView.reloadData()
+    }
+    
+    private func handleFetchFailed() {
+        errorView.isHidden = false
+        tableView.isHidden = true
+        hideAllReadMessage()
+    }
+    
+    private func handleUpdateDaysAllRead() {
+        delegate?.updateNumOfDaysAllRead()
+        showAllReadMessageIfNeeded()
     }
     
     private func showAllReadMessageIfNeeded() {
@@ -173,10 +185,9 @@ extension TodayNewsView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TodayNewsCell.reuseIdentifier) as? TodayNewsCell,
-              let cellViewModel = viewModel?.cellViewModels[indexPath.row] else {
-            return UITableViewCell()
-        }
-        cell.bindViewModel(cellViewModel)
+              let cellViewModel = viewModel?.cellViewModels[indexPath.row]
+        else { return UITableViewCell() }
+        cell.bind(with: cellViewModel)
         return cell
     }
     

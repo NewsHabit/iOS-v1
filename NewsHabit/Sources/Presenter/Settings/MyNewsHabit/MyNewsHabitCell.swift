@@ -13,7 +13,7 @@ import Then
 final class MyNewsHabitCell: UITableViewCell, BaseViewProtocol {
     
     static let reuseIdentifier = "MyNewsHabitCell"
-    private var viewModel: MyNewsHabitItem?
+    private var item: MyNewsHabitItem?
     
     // MARK: - UI Components
     
@@ -77,13 +77,11 @@ final class MyNewsHabitCell: UITableViewCell, BaseViewProtocol {
         }
     }
     
-    // MARK: - Bind
-    
-    func bindViewModel(_ viewModel: MyNewsHabitItem) {
-        self.viewModel = viewModel
+    func configure(with item: MyNewsHabitItem) {
+        self.item = item
         
-        titleLabel.text = viewModel.type.rawValue
-        descriptionLabel.text = viewModel.description
+        titleLabel.text = item.type.rawValue
+        descriptionLabel.text = item.description
     }
     
 }

@@ -53,7 +53,6 @@ final class ErrorView: UIStackView, BaseViewProtocol {
         addArrangedSubview(messageLabel)
     }
     
-    
     func setupLayout() {}
     
 }

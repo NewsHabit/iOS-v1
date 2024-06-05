@@ -20,7 +20,7 @@ final class HotNewsViewModel {
     enum Output {
         case updateHotNews
         case fetchFailed
-        case navigateTo(newsLink: String)
+        case navigateTo(url: String)
     }
     
     // MARK: - Properties
@@ -39,7 +39,7 @@ final class HotNewsViewModel {
             case .getHotNews:
                 fetchNewsData()
             case let .tapNewsCell(index):
-                output.send(.navigateTo(newsLink: cellViewModels[index].newsLink))
+                output.send(.navigateTo(url: cellViewModels[index].newsUrl))
             }
         }.store(in: &cancellables)
         
