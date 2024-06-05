@@ -15,20 +15,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: windowScene)
         
-        guard let window = window else { return }
-        // 앱의 테마 설정
-        window.overrideUserInterfaceStyle = window.toUserInterfaceStyle(themeType: UserDefaultsManager.theme)
-        // 루트 뷰 컨트롤러 설정
-        if UserDefaultsManager.isFirst {
-            window.rootViewController = UINavigationController(rootViewController: SetupProfileViewController()) 
-        } else {
-            window.rootViewController = TabBarController()
-        }
-        window.makeKeyAndVisible()
+        // window 생성
+        let myWindow = UIWindow(windowScene: windowScene)
+        
         // 알림 센터의 delegate 설정
         UNUserNotificationCenter.current().delegate = self
+        
+        // 앱의 테마 설정
+        myWindow.overrideUserInterfaceStyle = myWindow.toUserInterfaceStyle(themeType: UserDefaultsManager.theme)
+        
+        // 루트 뷰 컨트롤러 설정
+        if UserDefaultsManager.isFirst {
+            myWindow.rootViewController = UINavigationController(rootViewController: SetupProfileViewController())
+        } else {
+            myWindow.rootViewController = TabBarController()
+        }
+        
+        window = myWindow
+        myWindow.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -78,9 +83,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 extension SceneDelegate: UNUserNotificationCenterDelegate {
     
+    // 알림 배너를 통해 앱에 진입했을 때 호출
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        guard let tabBarController = window?.rootViewController as? UITabBarController else { return }
-        tabBarController.selectedIndex = 0
+        window?.rootViewController = TabBarController()
         completionHandler()
     }
     
