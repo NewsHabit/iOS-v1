@@ -13,7 +13,7 @@ let featureTargets: [Target] = [
     .feature(
         factory: .init(
             dependencies: [
-//                .domain,
+                .domain,
                 .feature(implements: .Home),
                 .feature(implements: .Onboarding),
                 .feature(implements: .Settings)
