@@ -14,6 +14,9 @@ let appTargets: [Target] = [
         implements: .iOS,
         factory: .init(
             infoPlist: Project.Environment.appInfoPlist,
+            dependencies: [
+                .feature
+            ],
             settings: Project.Environment.appSettings
         )
     )
