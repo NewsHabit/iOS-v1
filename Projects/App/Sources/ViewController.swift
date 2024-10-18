@@ -10,7 +10,7 @@ import UIKit
 import Shared
 import SnapKit
 
-class MyViewController: ViewController<View> {
+class MyViewController: WebViewController<View> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +19,9 @@ class MyViewController: ViewController<View> {
 //        setupLargeNavigationBar(title: "설정")
 //        setupNormalNavigationBar(rightTitle: "완료")
 //        setupNormalNavigationBar(rightTitle: "다음", isBackButtonHidden: true)
-        setupNormalNavigationBar(rightIcon: Images.refresh)
+//        setupNormalNavigationBar(rightIcon: Images.refresh)
+        setupToolBar()
+//        setupToolBar(isBookmarkButtonHidden: true)
     }
 }
 

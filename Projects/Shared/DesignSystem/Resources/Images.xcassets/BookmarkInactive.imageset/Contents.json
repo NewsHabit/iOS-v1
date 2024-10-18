@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Property 1=Frame 959.png",
+      "filename" : "Property 1=Variant5.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,7 +12,7 @@
           "value" : "light"
         }
       ],
-      "filename" : "Property 1=Frame 960.png",
+      "filename" : "Property 1=Variant5 1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -23,12 +23,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Property 1=Variant3.png",
+      "filename" : "Property 1=Variant5-1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Property 1=Frame 959@2x.png",
+      "filename" : "Property 1=Variant5@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -39,7 +39,7 @@
           "value" : "light"
         }
       ],
-      "filename" : "Property 1=Frame 959@2x 1.png",
+      "filename" : "Property 1=Variant5@2x 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -50,12 +50,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Property 1=Variant3@2x.png",
+      "filename" : "Property 1=Variant5@2x-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Property 1=Frame 959@3x.png",
+      "filename" : "Property 1=Variant5@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     },
@@ -66,7 +66,7 @@
           "value" : "light"
         }
       ],
-      "filename" : "Property 1=Frame 959@3x 1.png",
+      "filename" : "Property 1=Variant5@3x 1.png",
       "idiom" : "universal",
       "scale" : "3x"
     },
@@ -77,7 +77,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Property 1=Variant3@2x 1.png",
+      "filename" : "Property 1=Variant5@3x-1.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

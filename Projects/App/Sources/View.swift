@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import WebKit
 
-class View: UIView {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+class View: WKWebView {
+    override init(frame: CGRect, configuration: WKWebViewConfiguration) {
+        super.init(frame: frame, configuration: configuration)
+        isOpaque = false
         backgroundColor = .systemPink.withAlphaComponent(0.1)
     }
     

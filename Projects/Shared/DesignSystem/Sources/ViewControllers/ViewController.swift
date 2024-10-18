@@ -26,13 +26,13 @@ open class ViewController<View: UIView>: UIViewController, UIGestureRecognizerDe
     
     // MARK: - Properties
     
-    private let navigationBar = UIView()
-    let contentView = View()
+    let navigationBar = UIView()
+    public let contentView = View()
     
-    private(set) var titleLabel: UILabel?
-    private(set) var subTitleLabel: UILabel?
-    private(set) var backButton: UIButton?
-    private(set) var rightButton: UIButton?
+    public private(set) var titleLabel: UILabel?
+    public private(set) var subTitleLabel: UILabel?
+    public private(set) var backButton: UIButton?
+    public private(set) var rightButton: UIButton?
     
     // MARK: - Lifecycle
     
@@ -97,7 +97,7 @@ open class ViewController<View: UIView>: UIViewController, UIGestureRecognizerDe
     
     private func setupBackButton() {
         let button = UIButton()
-        button.setImage(Images.back, for: .normal)
+        button.setImage(Images.chevronLeft, for: .normal)
         button.tintColor = Colors.gray09
         
         navigationBar.addSubview(button)
