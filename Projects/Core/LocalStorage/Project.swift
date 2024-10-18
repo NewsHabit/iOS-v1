@@ -1,6 +1,6 @@
 //
 //  Project.swift
-//  NewsManifests
+//  LocalStorageManifests
 //
 //  Created by 지연 on 10/19/24.
 //
@@ -10,42 +10,42 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let targets: [Target] = [
-    .domain(
-        interface: .News,
+    .core(
+        interface: .LocalStorage,
         factory: .init(
             dependencies: [
-                .core
+                .shared
             ]
         )
     ),
-    .domain(
-        implements: .News,
+    .core(
+        implements: .LocalStorage,
         factory: .init(
             dependencies: [
-                .domain(interface: .News)
+                .core(interface: .LocalStorage)
             ]
         )
     ),
-    .domain(
-        testing: .News,
+    .core(
+        testing: .LocalStorage,
         factory: .init(
             dependencies: [
-                .domain(interface: .News)
+                .core(interface: .LocalStorage)
             ]
         )
     ),
-    .domain(
-        tests: .News,
+    .core(
+        tests: .LocalStorage,
         factory: .init(
             dependencies: [
-                .domain(implements: .News),
-                .domain(testing: .News)
+                .core(implements: .LocalStorage),
+                .core(testing: .LocalStorage)
             ]
         )
     )
 ]
 
 let project = Project.makeModule(
-    name: ModulePath.Domain.News.rawValue,
+    name: ModulePath.Core.LocalStorage.rawValue,
     targets: targets
 )

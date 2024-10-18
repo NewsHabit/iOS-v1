@@ -13,7 +13,7 @@ let domainTargets: [Target] = [
     .domain(
         factory: .init(
             dependencies: [
-//                .core,
+                .core,
                 .domain(implements: .News)
             ]
         )

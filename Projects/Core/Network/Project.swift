@@ -1,6 +1,6 @@
 //
 //  Project.swift
-//  NewsManifests
+//  NetworkManifests
 //
 //  Created by 지연 on 10/19/24.
 //
@@ -10,42 +10,43 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let targets: [Target] = [
-    .domain(
-        interface: .News,
+    .core(
+        interface: .Network,
         factory: .init(
             dependencies: [
-                .core
+                .shared
             ]
         )
     ),
-    .domain(
-        implements: .News,
+    .core(
+        implements: .Network,
         factory: .init(
             dependencies: [
-                .domain(interface: .News)
+                .core(interface: .Network)
             ]
         )
     ),
-    .domain(
-        testing: .News,
+    .core(
+        testing: .Network,
         factory: .init(
             dependencies: [
-                .domain(interface: .News)
+                .core(interface: .Network)
             ]
         )
     ),
-    .domain(
-        tests: .News,
+    .core(
+        tests: .Network,
         factory: .init(
             dependencies: [
-                .domain(implements: .News),
-                .domain(testing: .News)
+                .core(implements: .Network),
+                .core(testing: .Network)
             ]
         )
     )
 ]
 
 let project = Project.makeModule(
-    name: ModulePath.Domain.News.rawValue,
+    name: ModulePath.Core.Network.rawValue,
     targets: targets
 )
+

@@ -295,20 +295,9 @@ public extension Target {
         case .DesignSystem:
             newFactory.product = .staticFramework
             newFactory.resources = ["Resources/**"]
-        case .ThirdPartyLib:
-            newFactory.product = .framework
         case .Util:
-            newFactory.product = .staticFramework
+            newFactory.product = .framework
         }
-
-        return make(factory: newFactory)
-    }
-
-    static func shared(interface module: ModulePath.Shared, factory: TargetFactory) -> Self {
-        var newFactory = factory
-        newFactory.product = .staticFramework
-        newFactory.name = ModulePath.Shared.name + module.rawValue + "Interface"
-        newFactory.sources = .interface
 
         return make(factory: newFactory)
     }
