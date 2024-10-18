@@ -12,7 +12,7 @@ import SnapKit
 
 class ViewController: UIViewController {
     let button = {
-        let button = SelectableButton(title: "버튼")
+        let button = CheckBoxButton(title: "버튼")
         button.clipsToBounds = true
         button.layer.cornerRadius = 8
         return button
