@@ -288,15 +288,12 @@ public extension Target {
 
     static func shared(implements module: ModulePath.Shared, factory: TargetFactory) -> Self {
         var newFactory = factory
+        newFactory.product = .framework
         newFactory.name = ModulePath.Shared.name + module.rawValue
         newFactory.sources = .sources
 
-        switch module {
-        case .DesignSystem:
-            newFactory.product = .staticFramework
+        if module == .DesignSystem {
             newFactory.resources = ["Resources/**"]
-        case .Util:
-            newFactory.product = .framework
         }
 
         return make(factory: newFactory)
