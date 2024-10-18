@@ -10,28 +10,16 @@ import UIKit
 import Shared
 import SnapKit
 
-class ViewController: UIViewController {
-    let button = {
-        let button = CheckBoxButton(title: "버튼")
-        button.clipsToBounds = true
-        button.layer.cornerRadius = 8
-        return button
-    }()
+class MyViewController: ViewController<View> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Colors.background
-        view.addSubview(button)
-        button.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(20)
-            make.height.equalTo(56)
-            make.center.equalToSuperview()
-        }
-        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-    }
-    
-    @objc func buttonTapped(_ button: UIButton) {
-        button.isSelected.toggle()
+//        setupLargeNavigationBar(title: "구지옹님의 뉴빗", subTitle: "👀 지금까지 38일 완독했어요!")
+//        setupNormalNavigationBar(title: "이름 설정")
+//        setupLargeNavigationBar(title: "설정")
+//        setupNormalNavigationBar(rightTitle: "완료")
+//        setupNormalNavigationBar(rightTitle: "다음", isBackButtonHidden: true)
+        setupNormalNavigationBar(rightIcon: Images.refresh)
     }
 }
 
