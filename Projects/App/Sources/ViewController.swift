@@ -10,47 +10,99 @@ import UIKit
 import Shared
 
 class ViewController: UIViewController {
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 20
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Colors.background
         
-        let labels: [UILabel] = [
-            createLabel(text: "Heading 1", font: Fonts.heading1),
-            createLabel(text: "Heading 2", font: Fonts.heading2),
-            createLabel(text: "Heading 3", font: Fonts.heading3),
-            createLabel(text: "Title 1", font: Fonts.title1),
-            createLabel(text: "Title 2", font: Fonts.title2),
-            createLabel(text: "Title 3", font: Fonts.title3),
-            createLabel(text: "Body 1", font: Fonts.body1),
-            createLabel(text: "Body 2", font: Fonts.body2),
-            createLabel(text: "Body 3", font: Fonts.body3),
-            createLabel(text: "Caption 1", font: Fonts.caption1),
-            createLabel(text: "Caption 2", font: Fonts.caption2)
-        ]
+        view.backgroundColor = .white
+        setupScrollView()
+        addImages()
+    }
+    
+    private func setupScrollView() {
+        view.addSubview(scrollView)
+        scrollView.addSubview(stackView)
         
-        let stackView = UIStackView(arrangedSubviews: labels)
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.alignment = .leading
-        
-        view.addSubview(stackView)
-        
-        // Add constraints
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
     }
     
-    private func createLabel(text: String, font: UIFont) -> UILabel {
-        let label = UILabel()
-        label.text = text
-        label.font = font
-        label.textColor = Colors.gray09
-        label.numberOfLines = 1
-        return label
+    private func addImages() {
+        let imageProperties: [String: UIImage] = [
+            "back": Images.back,
+            "bookmarkActive": Images.bookmarkActive,
+            "bookmarkInactive": Images.bookmarkInactive,
+            "checkActive": Images.checkActive,
+            "checkInactive": Images.checkInactive,
+            "chevronLeft": Images.chevronLeft,
+            "chevronRight": Images.chevronRight,
+            "empty": Images.empty,
+            "error": Images.error,
+            "export": Images.export,
+            "homeActive": Images.homeActive,
+            "homeInactive": Images.homeInactive,
+            "logoBelt": Images.logoBelt,
+            "newsActive": Images.newsActive,
+            "newsInactive": Images.newsInactive,
+            "refresh": Images.refresh,
+            "settingsActive": Images.settingsActive,
+            "settingsInactive": Images.settingsInactive
+        ]
+        
+        for (name, image) in imageProperties {
+            let containerView = UIView()
+            containerView.translatesAutoresizingMaskIntoConstraints = false
+            
+            let imageView = UIImageView(image: image)
+            imageView.contentMode = .scaleAspectFit
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            
+            let label = UILabel()
+            label.text = name
+            label.textAlignment = .center
+            label.translatesAutoresizingMaskIntoConstraints = false
+            
+            containerView.addSubview(imageView)
+            containerView.addSubview(label)
+            
+            NSLayoutConstraint.activate([
+                imageView.topAnchor.constraint(equalTo: containerView.topAnchor),
+                imageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+                imageView.widthAnchor.constraint(equalToConstant: 100),
+                imageView.heightAnchor.constraint(equalToConstant: 100),
+                
+                label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+                label.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+                label.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+                label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+            ])
+            
+            stackView.addArrangedSubview(containerView)
+        }
     }
 }
 
