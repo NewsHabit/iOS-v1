@@ -1,11 +1,13 @@
 //
 //  SceneDelegate.swift
-//  newshabit
+//  FeatureOnboardingExample
 //
-//  Created by 지연 on 10/18/24.
+//  Created by 지연 on 10/19/24.
 //
 
 import UIKit
+
+import FeatureOnboarding
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -17,7 +19,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = UINavigationController(rootViewController: MyViewController())
+        window?.rootViewController = UINavigationController(
+            rootViewController: NameViewController()
+        )
         window?.makeKeyAndVisible()
     }
 }
