@@ -10,6 +10,9 @@ import UIKit
 import Shared
 
 public final class HomeViewController: ViewController<HomeView> {
+    private let dailyNewsDataSource = DailyNewsDataSource()
+    private let bookmarkDataSource = BookmarkDataSource()
+    
     // MARK: - Lifecycle
 
     public override func viewDidLoad() {
@@ -26,8 +29,15 @@ public final class HomeViewController: ViewController<HomeView> {
     // MARK: - Setup Methods
     
     private func setupCollectionView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        dailyNewsCollectionView.delegate = self
+        dailyNewsCollectionView.dataSource = dailyNewsDataSource
+        
+        bookmarkCollectionView.delegate = self
+        bookmarkCollectionView.dataSource = bookmarkDataSource
+    }
+    
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
 }
 
@@ -41,26 +51,38 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension HomeViewController: UICollectionViewDataSource {
-    public func collectionView(
-        _ collectionView: UICollectionView,
-        numberOfItemsInSection section: Int
-    ) -> Int {
+private extension HomeViewController {
+    var dailyNewsCollectionView: UICollectionView {
+        contentView.dailyNewsView.collectionView
+    }
+    
+    var bookmarkCollectionView: UICollectionView {
+        contentView.bookmarkView.collectionView
+    }
+}
+
+// TODO: 임시! Diffable Data Source로 바꿀 것
+
+class DailyNewsDataSource: NSObject, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 3
     }
     
-    public func collectionView(
-        _ collectionView: UICollectionView,
-        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(for: indexPath, cellType: NewsCell.self)
         cell.configure(with: .daily)
         return cell
     }
 }
 
-private extension HomeViewController {
-    var collectionView: UICollectionView {
-        contentView.dailyNewsView.collectionView
+class BookmarkDataSource: NSObject, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 8
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(for: indexPath, cellType: NewsCell.self)
+        cell.configure(with: .bookmark)
+        return cell
     }
 }
