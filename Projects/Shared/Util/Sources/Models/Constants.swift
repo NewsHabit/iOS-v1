@@ -9,4 +9,8 @@ import Foundation
 
 public struct Constants {
     public static let maxNameLength = 8
+    
+    public struct LineHeight {
+        public static let heading1 = 32.0
+    }
 }
