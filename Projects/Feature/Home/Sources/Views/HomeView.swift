@@ -21,7 +21,6 @@ public final class HomeView: UIView {
     private let containerView = {
         let view = UIView()
         view.backgroundColor = Colors.background
-        view.layer.masksToBounds = true
         view.layer.cornerRadius = 20
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return view
@@ -37,7 +36,6 @@ public final class HomeView: UIView {
     private let line = {
         let view = UIView()
         view.backgroundColor = Colors.gray01
-        view.layer.masksToBounds = true
         return view
     }()
     

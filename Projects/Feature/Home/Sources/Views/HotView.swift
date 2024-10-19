@@ -13,7 +13,7 @@ import SnapKit
 public final class HotView: UIView {
     // MARK: - Components
     
-    private let errorView = ErrorView()
+    let errorView = ErrorView()
     
     let collectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -46,7 +46,8 @@ public final class HotView: UIView {
         addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(16)
-            make.leading.bottom.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview()
         }
     }
 }

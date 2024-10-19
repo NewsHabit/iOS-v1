@@ -45,7 +45,6 @@ public final class CategoryCell: UICollectionViewCell, Reusable {
     // MARK: - Setup Methods
     
     private func setupCell() {
-        layer.masksToBounds = true
         layer.cornerRadius = 8
         layer.borderWidth = 1
     }

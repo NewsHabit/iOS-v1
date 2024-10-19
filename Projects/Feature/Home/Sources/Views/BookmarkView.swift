@@ -15,6 +15,7 @@ public final class BookmarkView: UIView {
         backgroundColor = .systemYellow.withAlphaComponent(0.1)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

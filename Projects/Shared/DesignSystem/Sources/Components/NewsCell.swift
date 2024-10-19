@@ -24,7 +24,6 @@ public final class NewsCell: UICollectionViewCell, Reusable {
     private let readStateView = {
         let view = UIView()
         view.backgroundColor = Colors.point
-        view.layer.masksToBounds = true
         view.layer.cornerRadius = 2.5
         return view
     }()
@@ -49,7 +48,6 @@ public final class NewsCell: UICollectionViewCell, Reusable {
     private let categoryView = {
         let view = UIView()
         view.backgroundColor = Colors.primary
-        view.layer.masksToBounds = true
         view.layer.cornerRadius = 11
         return view
     }()
@@ -76,9 +74,14 @@ public final class NewsCell: UICollectionViewCell, Reusable {
         let imageView = UIImageView()
         imageView.backgroundColor = Colors.gray01
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 8
         return imageView
+    }()
+    
+    private let line = {
+        let view = UIView()
+        view.backgroundColor = Colors.gray01
+        return view
     }()
     
     // MARK: - Init
@@ -99,7 +102,7 @@ public final class NewsCell: UICollectionViewCell, Reusable {
         addSubview(thumbnailImageView)
         thumbnailImageView.snp.makeConstraints { make in
             make.width.height.equalTo(75)
-            make.trailing.equalToSuperview().inset(20)
+            make.trailing.equalToSuperview()
             make.centerY.equalToSuperview()
         }
         
@@ -111,7 +114,7 @@ public final class NewsCell: UICollectionViewCell, Reusable {
         titleView.snp.makeConstraints { make in
             make.height.equalTo(24)
             make.top.equalTo(thumbnailImageView.snp.top)
-            make.leading.equalToSuperview().inset(20)
+            make.leading.equalToSuperview()
             make.trailing.equalTo(thumbnailImageView.snp.leading).offset(-10)
         }
         
@@ -132,6 +135,12 @@ public final class NewsCell: UICollectionViewCell, Reusable {
         descriptionLabel.snp.makeConstraints { make in
             make.leading.trailing.equalTo(titleView)
             make.bottom.equalTo(thumbnailImageView.snp.bottom)
+        }
+        
+        addSubview(line)
+        line.snp.makeConstraints { make in
+            make.leading.bottom.trailing.equalToSuperview()
+            make.height.equalTo(1)
         }
     }
     

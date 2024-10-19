@@ -20,5 +20,47 @@ public final class HomeViewController: ViewController<HomeView> {
         )
         setBackgroundColor(Colors.secondaryBackground)
         setTitleColor(UIColor.white)
+        setupCollectionView()
+    }
+    
+    // MARK: - Setup Methods
+    
+    private func setupCollectionView() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+    }
+}
+
+extension HomeViewController: UICollectionViewDelegateFlowLayout {
+    public func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 95)
+    }
+}
+
+extension HomeViewController: UICollectionViewDataSource {
+    public func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
+        return 3
+    }
+    
+    public func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(for: indexPath, cellType: NewsCell.self)
+        cell.configure(with: .daily)
+        return cell
+    }
+}
+
+private extension HomeViewController {
+    var collectionView: UICollectionView {
+        contentView.dailyNewsView.collectionView
     }
 }
