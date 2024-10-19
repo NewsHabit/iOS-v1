@@ -11,11 +11,15 @@ import WebKit
 import SnapKit
 
 open class WebViewController<View: WKWebView>: ViewController<View> {
+    // MARK: - Components
+    
     private lazy var toolBar = createStackView()
     public private(set) lazy var backwardButton = createButton(with: Images.chevronLeft)
     public private(set) lazy var forwardButton = createButton(with: Images.chevronRight)
     public private(set) lazy var exportButton = createButton(with: Images.export)
     public private(set) lazy var bookmarkButton = createButton(with: Images.bookmarkInactive)
+    
+    // MARK: - Lifecycle
     
     open override func viewDidLoad() {
         super.viewDidLoad()

@@ -8,7 +8,6 @@
 import UIKit
 
 public struct Images {
-    public static let back = SharedDesignSystemAsset.Images.back.image
     public static let bookmarkActive = SharedDesignSystemAsset.Images.bookmarkActive.image
     public static let bookmarkInactive = SharedDesignSystemAsset.Images.bookmarkInactive.image
     public static let checkActive = SharedDesignSystemAsset.Images.checkActive.image

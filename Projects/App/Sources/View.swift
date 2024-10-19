@@ -6,13 +6,20 @@
 //
 
 import UIKit
-import WebKit
 
-class View: WKWebView {
-    override init(frame: CGRect, configuration: WKWebViewConfiguration) {
-        super.init(frame: frame, configuration: configuration)
-        isOpaque = false
-        backgroundColor = .systemPink.withAlphaComponent(0.1)
+import SnapKit
+import Shared
+
+class View: UIView {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        let textField = ValidatableTextField(placeholder: "텍스트", validator: NameValidator())
+        addSubview(textField)
+        textField.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(25)
+            make.centerY.equalToSuperview().offset(-100)
+        }
+        textField.textField.becomeFirstResponder()
     }
     
     required init?(coder: NSCoder) {

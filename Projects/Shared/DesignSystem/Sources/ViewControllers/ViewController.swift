@@ -24,7 +24,7 @@ open class ViewController<View: UIView>: UIViewController, UIGestureRecognizerDe
         }
     }
     
-    // MARK: - Properties
+    // MARK: - Components
     
     let navigationBar = UIView()
     public let contentView = View()
