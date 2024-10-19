@@ -71,6 +71,15 @@ open class ViewController<View: UIView>: UIViewController, UIGestureRecognizerDe
         }
     }
     
+    public func setBackgroundColor(_ color: UIColor) {
+        view.backgroundColor = color
+    }
+    
+    public func setTitleColor(_ color: UIColor) {
+        titleLabel?.textColor = color
+        subTitleLabel?.textColor = color
+    }
+    
     // MARK: - Private Setup Methods
     
     private func setupViewController() {
