@@ -13,4 +13,10 @@ extension Date {
         dateFormatter.dateFormat = "yyyy년 M월 d일 HH:00"
         return dateFormatter.string(from: self)
     }
+    
+    public func formatAsMonthYear() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy년 M월"
+        return dateFormatter.string(from: self)
+    }
 }

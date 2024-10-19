@@ -11,10 +11,11 @@ import Shared
 
 public final class HomeViewController: ViewController<HomeView> {
     private let dailyNewsDataSource = DailyNewsDataSource()
+    private let monthlyRecordDataSource = MonthlyRecordDataSource()
     private let bookmarkDataSource = BookmarkDataSource()
     
     // MARK: - Lifecycle
-
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupLargeNavigationBar(
@@ -31,6 +32,8 @@ public final class HomeViewController: ViewController<HomeView> {
     private func setupCollectionView() {
         dailyNewsCollectionView.delegate = self
         dailyNewsCollectionView.dataSource = dailyNewsDataSource
+        
+        monthlyRecordCollectionView.dataSource = monthlyRecordDataSource
         
         bookmarkCollectionView.delegate = self
         bookmarkCollectionView.dataSource = bookmarkDataSource
@@ -56,6 +59,10 @@ private extension HomeViewController {
         contentView.dailyNewsView.collectionView
     }
     
+    var monthlyRecordCollectionView: UICollectionView {
+        contentView.monthlyRecordView.collectionView
+    }
+    
     var bookmarkCollectionView: UICollectionView {
         contentView.bookmarkView.collectionView
     }
@@ -71,6 +78,24 @@ class DailyNewsDataSource: NSObject, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(for: indexPath, cellType: NewsCell.self)
         cell.configure(with: .daily)
+        return cell
+    }
+}
+
+class MonthlyRecordDataSource: NSObject, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 38
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(for: indexPath, cellType: MonthlyCell.self)
+        if indexPath.row == 9 {
+            cell.configure(with: .read)
+        } else if indexPath.row == 0 {
+            cell.configure(with: .empty)
+        } else {
+            cell.configure(with: .unread)
+        }
         return cell
     }
 }
