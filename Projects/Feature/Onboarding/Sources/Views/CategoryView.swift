@@ -33,7 +33,15 @@ public final class CategoryView: UIView {
         return label
     }()
     
-    
+    let collectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 14
+        layout.minimumInteritemSpacing = 10
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(cellType: CategoryCell.self)
+        collectionView.backgroundColor = .clear
+        return collectionView
+    }()
     
     // MARK: - Init
     
@@ -62,5 +70,11 @@ public final class CategoryView: UIView {
             make.leading.equalToSuperview().inset(20)
         }
         
+        addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(42)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview()
+        }
     }
 }
