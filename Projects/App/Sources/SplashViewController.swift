@@ -10,7 +10,13 @@ import UIKit
 import SnapKit
 import Shared
 
+protocol SplashDelegate: AnyObject {
+    func didFinish()
+}
+
 final class SplashViewController: UIViewController {
+    weak var delegate: SplashDelegate?
+    
     // MARK: - Components
     
     private let logoBeltImageView = {
@@ -57,6 +63,10 @@ final class SplashViewController: UIViewController {
         descriptionLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(newsHabitLabel.snp.bottom)
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+            self?.delegate?.didFinish()
         }
     }
 }

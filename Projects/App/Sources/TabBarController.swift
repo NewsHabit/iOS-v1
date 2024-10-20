@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Feature
 import Shared
 
 final class TabBarController: UITabBarController {
@@ -47,7 +48,14 @@ final class TabBarController: UITabBarController {
         tabBar.unselectedItemTintColor = Colors.gray09
         
         viewControllers = Tab.allCases.map { tab in
-            let viewController = ViewController()
+            let viewController: UIViewController
+            
+            switch tab {
+            case .home:     viewController = HomeViewController()
+            case .hot:      viewController = HotViewController()
+            case .settings: viewController = SettingsViewController()
+            }
+            
             viewController.tabBarItem = UITabBarItem(
                 title: nil,
                 image: tab.inactiveImage,
