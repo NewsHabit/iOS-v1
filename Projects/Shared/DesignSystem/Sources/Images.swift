@@ -24,7 +24,6 @@ public struct Images {
     public static let newsActive = SharedDesignSystemAsset.Images.newsActive.image
     public static let newsInactive = SharedDesignSystemAsset.Images.newsInactive.image
     public static let refresh = SharedDesignSystemAsset.Images.refresh.image
-    public static let search = SharedDesignSystemAsset.Images.search.image
     public static let settingsActive = SharedDesignSystemAsset.Images.settingsActive.image
     public static let settingsInactive = SharedDesignSystemAsset.Images.settingsInactive.image
 }
