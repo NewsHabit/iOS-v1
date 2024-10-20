@@ -28,9 +28,9 @@ public final class MonthlyRecordView: UIView {
         return label
     }()
     
-    lazy var beforeButton = createButton(with: Images.chevronLeft)
+    lazy var beforeButton = createButton(with: UIImage(systemName: "chevron.left"))
     
-    lazy var afterButton = createButton(with: Images.chevronRight)
+    lazy var afterButton = createButton(with: UIImage(systemName: "chevron.right"))
     
     let collectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -105,13 +105,14 @@ public final class MonthlyRecordView: UIView {
 }
 
 private extension MonthlyRecordView {
-    func createButton(with image: UIImage) -> UIButton {
+    func createButton(with image: UIImage?) -> UIButton {
         var config = UIButton.Configuration.plain()
         config.image = image
         config.preferredSymbolConfigurationForImage = .init(pointSize: 12)
         let button = UIButton()
         button.backgroundColor = .clear
         button.configuration = config
+        button.tintColor = Colors.gray09
         return button
     }
 }

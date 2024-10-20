@@ -17,6 +17,7 @@ public final class HotView: UIView {
     
     let collectionView = {
         let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 0
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(cellType: NewsCell.self)
         collectionView.backgroundColor = .clear

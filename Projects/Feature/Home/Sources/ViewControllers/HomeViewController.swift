@@ -50,7 +50,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 95)
+        return CGSize(width: collectionView.frame.width, height: 105)
     }
 }
 

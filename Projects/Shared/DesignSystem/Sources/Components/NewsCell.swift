@@ -16,7 +16,7 @@ public final class NewsCell: UICollectionViewCell, Reusable {
     private let titleView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 8
+        stackView.spacing = 6
         stackView.alignment = .center
         return stackView
     }()

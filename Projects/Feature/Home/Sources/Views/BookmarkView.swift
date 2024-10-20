@@ -14,41 +14,11 @@ public final class BookmarkView: UIView {
     
     let emptyView = EmptyView()
     
-    private let stackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 6
-        return stackView
-    }()
-    
-    let searchBarView = {
-        let view = UIView()
-        view.backgroundColor = Colors.gray01
-        view.layer.cornerRadius = 22
-        return view
-    }()
-    
-    private let searchImageView = {
-        let imageView = UIImageView()
-        imageView.image = Images.search
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
-    private let textField = {
-        let textField = UITextField()
-        textField.placeholder = "기사 제목 검색"
-        textField.font = Fonts.caption1
-        textField.textColor = Colors.gray09
-        textField.clearButtonMode = .always
-        textField.autocapitalizationType = .none
-        textField.autocorrectionType = .no
-        textField.returnKeyType = .search
-        return textField
-    }()
+    let categoryDropDownButton = CategoryDropDownButton()
     
     let collectionView = {
         let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 0
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(cellType: NewsCell.self)
         collectionView.backgroundColor = .clear
@@ -76,32 +46,17 @@ public final class BookmarkView: UIView {
 //            make.center.equalToSuperview()
 //        }
         
-        [searchImageView, textField].forEach { searchBarView.addSubview($0) }
-        [searchBarView, collectionView].forEach { stackView.addArrangedSubview($0) }
-        addSubview(stackView)
-        stackView.snp.makeConstraints { make in
+        addSubview(categoryDropDownButton)
+        categoryDropDownButton.snp.makeConstraints { make in
             make.top.equalToSuperview()
+            make.leading.equalToSuperview().inset(20)
+        }
+        
+        addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(categoryDropDownButton.snp.bottom).offset(6)
             make.leading.trailing.equalToSuperview().inset(20)
             make.bottom.equalToSuperview()
-        }
-        
-        searchBarView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(44)
-        }
-        
-        searchImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(18)
-            make.leading.equalToSuperview().inset(14)
-            make.centerY.equalToSuperview()
-        }
-        
-        textField.snp.makeConstraints { make in
-            make.leading.equalTo(searchImageView.snp.trailing).offset(8)
-            make.trailing.equalToSuperview().inset(14)
-            make.height.equalTo(20)
-            make.centerY.equalToSuperview()
         }
     }
 }
