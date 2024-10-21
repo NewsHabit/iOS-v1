@@ -47,6 +47,16 @@ public final class HomeViewController: ViewController<HomeView> {
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(
         _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        guard collectionView != monthlyRecordCollectionView else { return }
+        let viewController = WebViewController()
+        viewController.setupToolBar()
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    public func collectionView(
+        _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {

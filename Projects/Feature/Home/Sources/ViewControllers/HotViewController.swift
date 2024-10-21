@@ -32,6 +32,15 @@ public final class HotViewController: ViewController<HotView> {
 extension HotViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(
         _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        let viewController = WebViewController()
+        viewController.setupToolBar()
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    public func collectionView(
+        _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {

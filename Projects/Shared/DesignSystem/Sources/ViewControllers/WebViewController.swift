@@ -44,6 +44,7 @@ open class WebViewController<View: WKWebView>: ViewController<View> {
     
     private func setupViewController() {
         setupNormalNavigationBar(rightIcon: Images.refresh)
+        setBackgroundColor(Colors.gray01)
         
         view.addSubview(toolBar)
         toolBar.snp.makeConstraints { make in
@@ -71,7 +72,6 @@ open class WebViewController<View: WKWebView>: ViewController<View> {
     private func createButton(with image: UIImage) -> UIButton {
         let button = UIButton()
         button.setImage(image, for: .normal)
-        button.tintColor = Colors.gray09
         return button
     }
 }

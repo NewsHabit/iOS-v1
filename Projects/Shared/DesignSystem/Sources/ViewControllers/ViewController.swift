@@ -100,7 +100,8 @@ open class ViewController<View: UIView>: UIViewController, UIGestureRecognizerDe
         view.addSubview(contentView)
         contentView.snp.makeConstraints { make in
             make.top.equalTo(navigationBar.snp.bottom)
-            make.leading.bottom.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
     

@@ -34,6 +34,28 @@ public final class SettingsViewController:ViewController<SettingsView> {
 extension SettingsViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(
         _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        let settingType = settings[indexPath.section][indexPath.row]
+        switch settingType {
+        case .name:         navigate(to: NameViewController())
+        case .category:     navigate(to: CategoryViewController())
+        case .newsCount:    navigate(to: NewsCountViewController())
+        case .notification: navigate(to: NotificationViewController())
+        case .developer:
+            let viewController = WebViewController()
+            viewController.setupToolBar(isBookmarkButtonHidden: true)
+            navigate(to: viewController)
+        case .reset:        print("reset")
+        }
+    }
+    
+    private func navigate(to viewContoller: UIViewController) {
+        navigationController?.pushViewController(viewContoller, animated: true)
+    }
+    
+    public func collectionView(
+        _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
