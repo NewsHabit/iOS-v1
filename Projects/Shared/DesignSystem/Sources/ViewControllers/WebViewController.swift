@@ -30,7 +30,7 @@ open class WebViewController<View: WKWebView>: ViewController<View> {
     
     public func setupToolBar(isBookmarkButtonHidden: Bool = false) {
         if isBookmarkButtonHidden {
-            [backwardButton, forwardButton, UIView(), exportButton].forEach {
+            [backwardButton, forwardButton, exportButton, UIView()].forEach {
                 toolBar.addArrangedSubview($0)
             }
         } else {
@@ -44,7 +44,6 @@ open class WebViewController<View: WKWebView>: ViewController<View> {
     
     private func setupViewController() {
         setupNormalNavigationBar(rightIcon: Images.refresh)
-        setBackgroundColor(Colors.gray01)
         
         view.addSubview(toolBar)
         toolBar.snp.makeConstraints { make in

@@ -36,7 +36,7 @@ extension HotViewController: UICollectionViewDelegateFlowLayout {
     ) {
         let viewController = WebViewController()
         viewController.setupToolBar()
-        navigationController?.pushViewController(viewController, animated: true)
+        navigateWithTab(to: viewController)
     }
     
     public func collectionView(

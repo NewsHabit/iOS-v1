@@ -45,13 +45,9 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         case .developer:
             let viewController = WebViewController()
             viewController.setupToolBar(isBookmarkButtonHidden: true)
-            navigate(to: viewController)
+            navigateWithTab(to: viewController)
         case .reset:        print("reset")
         }
-    }
-    
-    private func navigate(to viewContoller: UIViewController) {
-        navigationController?.pushViewController(viewContoller, animated: true)
     }
     
     public func collectionView(

@@ -52,7 +52,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
         guard collectionView != monthlyRecordCollectionView else { return }
         let viewController = WebViewController()
         viewController.setupToolBar()
-        navigationController?.pushViewController(viewController, animated: true)
+        navigateWithTab(to: viewController)
     }
     
     public func collectionView(

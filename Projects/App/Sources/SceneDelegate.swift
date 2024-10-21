@@ -26,6 +26,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 extension SceneDelegate: SplashDelegate {
     func didFinish() {
-        window?.rootViewController = TabBarController()
+        window?.rootViewController = UINavigationController(rootViewController: TabBarController())
     }
 }
