@@ -24,7 +24,7 @@ open class ViewController<View: UIView>: UIViewController, UIGestureRecognizerDe
         }
     }
     
-    // MARK: - Properties
+    // MARK: - Components
     
     let navigationBar = UIView()
     public let contentView = View()
@@ -71,6 +71,15 @@ open class ViewController<View: UIView>: UIViewController, UIGestureRecognizerDe
         }
     }
     
+    public func setBackgroundColor(_ color: UIColor) {
+        view.backgroundColor = color
+    }
+    
+    public func setTitleColor(_ color: UIColor) {
+        titleLabel?.textColor = color
+        subTitleLabel?.textColor = color
+    }
+    
     // MARK: - Private Setup Methods
     
     private func setupViewController() {
@@ -91,7 +100,8 @@ open class ViewController<View: UIView>: UIViewController, UIGestureRecognizerDe
         view.addSubview(contentView)
         contentView.snp.makeConstraints { make in
             make.top.equalTo(navigationBar.snp.bottom)
-            make.leading.bottom.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
     }
     

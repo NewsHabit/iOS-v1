@@ -8,7 +8,6 @@
 import UIKit
 
 public struct Images {
-    public static let back = SharedDesignSystemAsset.Images.back.image
     public static let bookmarkActive = SharedDesignSystemAsset.Images.bookmarkActive.image
     public static let bookmarkInactive = SharedDesignSystemAsset.Images.bookmarkInactive.image
     public static let checkActive = SharedDesignSystemAsset.Images.checkActive.image
@@ -18,6 +17,7 @@ public struct Images {
     public static let empty = SharedDesignSystemAsset.Images.empty.image
     public static let error = SharedDesignSystemAsset.Images.error.image
     public static let export = SharedDesignSystemAsset.Images.export.image
+    public static let heart = SharedDesignSystemAsset.Images.heart.image
     public static let homeActive = SharedDesignSystemAsset.Images.homeActive.image
     public static let homeInactive = SharedDesignSystemAsset.Images.homeInactive.image
     public static let logoBelt = SharedDesignSystemAsset.Images.logoBelt.image

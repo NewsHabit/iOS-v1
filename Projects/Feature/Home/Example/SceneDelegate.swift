@@ -1,11 +1,13 @@
 //
 //  SceneDelegate.swift
-//  newshabit
+//  FeatureHomeExample
 //
-//  Created by 지연 on 10/18/24.
+//  Created by 지연 on 10/20/24.
 //
 
 import UIKit
+
+import FeatureHome
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -17,15 +19,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        let splashViewController = SplashViewController()
-        splashViewController.delegate = self
-        window?.rootViewController = splashViewController
+        window?.rootViewController = UINavigationController(
+            rootViewController: HomeViewController()
+        )
         window?.makeKeyAndVisible()
-    }
-}
-
-extension SceneDelegate: SplashDelegate {
-    func didFinish() {
-        window?.rootViewController = UINavigationController(rootViewController: TabBarController())
     }
 }

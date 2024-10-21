@@ -19,4 +19,5 @@ public struct Fonts {
     public static let body3 = SharedDesignSystemFontFamily.Pretendard.regular.font(size: 14)
     public static let caption1 = SharedDesignSystemFontFamily.Pretendard.regular.font(size: 12)
     public static let caption2 = SharedDesignSystemFontFamily.Pretendard.semiBold.font(size: 10)
+    public static let logo = SharedDesignSystemFontFamily.EncodeSans.extraBold.font(size: 45)
 }

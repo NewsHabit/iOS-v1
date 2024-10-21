@@ -11,11 +11,15 @@ import WebKit
 import SnapKit
 
 open class WebViewController<View: WKWebView>: ViewController<View> {
+    // MARK: - Components
+    
     private lazy var toolBar = createStackView()
     public private(set) lazy var backwardButton = createButton(with: Images.chevronLeft)
     public private(set) lazy var forwardButton = createButton(with: Images.chevronRight)
     public private(set) lazy var exportButton = createButton(with: Images.export)
     public private(set) lazy var bookmarkButton = createButton(with: Images.bookmarkInactive)
+    
+    // MARK: - Lifecycle
     
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +30,7 @@ open class WebViewController<View: WKWebView>: ViewController<View> {
     
     public func setupToolBar(isBookmarkButtonHidden: Bool = false) {
         if isBookmarkButtonHidden {
-            [backwardButton, forwardButton, UIView(), exportButton].forEach {
+            [backwardButton, forwardButton, exportButton, UIView()].forEach {
                 toolBar.addArrangedSubview($0)
             }
         } else {
@@ -67,7 +71,6 @@ open class WebViewController<View: WKWebView>: ViewController<View> {
     private func createButton(with image: UIImage) -> UIButton {
         let button = UIButton()
         button.setImage(image, for: .normal)
-        button.tintColor = Colors.gray09
         return button
     }
 }
